@@ -1,0 +1,325 @@
+---
+title: Selection Toolbar
+description: A floating toolbar that appears above selected text for formatting and utility actions.
+---
+
+A floating toolbar that appears near a text selection so users can format, copy, or share highlighted content without leaving the editing surface.
+
+<ComponentTabs name="selection-toolbar-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/selection-toolbar
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/selection-toolbar
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/selection-toolbar
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/selection-toolbar
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps className="mb-0 pt-2">
+<Step>Install the required dependencies:</Step>
+
+```bash
+npm install @floating-ui/react-dom radix-ui
+```
+
+<Step>Copy the toolbar source into your project:</Step>
+
+<ComponentSource name="selection-toolbar" />
+
+<Step>Copy the supporting utilities used by the toolbar:</Step>
+
+<ComponentSource name="compose-refs" />
+
+<ComponentSource name="use-as-ref" />
+
+<ComponentSource name="use-isomorphic-layout-effect" />
+
+<ComponentSource name="use-lazy-ref" />
+
+<Step>Update the import paths to match your project structure.</Step>
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Layout
+
+Compose the toolbar from the root, action items, and separators.
+
+```tsx title="selection-toolbar-basic.tsx"
+"use client";
+
+import { Bold, Italic } from "lucide-react";
+import * as React from "react";
+import {
+  SelectionToolbar,
+  SelectionToolbarItem,
+  SelectionToolbarSeparator,
+} from "@/components/ui/selection-toolbar";
+
+export function EditorSelectionToolbar() {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  return (
+    <div
+      ref={containerRef}
+      contentEditable
+      suppressContentEditableWarning
+      className="rounded-lg border bg-card p-6"
+    >
+      <p>Select this text to open the toolbar.</p>
+
+      <SelectionToolbar container={containerRef}>
+        <SelectionToolbarItem onSelect={() => {}}>
+          <Bold className="size-4" />
+        </SelectionToolbarItem>
+        <SelectionToolbarItem onSelect={() => {}}>
+          <Italic className="size-4" />
+        </SelectionToolbarItem>
+        <SelectionToolbarSeparator />
+      </SelectionToolbar>
+    </div>
+  );
+}
+```
+
+## Usage
+
+### Basic Usage
+
+Attach the toolbar to a selectable container and provide actions with `SelectionToolbarItem`.
+
+```tsx title="selection-toolbar-basic-usage.tsx"
+<SelectionToolbar container={containerRef}>
+  <SelectionToolbarItem onSelect={() => wrapSelection("strong")}>
+    <Bold className="size-4" />
+  </SelectionToolbarItem>
+  <SelectionToolbarItem onSelect={() => wrapSelection("em")}>
+    <Italic className="size-4" />
+  </SelectionToolbarItem>
+</SelectionToolbar>
+```
+
+### Track Selected Text
+
+Use `onSelectionChange` when you need analytics, counters, or contextual UI tied to the active selection.
+
+<ComponentTabs name="selection-toolbar-info-demo" />
+
+```tsx title="selection-toolbar-selection-info.tsx"
+<SelectionToolbar
+  container={containerRef}
+  onSelectionChange={(text) => {
+    setSelectedText(text);
+    setWordCount(text.trim().split(/\s+/).filter(Boolean).length);
+  }}
+>
+  <SelectionToolbarItem onSelect={onCopy}>
+    <Copy className="size-4" />
+  </SelectionToolbarItem>
+</SelectionToolbar>
+```
+
+### Custom Positioning
+
+Change `side`, `align`, and collision options when the default top-center placement is not ideal for your editor layout.
+
+```tsx title="selection-toolbar-positioning.tsx"
+<SelectionToolbar
+  container={containerRef}
+  side="bottom"
+  align="start"
+  sideOffset={12}
+  collisionPadding={8}
+>
+  <SelectionToolbarItem onSelect={onCopy}>
+    <Copy className="size-4" />
+  </SelectionToolbarItem>
+</SelectionToolbar>
+```
+
+## API Reference
+
+### SelectionToolbar
+
+The root component that tracks text selection and positions the floating toolbar.
+
+<TypeTable
+  type={{
+    open: {
+      description: "Controls the toolbar visibility when using it in controlled mode.",
+      type: "boolean",
+    },
+    onOpenChange: {
+      description: "Called when the toolbar opens or closes.",
+      type: "(open: boolean) => void",
+    },
+    onSelectionChange: {
+      description: "Receives the currently selected text whenever it changes.",
+      type: "(text: string) => void",
+    },
+    container: {
+      description: "Restricts selection tracking to a specific editable container element or ref.",
+      type: "HTMLElement | { current: HTMLElement | null } | null",
+    },
+    portalContainer: {
+      description: "Custom portal mount target for the floating toolbar.",
+      type: "Element | DocumentFragment | null",
+    },
+    side: {
+      description: "Preferred side for the floating toolbar.",
+      type: '"top" | "right" | "bottom" | "left"',
+      default: '"top"',
+    },
+    sideOffset: {
+      description: "Offset in pixels from the selected text.",
+      type: "number",
+      default: "8",
+    },
+    align: {
+      description: "Alignment relative to the selection.",
+      type: '"start" | "center" | "end"',
+      default: '"center"',
+    },
+    alignOffset: {
+      description: "Cross-axis offset applied to the floating toolbar.",
+      type: "number",
+      default: "0",
+    },
+    avoidCollisions: {
+      description: "Prevents the toolbar from overflowing the viewport or collision boundaries.",
+      type: "boolean",
+      default: "true",
+    },
+    collisionBoundary: {
+      description: "Boundary element or list of elements used for collision detection.",
+      type: "Element | null | Array<Element | null>",
+      default: "[]",
+    },
+    collisionPadding: {
+      description: "Padding applied during collision detection.",
+      type: "number | Partial<Record<'top' | 'right' | 'bottom' | 'left', number>>",
+      default: "0",
+    },
+    sticky: {
+      description: "Controls how the floating element stays attached during collision handling.",
+      type: '"partial" | "always"',
+      default: '"partial"',
+    },
+    hideWhenDetached: {
+      description: "Hides the toolbar when the reference selection becomes detached.",
+      type: "boolean",
+      default: "false",
+    },
+    updatePositionStrategy: {
+      description: "Determines whether Floating UI updates on demand or every animation frame.",
+      type: '"optimized" | "always"',
+      default: '"optimized"',
+    },
+    asChild: {
+      description: "Merges the toolbar props onto a child element instead of rendering a div.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes for the floating toolbar.",
+      type: "string",
+    },
+    children: {
+      description: "Toolbar items and separators.",
+      type: "ReactNode",
+    },
+  }}
+/>
+
+### SelectionToolbarItem
+
+An interactive action button inside the floating toolbar.
+
+<TypeTable
+  type={{
+    onSelect: {
+      description: "Runs when the item is selected and receives the selected text plus the dispatch event.",
+      type: "(text: string, event: Event) => void",
+    },
+    asChild: {
+      description: "Merges the item props onto a child element instead of rendering the default button.",
+      type: "boolean",
+      default: "false",
+    },
+    disabled: {
+      description: "Disables the item.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes for the item.",
+      type: "string",
+    },
+    children: {
+      description: "Icon or custom action content.",
+      type: "ReactNode",
+    },
+  }}
+/>
+
+### SelectionToolbarSeparator
+
+A simple vertical separator between toolbar groups.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Merges separator props onto a child element instead of rendering a div.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes for the separator.",
+      type: "string",
+    },
+  }}
+/>

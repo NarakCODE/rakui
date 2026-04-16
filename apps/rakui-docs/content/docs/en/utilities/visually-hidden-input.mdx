@@ -1,0 +1,140 @@
+---
+title: Visually Hidden Input
+description: Render an accessible hidden form input for form submissions and accessibility.
+---
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/visually-hidden-input
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/visually-hidden-input
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/visually-hidden-input
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/visually-hidden-input
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>
+        Copy and paste the following code into your project.
+      </Step>
+
+      <ComponentSource name="visually-hidden-input" />
+
+      <Step>
+        Update the import paths to match your project setup.
+      </Step>
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+## Usage
+
+```tsx title="visually-hidden-input-snippet.tsx"
+import { VisuallyHiddenInput } from "@rakui/visually-hidden-input";
+
+export default function Example() {
+  return (
+    <form>
+      <VisuallyHiddenInput name="hidden-field" value="secret-value" />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+## Props
+
+### VisuallyHiddenInput
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `string` | - | Input name attribute |
+| `value` | `string` | - | Input value |
+| `onChange` | `(e: ChangeEvent<HTMLInputElement>) => void` | - | Change handler |
+| `...rest` | `InputHTMLAttributes<HTMLInputElement>` | - | Additional input attributes |
+
+## Examples
+
+### File Upload
+
+```tsx title="visually-hidden-input-snippet.tsx"
+import { VisuallyHiddenInput } from "@rakui/visually-hidden-input";
+import { useRef } from "react";
+
+export default function FileUpload() {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <div>
+      <button 
+        type="button" 
+        onClick={() => inputRef.current?.click()}
+      >
+        Choose File
+      </button>
+      <VisuallyHiddenInput
+        ref={inputRef}
+        type="file"
+        name="file"
+        onChange={(e) => console.log(e.target.files)}
+      />
+    </div>
+  );
+}
+```
+
+### Form Token
+
+```tsx title="visually-hidden-input-snippet.tsx"
+import { VisuallyHiddenInput } from "@rakui/visually-hidden-input";
+
+export default function SecureForm() {
+  return (
+    <form action="/submit" method="POST">
+      <VisuallyHiddenInput 
+        name="csrf_token" 
+        value="secure-token-value" 
+      />
+      <button type="submit">Submit Form</button>
+    </form>
+  );
+}
+```

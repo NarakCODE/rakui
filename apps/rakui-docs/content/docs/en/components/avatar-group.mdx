@@ -1,0 +1,319 @@
+---
+title: Avatar Group
+description: Display a group of user avatars with overlap styling and an optional overflow counter.
+---
+
+Display a group of user avatars with overlap styling and an optional overflow counter.
+
+<ComponentTabs name="avatar-group-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">
+          npm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="pnpm">
+          pnpm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="yarn">
+          yarn
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="bun">
+          bun
+        </CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/avatar-group
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/avatar-group
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/avatar-group
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/avatar-group
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>
+        Install the following dependencies:
+      </Step>
+
+      <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+        <CodeBlockTabsList>
+          <CodeBlockTabsTrigger value="npm">
+            npm
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="pnpm">
+            pnpm
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="yarn">
+            yarn
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="bun">
+            bun
+          </CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
+
+        <CodeBlockTab value="npm">
+          ```bash
+          npm install @radix-ui/react-avatar class-variance-authority
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="pnpm">
+          ```bash
+          pnpm add @radix-ui/react-avatar class-variance-authority
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="yarn">
+          ```bash
+          yarn add @radix-ui/react-avatar class-variance-authority
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="bun">
+          ```bash
+          bun add @radix-ui/react-avatar class-variance-authority
+          ```
+        </CodeBlockTab>
+      </CodeBlockTabs>
+
+      <Step>
+        Copy and paste the following code into your project:
+      </Step>
+
+      <ComponentSource name="avatar-group" />
+
+      <Step>
+        Update the import paths to match your project setup.
+      </Step>
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Layout
+
+```tsx title="avatar-group-imports.tsx"
+import { AvatarGroup } from "@/components/ui/avatar-group";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+<AvatarGroup>
+  <Avatar>
+    <AvatarImage src="/tony-hawk.png" />
+    <AvatarFallback>TH</AvatarFallback>
+  </Avatar>
+  <Avatar>
+    <AvatarImage src="/rodney-mullen.png" />
+    <AvatarFallback>RM</AvatarFallback>
+  </Avatar>
+</AvatarGroup>
+```
+
+## Examples
+
+### With Truncation
+
+Automatically truncate long lists and show overflow indicators with the `max` prop.
+
+<ComponentTabs name="avatar-group-truncation-demo" />
+
+### With RTL
+
+Support for right-to-left layouts and vertical RTL stacking.
+
+<ComponentTabs name="avatar-group-rtl-demo" />
+
+### With Icons
+
+Use the Avatar Group component with icons or other elements beyond avatars.
+
+<ComponentTabs name="avatar-group-icons-demo" />
+
+### Custom Overflow
+
+Customize the overflow indicator with the `renderOverflow` prop.
+
+<ComponentTabs name="avatar-group-custom-overflow-demo" />
+
+## API Reference
+
+### AvatarGroup
+
+The main avatar group container that handles layout and masking of child elements.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `max` | `number` | - | Maximum number of avatars to show before displaying overflow count |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Layout orientation |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl"` | `"md"` | Size of all child avatars |
+| `renderOverflow` | `(count: number) => React.ReactNode` | - | Custom renderer for the overflow indicator |
+| `className` | `string` | - | Additional CSS classes to apply |
+
+### Avatar
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl"` | `"md"` | Size of the avatar |
+| `className` | `string` | - | Additional CSS classes to apply |
+
+### AvatarImage
+
+Extends all props from `@radix-ui/react-avatar` Image component.
+
+### AvatarFallback
+
+Extends all props from `@radix-ui/react-avatar` Fallback component.
+
+## Data Attributes
+
+<div className="not-prose overflow-hidden rounded-xl border border-fd-border bg-fd-card">
+  <table className="w-full text-left text-sm">
+    <thead className="bg-fd-muted/50 text-fd-muted-foreground">
+      <tr>
+        <th className="px-4 py-3 font-medium">Attribute</th>
+        <th className="px-4 py-3 font-medium">Description</th>
+      </tr>
+    </thead>
+    <tbody className="divide-y divide-fd-border">
+      <tr>
+        <td className="px-4 py-3 align-top">
+          <code className="rounded bg-fd-muted px-1.5 py-0.5 text-xs">[data-orientation]</code>
+        </td>
+        <td className="px-4 py-3 text-fd-muted-foreground">
+          The orientation of the avatar group: <code className="rounded bg-fd-muted px-1.5 py-0.5 text-xs">"horizontal"</code> or <code className="rounded bg-fd-muted px-1.5 py-0.5 text-xs">"vertical"</code>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+## Styling
+
+### Custom Colors
+
+You can customize the fallback background color using Tailwind CSS classes.
+
+```tsx title="avatar-group-snippet.tsx"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { AvatarGroup } from "@/components/ui/avatar-group";
+
+export function CustomColors() {
+  return (
+    <AvatarGroup max={3}>
+      <Avatar>
+        <AvatarFallback className="bg-blue-100 text-blue-700">A</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarFallback className="bg-green-100 text-green-700">B</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarFallback className="bg-purple-100 text-purple-700">C</AvatarFallback>
+      </Avatar>
+    </AvatarGroup>
+  );
+}
+```
+
+### Adding Borders
+
+Add borders to avatars for a different visual style.
+
+```tsx title="avatar-group-snippet.tsx"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AvatarGroup } from "@/components/ui/avatar-group";
+
+export function WithBorders() {
+  return (
+    <AvatarGroup max={3}>
+      <Avatar className="ring-4 ring-background">
+        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarFallback>CN</AvatarFallback>
+      </Avatar>
+      <Avatar className="ring-4 ring-background">
+        <AvatarImage src="https://github.com/ethanniser.png" />
+        <AvatarFallback>EN</AvatarFallback>
+      </Avatar>
+      <Avatar className="ring-4 ring-background">
+        <AvatarFallback>+1</AvatarFallback>
+      </Avatar>
+    </AvatarGroup>
+  );
+}
+```
+
+### Status Indicators
+
+Add status indicators to show online/offline status.
+
+```tsx title="avatar-group-snippet.tsx"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AvatarGroup } from "@/components/ui/avatar-group";
+
+export function WithStatus() {
+  return (
+    <AvatarGroup max={3}>
+      <div className="relative">
+        <Avatar>
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+        <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-background bg-green-500" />
+      </div>
+      <div className="relative">
+        <Avatar>
+          <AvatarImage src="https://github.com/ethanniser.png" />
+          <AvatarFallback>EN</AvatarFallback>
+        </Avatar>
+        <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-background bg-yellow-500" />
+      </div>
+      <Avatar>
+        <AvatarFallback>+1</AvatarFallback>
+      </Avatar>
+    </AvatarGroup>
+  );
+}
+```
+
+## Related Components
+
+- **Avatar**: Individual avatar display
+- **Badge**: Status indicators and labels
+- **Card**: Container for user profiles

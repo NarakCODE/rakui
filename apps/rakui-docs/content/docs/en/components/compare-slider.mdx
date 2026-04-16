@@ -1,0 +1,429 @@
+---
+title: Compare Slider
+description: A before/after comparison slider with drag and hover interactions.
+---
+
+A before/after comparison slider with drag and hover interactions, supporting horizontal and vertical orientations with keyboard navigation.
+
+<ComponentTabs name="compare-slider-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/compare-slider
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/compare-slider
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/compare-slider
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/compare-slider
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>Install the following dependencies:</Step>
+
+```bash
+npm install radix-ui
+```
+
+<Step>
+        Copy and paste the following code into your project.
+      </Step>
+
+      <ComponentSource name="compare-slider" />
+
+      <Step>
+        Update the import paths to match your project setup.
+      </Step>
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+## Layout
+
+---
+
+Import the parts and compose them together.
+
+```tsx title="compare-slider-snippet.tsx"
+import {
+  CompareSlider,
+  CompareSliderBefore,
+  CompareSliderAfter,
+  CompareSliderHandle,
+} from "@/components/ui/compare-slider";
+
+export default function Example() {
+  return (
+    <CompareSlider className="h-64 w-full">
+      <CompareSliderBefore label="Before">
+        <img src="/image-before.jpg" alt="Before" />
+      </CompareSliderBefore>
+      <CompareSliderAfter label="After">
+        <img src="/image-after.jpg" alt="After" />
+      </CompareSliderAfter>
+      <CompareSliderHandle />
+    </CompareSlider>
+  );
+}
+```
+
+## Examples
+
+### Vertical Orientation
+
+Use `orientation="vertical"` for a top-to-bottom comparison.
+
+<ComponentTabs name="compare-slider-vertical-demo" />
+
+### Hover Interaction
+
+Use `interaction="hover"` to reveal the comparison on mouse hover instead of dragging.
+
+<ComponentTabs name="compare-slider-hover-demo" />
+
+### Custom Handle
+
+Replace the default handle with custom content.
+
+<ComponentTabs name="compare-slider-custom-demo" />
+
+### Controlled State
+
+Manage the slider position with controlled state.
+
+<ComponentTabs name="compare-slider-controlled-demo" />
+
+## Theming
+
+### Container Theming
+
+Use `data-slot="compare-slider"` to style the root container:
+
+```tsx title="compare-slider-snippet.tsx"
+<CompareSlider className="rounded-lg border-2 border-border shadow-lg" />
+```
+
+### Before/After Theming
+
+Style the before and after containers:
+
+```tsx title="compare-slider-snippet.tsx"
+<CompareSliderBefore className="bg-linear-to-r from-blue-500 to-purple-500" />
+<CompareSliderAfter className="bg-linear-to-r from-green-500 to-teal-500" />
+```
+
+### Handle Theming
+
+Customize the handle appearance:
+
+```tsx title="compare-slider-snippet.tsx"
+<CompareSliderHandle className="w-12 bg-primary/80 rounded-full" />
+```
+
+### Label Theming
+
+Style the labels positioned on each side:
+
+```tsx title="compare-slider-snippet.tsx"
+<CompareSliderLabel className="bg-black/70 text-white font-bold" />
+```
+
+## API Reference
+
+### CompareSlider
+
+The root container component that manages the comparison state and interactions.
+
+<TypeTable
+  type={{
+    value: {
+      description: "Controlled value (0-100 percentage)",
+      type: "number",
+    },
+    defaultValue: {
+      description: "Default value for uncontrolled slider",
+      type: "number",
+      default: "50",
+    },
+    onValueChange: {
+      description: "Callback when the value changes",
+      type: "(value: number) => void",
+    },
+    step: {
+      description: "Step increment for keyboard navigation",
+      type: "number",
+      default: "1",
+    },
+    interaction: {
+      description: "Interaction mode: drag or hover",
+      type: '"drag" | "hover"',
+      default: '"drag"',
+    },
+    orientation: {
+      description: "Slider orientation",
+      type: '"horizontal" | "vertical"',
+      default: '"horizontal"',
+    },
+    asChild: {
+      description: "Merge props onto child element",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-slot='compare-slider']",
+      value: "Present on the root element.",
+    },
+    {
+      title: "[data-orientation='horizontal']",
+      value: "Present when orientation is horizontal.",
+    },
+    {
+      title: "[data-orientation='vertical']",
+      value: "Present when orientation is vertical.",
+    },
+  ]}
+/>
+
+### CompareSliderBefore
+
+The before state container with optional label support.
+
+<TypeTable
+  type={{
+    label: {
+      description: "Label text displayed on the before side",
+      type: "string",
+    },
+    asChild: {
+      description: "Merge props onto child element",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-slot='compare-slider-before']",
+      value: "Present on the before element.",
+    },
+    {
+      title: "[role='img']",
+      value: "Indicates the element represents an image.",
+    },
+  ]}
+/>
+
+### CompareSliderAfter
+
+The after state container with optional label support.
+
+<TypeTable
+  type={{
+    label: {
+      description: "Label text displayed on the after side",
+      type: "string",
+    },
+    asChild: {
+      description: "Merge props onto child element",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-slot='compare-slider-after']",
+      value: "Present on the after element.",
+    },
+    {
+      title: "[role='img']",
+      value: "Indicates the element represents an image.",
+    },
+  ]}
+/>
+
+### CompareSliderHandle
+
+The draggable handle that controls the comparison position.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Merge props onto child element",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-slot='compare-slider-handle']",
+      value: "Present on the handle element.",
+    },
+    {
+      title: "[role='presentation']",
+      value: "Indicates the element is purely presentational.",
+    },
+  ]}
+/>
+
+### CompareSliderLabel
+
+A label component for displaying text on either side of the comparison.
+
+<TypeTable
+  type={{
+    side: {
+      description: "Position of the label (before or after)",
+      type: '"before" | "after"',
+    },
+    asChild: {
+      description: "Merge props onto child element",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-slot='compare-slider-label']",
+      value: "Present on the label element.",
+    },
+  ]}
+/>
+
+## Accessibility
+
+The compare slider component includes comprehensive accessibility features:
+
+### Keyboard Interactions
+
+<KeyboardShortcutsTable
+  data={[
+    {
+      keys: ["ArrowLeft"],
+      description: "Decrease the value by one step (horizontal).",
+    },
+    {
+      keys: ["ArrowRight"],
+      description: "Increase the value by one step (horizontal).",
+    },
+    {
+      keys: ["ArrowUp"],
+      description: "Decrease the value by one step (vertical).",
+    },
+    {
+      keys: ["ArrowDown"],
+      description: "Increase the value by one step (vertical).",
+    },
+    {
+      keys: ["PageUp"],
+      description: "Decrease the value by ten steps.",
+    },
+    {
+      keys: ["PageDown"],
+      description: "Increase the value by ten steps.",
+    },
+    {
+      keys: ["Shift", "Arrow Keys"],
+      description: "Increase or decrease the value by ten steps.",
+    },
+    {
+      keys: ["Home"],
+      description: "Set the value to minimum (0%).",
+    },
+    {
+      keys: ["End"],
+      description: "Set the value to maximum (100%).",
+    },
+  ]}
+/>
+
+### ARIA Attributes
+
+- Root element has `role="slider"` with `aria-valuemin`, `aria-valuemax`, and `aria-valuenow`
+- `aria-orientation` indicates horizontal or vertical orientation
+- Before/After elements have `role="img"` with `aria-labelledby` when labels are present
+- Handle has `role="presentation"` and `aria-hidden="true"`
+
+## Features
+
+- Drag and hover interaction modes
+- Horizontal and vertical orientations
+- Smooth pointer-based dragging with proper event handling
+- Full keyboard navigation support
+- Customizable handle with default directional icons
+- Optional labels with automatic positioning
+- Touch-optimized for mobile devices
+- Works with images, videos, or any content
+- Controlled and uncontrolled state management

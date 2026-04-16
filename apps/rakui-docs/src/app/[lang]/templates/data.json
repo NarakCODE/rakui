@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "header": "Executive Summary",
+    "type": "Executive Summary",
+    "status": "Done",
+    "target": "24",
+    "limit": "48",
+    "reviewer": "Eddie Lake"
+  },
+  {
+    "id": 2,
+    "header": "Technical Approach",
+    "type": "Technical Approach",
+    "status": "In Progress",
+    "target": "36",
+    "limit": "72",
+    "reviewer": "Jamik Tashpulatov"
+  },
+  {
+    "id": 3,
+    "header": "Design Proposal",
+    "type": "Design",
+    "status": "Done",
+    "target": "12",
+    "limit": "24",
+    "reviewer": "Emily Whalen"
+  },
+  {
+    "id": 4,
+    "header": "Capabilities Matrix",
+    "type": "Capabilities",
+    "status": "Not Started",
+    "target": "18",
+    "limit": "36",
+    "reviewer": "Assign reviewer"
+  },
+  {
+    "id": 5,
+    "header": "Past Performance",
+    "type": "Past Performance",
+    "status": "In Progress",
+    "target": "30",
+    "limit": "60",
+    "reviewer": "Eddie Lake"
+  },
+  {
+    "id": 6,
+    "header": "Key Personnel",
+    "type": "Key Personnel",
+    "status": "Done",
+    "target": "8",
+    "limit": "16",
+    "reviewer": "Jamik Tashpulatov"
+  },
+  {
+    "id": 7,
+    "header": "Focus Documents",
+    "type": "Focus Documents",
+    "status": "In Progress",
+    "target": "20",
+    "limit": "40",
+    "reviewer": "Emily Whalen"
+  },
+  {
+    "id": 8,
+    "header": "Cover Page",
+    "type": "Cover Page",
+    "status": "Done",
+    "target": "4",
+    "limit": "8",
+    "reviewer": "Eddie Lake"
+  },
+  {
+    "id": 9,
+    "header": "Narrative",
+    "type": "Narrative",
+    "status": "Not Started",
+    "target": "40",
+    "limit": "80",
+    "reviewer": "Assign reviewer"
+  },
+  {
+    "id": 10,
+    "header": "Table of Contents",
+    "type": "Table of Contents",
+    "status": "Done",
+    "target": "6",
+    "limit": "12",
+    "reviewer": "Jamik Tashpulatov"
+  }
+]

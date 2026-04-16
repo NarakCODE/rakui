@@ -1,0 +1,161 @@
+---
+title: Meter
+description: A progress meter component that displays a labeled progress bar with a percentage value.
+---
+
+A progress meter component that displays a labeled progress bar with a percentage value, ideal for showing storage usage, memory consumption, or CPU load.
+
+<ComponentTabs name="meter-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/meter
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/meter
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/meter
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/meter
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>
+        Copy and paste the following code into your project.
+      </Step>
+
+      <ComponentSource name="meter" />
+
+      <Step>
+        Update the import paths to match your project setup.
+      </Step>
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Usage
+
+---
+
+```tsx title="meter-basic.tsx"
+import { Meter } from "@/components/ui/meter";
+
+export function StorageMeter() {
+  return <Meter label="Storage" value={65} />;
+}
+```
+
+## Examples
+
+### Multiple Meters
+
+Display multiple meters together to show resource usage at a glance.
+
+<ComponentTabs name="meter-demo" />
+
+### Value Boundaries
+
+Values outside the 0-100 range are automatically clamped to the valid range.
+
+```tsx title="meter-boundaries.tsx"
+import { Meter } from "@/components/ui/meter";
+
+export function MeterBoundaries() {
+  return (
+    <div className="flex flex-col gap-4">
+      <Meter label="Underflow" value={-10} />
+      <Meter label="Overflow" value={150} />
+      <Meter label="Exact Zero" value={0} />
+      <Meter label="Exact Full" value={100} />
+    </div>
+  );
+}
+```
+
+### Custom Labels
+
+Use any string as the label to describe the measured resource.
+
+```tsx title="meter-labels.tsx"
+import { Meter } from "@/components/ui/meter";
+
+export function MeterLabels() {
+  return (
+    <div className="flex flex-col gap-4">
+      <Meter label="Disk Usage" value={73} />
+      <Meter label="Network Bandwidth" value={45} />
+      <Meter label="GPU Memory" value={92} />
+    </div>
+  );
+}
+```
+
+## API Reference
+
+### Meter
+
+<TypeTable
+  type={{
+    label: {
+      description: "Label displayed above the progress bar.",
+      type: "string",
+      default: '"Storage"',
+    },
+    value: {
+      description: "Progress value between 0 and 100. Values are automatically clamped to this range.",
+      type: "number",
+    },
+    className: {
+      description: "Additional CSS classes for the meter root.",
+      type: "string",
+    },
+  }}
+/>
+
+## Accessibility
+
+- The underlying `Progress` component uses the `progressbar` role for screen reader support.
+- The label and percentage text are rendered as visible text, providing context without relying solely on ARIA attributes.
+
+## Related Components
+
+- [Progress](/docs/components/progress) — Base progress indicator used internally.
+- [Gauge](/docs/components/gauge) — Circular gauge for radial progress.
+- [Circular Progress](/docs/components/circular-progress) — Ring-style progress indicator.

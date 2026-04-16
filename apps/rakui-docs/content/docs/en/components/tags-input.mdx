@@ -1,0 +1,427 @@
+---
+title: Tags Input
+description: An input component for entering and managing multiple tags.
+---
+
+<ComponentTabs name="tags-input-demo" />
+
+## Installation [#installation]
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">Command</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @diceui/tags-input
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @diceui/tags-input
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @diceui/tags-input
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @diceui/tags-input
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>Install the following dependencies:</Step>
+
+```bash
+npm install @diceui/tags-input @phosphor-icons/react
+```
+
+<Step>
+        Install the following dependencies:
+      </Step>
+
+      <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+        <CodeBlockTabsList>
+          <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+          <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+          <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+          <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
+
+        <CodeBlockTab value="npm">
+          ```bash
+          npm install @diceui/tags-input
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="pnpm">
+          ```bash
+          pnpm add @diceui/tags-input
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="yarn">
+          ```bash
+          yarn add @diceui/tags-input
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="bun">
+          ```bash
+          bun add @diceui/tags-input
+          ```
+        </CodeBlockTab>
+      </CodeBlockTabs>
+
+      <Step>
+        Copy and paste the following code into your project.
+      </Step>
+
+      <ComponentSource name="tags-input" />
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Layout [#layout]
+
+Import the parts, and compose them together.
+
+```tsx title="tags-input-usage.tsx"
+import {
+  TagsInput,
+  TagsInputClear,
+  TagsInputInput,
+  TagsInputItem,
+  TagsInputLabel,
+  TagsInputList,
+} from "@/components/ui/tags-input";
+
+return (
+  <TagsInput>
+    <TagsInputLabel />
+    <TagsInputList>
+      {tags.map((tag) => (
+        <TagsInputItem key={tag} value={tag}>
+          {tag}
+        </TagsInputItem>
+      ))}
+      <TagsInputInput placeholder="Add tag..." />
+    </TagsInputList>
+    <TagsInputClear>Clear</TagsInputClear>
+  </TagsInput>
+);
+```
+
+## Usage [#usage]
+
+### Basic
+
+A simple tags input with editable tags, a label, and a clear button.
+
+<ComponentTabs name="tags-input-demo" />
+
+### Editable
+
+Enable the `editable` prop to allow inline editing of existing tags. Use `addOnPaste` to create multiple tags from pasted text.
+
+<ComponentTabs name="tags-input-editable-demo" />
+
+### With Validation
+
+Use `onValidate` to reject invalid tags and `onInvalid` to show feedback. Combine with `max` to limit the number of tags.
+
+<ComponentTabs name="tags-input-validation-demo" />
+
+### With Sortable
+
+Combine with the `Sortable` component to let users reorder tags via drag and drop.
+
+<ComponentTabs name="tags-input-sortable-demo" />
+
+## API Reference [#api-reference]
+
+### TagsInput
+
+The root container for the tags input.
+
+<TypeTable
+  type={{
+    value: {
+      description: "Controlled array of tag values.",
+      type: "string[]",
+    },
+    defaultValue: {
+      description: "Initial tag values when uncontrolled.",
+      type: "string[]",
+    },
+    onValueChange: {
+      description: "Called when the tag list changes.",
+      type: "(value: string[]) => void",
+    },
+    onValidate: {
+      description: "Validates a tag before it is added.",
+      type: "(value: string) => boolean",
+    },
+    onInvalid: {
+      description: "Called when a tag fails validation.",
+      type: "(value: string) => void",
+    },
+    editable: {
+      description: "Allow inline editing of existing tags.",
+      type: "boolean",
+      default: "false",
+    },
+    addOnPaste: {
+      description: "Create tags from pasted text, split by delimiter.",
+      type: "boolean",
+      default: "false",
+    },
+    addOnTab: {
+      description: "Add the current input value as a tag when Tab is pressed.",
+      type: "boolean",
+      default: "false",
+    },
+    blurBehavior: {
+      description: "Behavior when the input loses focus.",
+      type: '"add" | "clear"',
+    },
+    delimiter: {
+      description: "Character used to split pasted text into multiple tags.",
+      type: "string",
+      default: '","',
+    },
+    max: {
+      description: "Maximum number of tags allowed.",
+      type: "number",
+      default: "Infinity",
+    },
+    disabled: {
+      description: "Disables the entire tags input.",
+      type: "boolean",
+      default: "false",
+    },
+    readOnly: {
+      description: "Whether the tags input is read-only.",
+      type: "boolean",
+      default: "false",
+    },
+    required: {
+      description: "Whether the field is required in a form context.",
+      type: "boolean",
+      default: "false",
+    },
+    loop: {
+      description: "Wrap focus from last to first tag and vice versa.",
+      type: "boolean",
+      default: "false",
+    },
+    displayValue: {
+      description: "Function to convert a tag value to its display string.",
+      type: "(value: string) => string",
+    },
+    dir: {
+      description: "Reading direction of the tags input.",
+      type: '"ltr" | "rtl"',
+      default: '"ltr"',
+    },
+    name: {
+      description: "Name of the form field.",
+      type: "string",
+    },
+    id: {
+      description: "Unique identifier for the tags input.",
+      type: "string",
+    },
+    asChild: {
+      description: "Merge props onto child element.",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+### TagsInputLabel
+
+An accessible label for the tags input.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Merge props onto child element.",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+### TagsInputItem
+
+A single tag rendered inside the list.
+
+<TypeTable
+  type={{
+    value: {
+      description: "Unique value for the tag.",
+      type: "string",
+      required: true,
+    },
+    disabled: {
+      description: "Whether the tag is disabled.",
+      type: "boolean",
+      default: "false",
+    },
+    asChild: {
+      description: "Merge props onto child element.",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-highlighted]",
+      value: "Present when the tag is highlighted/focused.",
+    },
+    {
+      title: "[data-editing]",
+      value: "Present when the tag is in edit mode.",
+    },
+    {
+      title: "[data-editable]",
+      value: "Present when the tag is editable.",
+    },
+    {
+      title: "[data-disabled]",
+      value: "Present when the tag is disabled.",
+    },
+  ]}
+/>
+
+### TagsInputItemText
+
+Displays the text content of a tag. Automatically renders the display value.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Merge props onto child element.",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+### TagsInputItemDelete
+
+A button that removes the associated tag when clicked.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Merge props onto child element.",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+### TagsInputInput
+
+The text input field for entering new tags.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Merge props onto child element.",
+      type: "boolean",
+      default: "false",
+    },
+    placeholder: {
+      description: "Placeholder text shown when the input is empty.",
+      type: "string",
+    },
+    disabled: {
+      description: "Whether the input is disabled.",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+### TagsInputClear
+
+A button that clears all tags. Supports `asChild` for custom styling.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Merge props onto child element.",
+      type: "boolean",
+      default: "false",
+    },
+    forceMount: {
+      description: "Always render the clear button for animations.",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+## Accessibility [#accessibility]
+
+### Keyboard Interactions
+
+<KeyboardShortcutsTable
+  data={[
+    {
+      keys: ["Enter"],
+      description: "Adds the current input value as a new tag.",
+    },
+    {
+      keys: ["Tab"],
+      description: "When addOnTab is enabled, adds the current input value as a tag.",
+    },
+    {
+      keys: ["Backspace"],
+      description: "When the input is empty, removes the last tag.",
+    },
+    {
+      keys: ["ArrowLeft", "ArrowRight"],
+      description: "Moves focus between tags and the input.",
+    },
+    {
+      keys: ["Escape"],
+      description: "When a tag is being edited, cancels the edit.",
+    },
+    {
+      keys: ["Home"],
+      description: "Moves focus to the first tag or the input.",
+    },
+    {
+      keys: ["End"],
+      description: "Moves focus to the last tag or the input.",
+    },
+  ]}
+/>

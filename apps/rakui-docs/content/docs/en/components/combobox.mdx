@@ -1,0 +1,331 @@
+---
+title: Combobox
+description: An autocomplete input with a searchable list of selectable options.
+---
+
+An autocomplete input with a searchable list of selectable options.
+
+<ComponentTabs name="combobox-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">Command</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @diceui/combobox
+        ```
+      </CodeBlockTab>
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @diceui/combobox
+        ```
+      </CodeBlockTab>
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @diceui/combobox
+        ```
+      </CodeBlockTab>
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @diceui/combobox
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps className="mb-0 pt-2">
+      <Step>Install the following dependencies:</Step>
+
+```bash
+npm install @diceui/combobox lucide-react
+```
+
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install @diceui/combobox lucide-react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+      <ComponentSource name="combobox" />
+      <Step>Update the import paths to match your project setup.</Step>
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Usage
+
+```tsx title="combobox-imports.tsx"
+import {
+  Combobox,
+  ComboboxAnchor,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxItemText,
+  ComboboxLabel,
+  ComboboxPortal,
+  ComboboxTrigger,
+} from "@/components/ui/combobox"
+```
+
+```tsx title="combobox-snippet.tsx"
+<Combobox>
+  <ComboboxLabel>Framework</ComboboxLabel>
+  <ComboboxAnchor>
+    <ComboboxInput placeholder="Search framework..." />
+    <ComboboxTrigger />
+  </ComboboxAnchor>
+  <ComboboxPortal>
+    <ComboboxContent>
+      <ComboboxEmpty>No framework found.</ComboboxEmpty>
+      <ComboboxItem value="react">
+        <ComboboxItemText>React</ComboboxItemText>
+      </ComboboxItem>
+    </ComboboxContent>
+  </ComboboxPortal>
+</Combobox>
+```
+
+## Examples
+
+### Basic Search
+
+This example shows a standard searchable combobox with a label, empty state, and selected item indicator.
+
+```tsx title="combobox-snippet.tsx"
+"use client"
+
+import {
+  Combobox,
+  ComboboxAnchor,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxItemText,
+  ComboboxLabel,
+  ComboboxPortal,
+  ComboboxTrigger,
+} from "@/components/ui/combobox"
+
+const tricks = [
+  { label: "Kickflip", value: "kickflip" },
+  { label: "Heelflip", value: "heelflip" },
+  { label: "Tre Flip", value: "tre-flip" },
+  { label: "FS 540", value: "fs-540" },
+]
+
+export function ComboboxBasicSearch() {
+  return (
+    <Combobox className="w-full max-w-sm">
+      <ComboboxLabel>Trick</ComboboxLabel>
+      <ComboboxAnchor>
+        <ComboboxInput placeholder="Search trick..." />
+        <ComboboxTrigger />
+      </ComboboxAnchor>
+      <ComboboxPortal>
+        <ComboboxContent>
+          <ComboboxEmpty>No tricks found.</ComboboxEmpty>
+          {tricks.map((trick) => (
+            <ComboboxItem key={trick.value} value={trick.value}>
+              <ComboboxItemText>{trick.label}</ComboboxItemText>
+            </ComboboxItem>
+          ))}
+        </ComboboxContent>
+      </ComboboxPortal>
+    </Combobox>
+  )
+}
+```
+
+## RTL
+
+To enable RTL support in shadcn/ui, see the [RTL configuration guide](/docs/rtl).
+
+```tsx title="combobox-snippet.tsx"
+"use client"
+
+import {
+  Combobox,
+  ComboboxAnchor,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxItemText,
+  ComboboxLabel,
+  ComboboxPortal,
+  ComboboxTrigger,
+} from "@/components/ui/combobox"
+import { useTranslation } from "react-i18next"
+
+const tricks = [
+  { label: "Kickflip", value: "kickflip" },
+  { label: "Heelflip", value: "heelflip" },
+  { label: "Tre Flip", value: "tre-flip" },
+]
+
+export function ComboboxRtlDemo() {
+  const { i18n, t } = useTranslation()
+  const dir = i18n.dir()
+
+  return (
+    <div dir={dir} className="w-full max-w-sm">
+      <Combobox>
+        <ComboboxLabel>{t("combobox.trickLabel", "Trick")}</ComboboxLabel>
+        <ComboboxAnchor>
+          <ComboboxInput
+            placeholder={t("combobox.searchPlaceholder", "Search trick...")}
+          />
+          <ComboboxTrigger />
+        </ComboboxAnchor>
+        <ComboboxPortal>
+          <ComboboxContent>
+            <ComboboxEmpty>
+              {t("combobox.empty", "No tricks found.")}
+            </ComboboxEmpty>
+            {tricks.map((trick) => (
+              <ComboboxItem key={trick.value} value={trick.value}>
+                <ComboboxItemText>{trick.label}</ComboboxItemText>
+              </ComboboxItem>
+            ))}
+          </ComboboxContent>
+        </ComboboxPortal>
+      </Combobox>
+    </div>
+  )
+}
+```
+
+## API Reference
+
+### Combobox
+
+<TypeTable
+  type={{
+    open: {
+      description: 'Controls whether the combobox is open',
+      type: 'boolean',
+      default: 'false',
+    },
+    defaultOpen: {
+      description: 'Default open state for uncontrolled usage',
+      type: 'boolean',
+      default: 'false',
+    },
+    value: {
+      description: 'Controlled value of the selected item',
+      type: 'string',
+    },
+    defaultValue: {
+      description: 'Default selected value',
+      type: 'string',
+    },
+    onValueChange: {
+      description: 'Callback when the selected value changes',
+      type: '(value: string) => void',
+    },
+    openOnFocus: {
+      description: 'Whether to open the combobox on input focus',
+      type: 'boolean',
+      default: 'false',
+    },
+    autoHighlight: {
+      description: 'Whether to highlight the first matching item',
+      type: 'boolean',
+      default: 'false',
+    },
+    disabled: {
+      description: 'Whether the combobox is disabled',
+      type: 'boolean',
+      default: 'false',
+    },
+    loop: {
+      description: 'Whether focus loops around the item list',
+      type: 'boolean',
+      default: 'false',
+    },
+    children: {
+      description: 'Combobox content',
+      type: 'ReactNode',
+    },
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>
+
+### ComboboxInput
+
+<TypeTable
+  type={{
+    placeholder: {
+      description: 'Placeholder text for the input',
+      type: 'string',
+    },
+    value: {
+      description: 'Controlled input value',
+      type: 'string',
+    },
+    onChange: {
+      description: 'Callback when the input value changes',
+      type: 'React.ChangeEventHandler<HTMLInputElement>',
+    },
+    disabled: {
+      description: 'Whether the input is disabled',
+      type: 'boolean',
+      default: 'false',
+    },
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>
+
+### ComboboxItem
+
+<TypeTable
+  type={{
+    value: {
+      description: 'Unique value of the item',
+      type: 'string',
+    },
+    label: {
+      description: 'Optional label for the item',
+      type: 'string',
+    },
+    disabled: {
+      description: 'Whether the item is disabled',
+      type: 'boolean',
+      default: 'false',
+    },
+    onSelect: {
+      description: 'Callback when the item is selected',
+      type: '(value: string) => void',
+    },
+    children: {
+      description: 'Item content',
+      type: 'ReactNode',
+    },
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>

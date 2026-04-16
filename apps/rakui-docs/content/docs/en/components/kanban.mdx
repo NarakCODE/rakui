@@ -1,0 +1,557 @@
+---
+title: Kanban
+description: A draggable kanban board component for task management with support for columns and items.
+---
+
+<ComponentTabs name="kanban-demo" />
+
+## Installation [#installation]
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">
+          npm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="pnpm">
+          pnpm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="yarn">
+          yarn
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="bun">
+          bun
+        </CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/kanban
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/kanban
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/kanban
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/kanban
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>
+        Install the following dependencies:
+      </Step>
+
+      <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+        <CodeBlockTabsList>
+          <CodeBlockTabsTrigger value="npm">
+            npm
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="pnpm">
+            pnpm
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="yarn">
+            yarn
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="bun">
+            bun
+          </CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
+
+        <CodeBlockTab value="npm">
+          ```bash
+          npm install @dnd-kit/core @dnd-kit/modifiers @dnd-kit/sortable @dnd-kit/utilities radix-ui
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="pnpm">
+          ```bash
+          pnpm add @dnd-kit/core @dnd-kit/modifiers @dnd-kit/sortable @dnd-kit/utilities radix-ui
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="yarn">
+          ```bash
+          yarn add @dnd-kit/core @dnd-kit/modifiers @dnd-kit/sortable @dnd-kit/utilities radix-ui
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="bun">
+          ```bash
+          bun add @dnd-kit/core @dnd-kit/modifiers @dnd-kit/sortable @dnd-kit/utilities radix-ui
+          ```
+        </CodeBlockTab>
+      </CodeBlockTabs>
+
+      <Step>
+        Copy and paste the refs composition utilities into your `lib/compose-refs.ts` file.
+      </Step>
+
+      <ComponentSource name="compose-refs" />
+
+      <Step>
+        Copy and paste the following code into your project.
+      </Step>
+
+      <ComponentSource name="kanban" />
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Layout [#layout]
+
+Import the parts, and compose them together.
+
+```tsx title="kanban-usage.tsx"
+import {
+  Kanban,
+  KanbanBoard,
+  KanbanColumn,
+  KanbanColumnHandle,
+  KanbanItem,
+  KanbanItemHandle,
+  KanbanOverlay,
+} from "@/components/ui/kanban";
+
+return (
+  <Kanban>
+    <KanbanBoard>
+      <KanbanColumn>
+        <KanbanColumnHandle />
+        <KanbanItem>
+          <KanbanItemHandle />
+        </KanbanItem>
+      </KanbanColumn>
+    </KanbanBoard>
+    <KanbanOverlay />
+  </Kanban>
+)
+```
+
+## Usage [#usage]
+
+### With Primitive Values [#with-primitive-values]
+
+When using primitive arrays (strings, numbers), the `getItemValue` prop is optional. The component will automatically use the items themselves as unique identifiers.
+
+```tsx title="kanban-example.tsx"
+const [columns, setColumns] = React.useState({
+  todo: ["Task 1", "Task 2"],
+  done: ["Task 3"],
+});
+
+<Kanban.Kanban value={columns} onValueChange={setColumns}>
+  <Kanban.Board>
+    {Object.entries(columns).map(([columnId, items]) => (
+      <Kanban.Column key={columnId} value={columnId}>
+        {items.map((item) => (
+          <Kanban.Item key={item} value={item}>
+            {item}
+          </Kanban.Item>
+        ))}
+      </Kanban.Column>
+    ))}
+  </Kanban.Board>
+</Kanban.Kanban>
+```
+
+### With Object Arrays [#with-object-arrays]
+
+When using object arrays, the `getItemValue` prop is required to extract unique identifiers from each item.
+
+```tsx title="kanban-example.tsx"
+const [columns, setColumns] = React.useState({
+  todo: [
+    { id: 1, title: "Task 1" },
+    { id: 2, title: "Task 2" },
+  ],
+  done: [
+    { id: 3, title: "Task 3" },
+  ],
+});
+
+<Kanban.Kanban
+  value={columns}
+  onValueChange={setColumns}
+  getItemValue={(item) => item.id}
+>
+  <Kanban.Board>
+    {Object.entries(columns).map(([columnId, items]) => (
+      <Kanban.Column key={columnId} value={columnId}>
+        {items.map((item) => (
+          <Kanban.Item key={item.id} value={item.id}>
+            {item.title}
+          </Kanban.Item>
+        ))}
+      </Kanban.Column>
+    ))}
+  </Kanban.Board>
+</Kanban.Kanban>
+```
+
+## Examples [#examples]
+
+### With Dynamic Overlay [#with-dynamic-overlay]
+
+Display a dynamic overlay when an item or column is being dragged.
+
+<ComponentTabs name="kanban-dynamic-overlay-demo" />
+
+## API Reference [#api-reference]
+
+### Kanban [#kanban]
+
+The main container component for kanban board functionality.
+
+<TypeTable
+  type={{
+    value: {
+      description: 'The board data structure mapping column IDs to arrays of items',
+      type: 'Record<UniqueIdentifier, T[]>',
+    },
+    onValueChange: {
+      description: 'Callback when the board state changes',
+      type: '(columns: Record<UniqueIdentifier, T[]>) => void',
+    },
+    getItemValue: {
+      description: 'Function to extract a unique identifier from each item (required for object arrays)',
+      type: '(item: T) => UniqueIdentifier',
+    },
+    onMove: {
+      description: 'Custom callback for handling moves with event details',
+      type: '(event: { activeIndex: number; overIndex: number }) => void',
+    },
+    modifiers: {
+      description: 'dnd-kit modifiers for drag behavior',
+      type: 'DndContextProps["modifiers"]',
+    },
+    strategy: {
+      description: 'Sorting strategy for dnd-kit',
+      type: 'SortableContextProps["strategy"]',
+    },
+    orientation: {
+      description: 'Layout orientation for columns',
+      type: '"horizontal" | "vertical"',
+      default: '"horizontal"',
+    },
+    flatCursor: {
+      description: 'Disable grab cursor styling',
+      type: 'boolean',
+      default: 'false',
+    },
+    id: {
+      description: 'Unique identifier for the dnd context',
+      type: 'string',
+    },
+    accessibility: {
+      description: 'Accessibility configuration for dnd-kit',
+      type: 'DndContextProps["accessibility"]',
+    },
+    autoScroll: {
+      description: 'Auto-scroll configuration for dnd-kit',
+      type: 'DndContextProps["autoScroll"]',
+    },
+    cancelDrop: {
+      description: 'Cancel drop configuration for dnd-kit',
+      type: 'DndContextProps["cancelDrop"]',
+    },
+    children: {
+      description: 'Child components (KanbanBoard, KanbanOverlay)',
+      type: 'React.ReactNode',
+    },
+    collisionDetection: {
+      description: 'Custom collision detection algorithm',
+      type: 'CollisionDetection',
+    },
+    measuring: {
+      description: 'Measuring configuration for dnd-kit',
+      type: 'DndContextProps["measuring"]',
+    },
+    onDragStart: {
+      description: 'Callback when drag starts',
+      type: 'DndContextProps["onDragStart"]',
+    },
+    onDragMove: {
+      description: 'Callback when drag moves',
+      type: 'DndContextProps["onDragMove"]',
+    },
+    onDragOver: {
+      description: 'Callback when drag moves over a droppable',
+      type: 'DndContextProps["onDragOver"]',
+    },
+    onDragEnd: {
+      description: 'Callback when drag ends',
+      type: 'DndContextProps["onDragEnd"]',
+    },
+    onDragCancel: {
+      description: 'Callback when drag is cancelled',
+      type: 'DndContextProps["onDragCancel"]',
+    },
+  }}
+/>
+
+### KanbanBoard [#kanbanboard]
+
+Container for kanban columns.
+
+<TypeTable
+  type={{
+    children: {
+      description: 'Child KanbanColumn components',
+      type: 'React.ReactNode',
+    },
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+### KanbanColumn [#kanbancolumn]
+
+Individual kanban column component.
+
+<TypeTable
+  type={{
+    value: {
+      description: 'Unique identifier for the column',
+      type: 'UniqueIdentifier',
+    },
+    children: {
+      description: 'Child KanbanItem components',
+      type: 'React.ReactNode',
+    },
+    disabled: {
+      description: 'Disable dragging for this column',
+      type: 'boolean',
+      default: 'false',
+    },
+    asHandle: {
+      description: 'Use the entire column as a drag handle',
+      type: 'boolean',
+      default: 'false',
+    },
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-disabled]",
+      value: "Present when the column is disabled.",
+    },
+    {
+      title: "[data-dragging]",
+      value: "Present when the column is being dragged.",
+    },
+  ]}
+/>
+
+### KanbanColumnHandle [#kanbancolumnhandle]
+
+A button component that acts as a drag handle for kanban columns.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+    disabled: {
+      description: 'Disable the handle',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-disabled]",
+      value: "Present when the column is disabled.",
+    },
+    {
+      title: "[data-dragging]",
+      value: "Present when the parent column is being dragged.",
+    },
+  ]}
+/>
+
+### KanbanItem [#kanbanitem]
+
+Individual kanban item component.
+
+<TypeTable
+  type={{
+    value: {
+      description: 'Unique identifier for the item',
+      type: 'UniqueIdentifier',
+    },
+    disabled: {
+      description: 'Disable dragging for this item',
+      type: 'boolean',
+      default: 'false',
+    },
+    asHandle: {
+      description: 'Use the entire item as a drag handle',
+      type: 'boolean',
+      default: 'false',
+    },
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-disabled]",
+      value: "Present when the item is disabled.",
+    },
+    {
+      title: "[data-dragging]",
+      value: "Present when the item is being dragged.",
+    },
+  ]}
+/>
+
+### KanbanItemHandle [#kanbanitemhandle]
+
+A button component that acts as a drag handle for kanban items.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+    disabled: {
+      description: 'Disable the handle',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-disabled]",
+      value: "Present when the item is disabled.",
+    },
+    {
+      title: "[data-dragging]",
+      value: "Present when the parent item is being dragged.",
+    },
+  ]}
+/>
+
+### KanbanOverlay [#kanbanoverlay]
+
+The overlay component that appears when an item or column is being dragged.
+
+<TypeTable
+  type={{
+    container: {
+      description: 'Portal container element',
+      type: 'Element | DocumentFragment | null',
+      default: 'document.body',
+    },
+    dropAnimation: {
+      description: 'Animation configuration for drop',
+      type: 'DropAnimation',
+    },
+    children: {
+      description: 'Content to render in the overlay, or a function receiving the dragged item info',
+      type: 'React.ReactNode | ((params: { value: UniqueIdentifier; variant: "column" | "item" }) => React.ReactNode)',
+    },
+    adjustScale: {
+      description: 'Adjust scale of the overlay',
+      type: 'boolean',
+    },
+    modifiers: {
+      description: 'Modifiers for drag behavior',
+      type: 'any',
+    },
+    zIndex: {
+      description: 'Z-index for the overlay',
+      type: 'number',
+    },
+  }}
+/>
+
+## Accessibility [#accessibility]
+
+### Keyboard Interactions [#keyboard-interactions]
+
+<KeyboardShortcutsTable
+  data={[
+    {
+      keys: ["Enter", "Space"],
+      description: "Picks up the kanban item or column for reordering when released, and drops it in its new position when pressed again.",
+    },
+    {
+      keys: ["ArrowUp"],
+      description: "Moves the kanban item up in vertical orientation.",
+    },
+    {
+      keys: ["ArrowDown"],
+      description: "Moves the kanban item down in vertical orientation.",
+    },
+    {
+      keys: ["ArrowLeft"],
+      description: "Moves the kanban item left in horizontal orientation.",
+    },
+    {
+      keys: ["ArrowRight"],
+      description: "Moves the kanban item right in horizontal orientation.",
+    },
+    {
+      keys: ["Esc"],
+      description: "Cancels the drag operation and returns the item or column to its original position.",
+    },
+  ]}
+/>

@@ -1,0 +1,473 @@
+---
+title: Marquee
+description: An infinite scrolling marquee component with pause on hover and keyboard support.
+---
+
+<ComponentTabs name="marquee-demo" />
+
+## Installation [#installation]
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">
+          npm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="pnpm">
+          pnpm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="yarn">
+          yarn
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="bun">
+          bun
+        </CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/marquee
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/marquee
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/marquee
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/marquee
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>Install the following dependencies:</Step>
+
+```bash
+npm install class-variance-authority
+```
+
+<Step>
+        Install the following dependencies:
+      </Step>
+
+      <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+        <CodeBlockTabsList>
+          <CodeBlockTabsTrigger value="npm">
+            npm
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="pnpm">
+            pnpm
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="yarn">
+            yarn
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="bun">
+            bun
+          </CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
+
+        <CodeBlockTab value="npm">
+          ```bash
+          npm install radix-ui
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="pnpm">
+          ```bash
+          pnpm add radix-ui
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="yarn">
+          ```bash
+          yarn add radix-ui
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="bun">
+          ```bash
+          bun add radix-ui
+          ```
+        </CodeBlockTab>
+      </CodeBlockTabs>
+
+      <Step>
+        Copy and paste the following code into your project.
+      </Step>
+
+      <ComponentSource name="marquee" />
+
+      <Step>
+        Add the following CSS animations to your globals.css file:
+      </Step>
+
+      ```css
+      @keyframes marquee-left {
+        0% {
+          transform: translateX(0%);
+        }
+        100% {
+          transform: translateX(calc(-100% - var(--marquee-gap)));
+        }
+      }
+
+      @keyframes marquee-right {
+        0% {
+          transform: translateX(calc(-100% - var(--marquee-gap)));
+        }
+        100% {
+          transform: translateX(0%);
+        }
+      }
+
+      @keyframes marquee-up {
+        0% {
+          transform: translateY(0%);
+        }
+        100% {
+          transform: translateY(calc(-100% - var(--marquee-gap)));
+        }
+      }
+
+      @keyframes marquee-down {
+        0% {
+          transform: translateY(calc(-100% - var(--marquee-gap)));
+        }
+        100% {
+          transform: translateY(0%);
+        }
+      }
+
+      @keyframes marquee-left-rtl {
+        0% {
+          transform: translateX(0%);
+        }
+        100% {
+          transform: translateX(calc(100% + var(--marquee-gap)));
+        }
+      }
+
+      @keyframes marquee-right-rtl {
+        0% {
+          transform: translateX(calc(100% + var(--marquee-gap)));
+        }
+        100% {
+          transform: translateX(0%);
+        }
+      }
+
+      .animate-marquee-left {
+        animation: marquee-left var(--marquee-duration) linear infinite;
+      }
+
+      .animate-marquee-right {
+        animation: marquee-right var(--marquee-duration) linear infinite;
+      }
+
+      .animate-marquee-up {
+        animation: marquee-up var(--marquee-duration) linear infinite;
+      }
+
+      .animate-marquee-down {
+        animation: marquee-down var(--marquee-duration) linear infinite;
+      }
+
+      .animate-marquee-left-rtl {
+        animation: marquee-left-rtl var(--marquee-duration) linear infinite;
+      }
+
+      .animate-marquee-right-rtl {
+        animation: marquee-right-rtl var(--marquee-duration) linear infinite;
+      }
+      ```
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Layout [#layout]
+
+Import the parts, and compose them together.
+
+```tsx title="marquee-usage.tsx"
+import {
+  Marquee,
+  MarqueeContent,
+  MarqueeEdge,
+  MarqueeItem,
+} from "@/components/ui/marquee";
+
+return (
+  <Marquee>
+    <MarqueeContent>
+      <MarqueeItem>Item 1</MarqueeItem>
+      <MarqueeItem>Item 2</MarqueeItem>
+    </MarqueeContent>
+    <MarqueeEdge side="left" />
+    <MarqueeEdge side="right" />
+  </Marquee>
+);
+```
+
+## Usage [#usage]
+
+### Basic Marquee
+
+A simple horizontal marquee that scrolls items from right to left.
+
+<ComponentTabs name="marquee-demo" />
+
+### Pause on Hover
+
+Add the `pauseOnHover` prop to pause the animation when the user hovers over the marquee.
+
+```tsx title="marquee-snippet.tsx"
+<Marquee pauseOnHover>
+  <MarqueeContent>
+    {items.map((item) => (
+      <MarqueeItem key={item.id}>{item.name}</MarqueeItem>
+    ))}
+  </MarqueeContent>
+</Marquee>
+```
+
+### Pause on Keyboard
+
+Add the `pauseOnKeyboard` prop to allow users to pause/resume the animation by pressing the spacebar.
+
+```tsx title="marquee-snippet.tsx"
+<Marquee pauseOnKeyboard>
+  <MarqueeContent>
+    {items.map((item) => (
+      <MarqueeItem key={item.id}>{item.name}</MarqueeItem>
+    ))}
+  </MarqueeContent>
+</Marquee>
+```
+
+### Vertical Orientation
+
+Use `side="top"` or `side="bottom"` for vertical marquees.
+
+```tsx title="marquee-snippet.tsx"
+<Marquee side="top" className="h-[400px]">
+  <MarqueeContent>
+    {items.map((item) => (
+      <MarqueeItem key={item.id}>{item.name}</MarqueeItem>
+    ))}
+  </MarqueeContent>
+  <MarqueeEdge side="top" />
+  <MarqueeEdge side="bottom" />
+</Marquee>
+```
+
+### Auto Fill
+
+Use the `autoFill` prop to automatically duplicate content to fill the container.
+
+```tsx title="marquee-snippet.tsx"
+<Marquee autoFill>
+  <MarqueeContent>
+    {items.map((item) => (
+      <MarqueeItem key={item.id}>{item.name}</MarqueeItem>
+    ))}
+  </MarqueeContent>
+</Marquee>
+```
+
+### Custom Speed
+
+Adjust the animation speed with the `speed` prop (pixels per second).
+
+```tsx title="marquee-snippet.tsx"
+<Marquee speed={100}>
+  <MarqueeContent>
+    {items.map((item) => (
+      <MarqueeItem key={item.id}>{item.name}</MarqueeItem>
+    ))}
+  </MarqueeContent>
+</Marquee>
+```
+
+## Examples [#examples]
+
+### Logo Showcase
+
+Display a continuous scrolling logo cloud with auto-fill.
+
+<ComponentTabs name="marquee-logo-demo" />
+
+### Vertical Layout
+
+Create a vertical scrolling testimonials section.
+
+<ComponentTabs name="marquee-vertical-demo" />
+
+### RTL Support
+
+Full right-to-left language support with automatic animation direction adjustment.
+
+<ComponentTabs name="marquee-rtl-demo" />
+
+## API Reference [#api-reference]
+
+### Marquee
+
+The root container component for the marquee.
+
+<TypeTable
+  type={{
+    side: {
+      description: 'The direction the marquee scrolls towards',
+      type: '"left" | "right" | "top" | "bottom"',
+      default: '"left"',
+    },
+    dir: {
+      description: 'Text direction for RTL support',
+      type: '"ltr" | "rtl"',
+    },
+    speed: {
+      description: 'Animation speed in pixels per second',
+      type: 'number',
+      default: '50',
+    },
+    delay: {
+      description: 'Animation delay in seconds',
+      type: 'number',
+      default: '0',
+    },
+    loopCount: {
+      description: 'Number of loops (0 for infinite)',
+      type: 'number',
+      default: '0',
+    },
+    gap: {
+      description: 'Gap between items',
+      type: 'string | number',
+      default: '"1rem"',
+    },
+    autoFill: {
+      description: 'Automatically duplicate content to fill container',
+      type: 'boolean',
+      default: 'false',
+    },
+    pauseOnHover: {
+      description: 'Pause animation on hover',
+      type: 'boolean',
+      default: 'false',
+    },
+    pauseOnKeyboard: {
+      description: 'Allow pausing with spacebar',
+      type: 'boolean',
+      default: 'false',
+    },
+    reverse: {
+      description: 'Reverse animation direction',
+      type: 'boolean',
+      default: 'false',
+    },
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+### MarqueeContent
+
+The content wrapper that handles the animation.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+### MarqueeItem
+
+Individual items within the marquee.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+### MarqueeEdge
+
+Gradient edge fade effect.
+
+<TypeTable
+  type={{
+    side: {
+      description: 'Position of the edge fade',
+      type: '"left" | "right" | "top" | "bottom"',
+    },
+    size: {
+      description: 'Size of the edge fade',
+      type: '"default" | "sm" | "lg"',
+      default: '"default"',
+    },
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+## Accessibility [#accessibility]
+
+### Keyboard Interactions
+
+<KeyboardShortcutsTable
+  data={[
+    {
+      keys: ["Space"],
+      description: "When pauseOnKeyboard is enabled, toggles pause/resume of the animation.",
+    },
+  ]}
+/>
+
+### ARIA Attributes
+
+- The marquee has `role="marquee"` and `aria-live="off"` to indicate it's a decorative scrolling element
+- When `pauseOnKeyboard` is enabled, the marquee is focusable and has visible focus styles
+- Items within the marquee can contain their own interactive elements

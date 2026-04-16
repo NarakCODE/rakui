@@ -1,0 +1,299 @@
+---
+title: Stat
+description: A compact metric card primitive for labels, values, indicators, trend summaries, and supporting notes.
+---
+
+import { ComponentTabs } from "@/components/docs-mdx";
+
+Display product, finance, or operations metrics in a compact card layout with optional indicators, trend messaging, separators, and supporting descriptions.
+
+<ComponentTabs name="stat-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">
+          npm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="pnpm">
+          pnpm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="yarn">
+          yarn
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="bun">
+          bun
+        </CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/stat
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/stat
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/stat
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/stat
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>Install the following dependencies:</Step>
+
+```bash
+npm install class-variance-authority
+```
+
+<Step>
+        Copy and paste the following code into your project:
+      </Step>
+
+      <ComponentSource name="stat" title="src/components/ui/stat.tsx" />
+
+      <Step>
+        Update the import paths to match your project setup.
+      </Step>
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Usage
+
+```tsx title="stat-demo.tsx"
+import { ArrowUpRight, DollarSign } from "lucide-react";
+import {
+  Stat,
+  StatDescription,
+  StatIndicator,
+  StatLabel,
+  StatTrend,
+  StatValue,
+} from "@/components/ui/stat";
+
+export function RevenueStat() {
+  return (
+    <Stat>
+      <StatLabel>Monthly revenue</StatLabel>
+      <StatValue>$48,240</StatValue>
+      <StatIndicator color="success" variant="icon">
+        <DollarSign />
+      </StatIndicator>
+      <StatTrend trend="up">
+        <ArrowUpRight />
+        12.4% from last month
+      </StatTrend>
+      <StatDescription>
+        Compared with the previous billing cycle.
+      </StatDescription>
+    </Stat>
+  );
+}
+```
+
+## Examples
+
+### Indicator Variants
+
+`StatIndicator` supports `default`, `icon`, `badge`, and `action` variants so the same layout can cover dashboards, scorecards, and navigational summaries.
+
+<ComponentTabs name="stat-indicator-demo" />
+
+### With Supporting Details
+
+Use `StatSeparator` and `StatDescription` when the card needs extra context without changing the overall grid structure.
+
+```tsx title="stat-snippet.tsx"
+import {
+  Stat,
+  StatDescription,
+  StatIndicator,
+  StatLabel,
+  StatSeparator,
+  StatTrend,
+  StatValue,
+} from "@/components/ui/stat";
+
+<Stat>
+  <StatLabel>Active customers</StatLabel>
+  <StatValue>1,284</StatValue>
+  <StatIndicator color="info" variant="badge">
+    +86
+  </StatIndicator>
+  <StatTrend trend="up">7.1% week over week</StatTrend>
+  <StatSeparator />
+  <StatDescription>
+    New workspace invites outpaced churn by 4.3x this week.
+  </StatDescription>
+</Stat>;
+```
+
+## API Reference
+
+### Stat
+
+<TypeTable
+  type={{
+    className: {
+      description: "Additional CSS classes for the stat root.",
+      type: "string",
+    },
+    children: {
+      description: "Composed stat slot elements rendered inside the grid.",
+      type: "ReactNode",
+    },
+  }}
+/>
+
+Accepts all native `div` props.
+
+### StatIndicator
+
+<TypeTable
+  type={{
+    variant: {
+      description: "Visual presentation for the indicator container.",
+      type: '"default" | "icon" | "badge" | "action"',
+      default: '"default"',
+    },
+    color: {
+      description: "Semantic color treatment for the indicator.",
+      type: '"default" | "success" | "info" | "warning" | "error"',
+      default: '"default"',
+    },
+    className: {
+      description: "Additional CSS classes for the indicator wrapper.",
+      type: "string",
+    },
+    children: {
+      description: "Icon, text, or badge content displayed inside the indicator.",
+      type: "ReactNode",
+    },
+  }}
+/>
+
+Accepts all native `div` props except the built-in HTML `color` attribute.
+
+### StatTrend
+
+<TypeTable
+  type={{
+    trend: {
+      description: "Controls the trend color styling.",
+      type: '"up" | "down" | "neutral"',
+    },
+    className: {
+      description: "Additional CSS classes for the trend row.",
+      type: "string",
+    },
+    children: {
+      description: "Trend copy and optional icon.",
+      type: "ReactNode",
+    },
+  }}
+/>
+
+Accepts all native `div` props.
+
+### StatLabel, StatValue, and StatDescription
+
+<TypeTable
+  type={{
+    className: {
+      description: "Additional CSS classes for the slot.",
+      type: "string",
+    },
+    children: {
+      description: "Content rendered for the slot.",
+      type: "ReactNode",
+    },
+  }}
+/>
+
+Each slot accepts native `div` props.
+
+### StatSeparator
+
+`StatSeparator` wraps the shared `Separator` component and forwards its props while adding the `data-slot="stat-separator"` marker and default vertical spacing.
+
+### Data Attributes
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-slot='stat']",
+      value: "Applied to the root stat container.",
+    },
+    {
+      title: "[data-slot='stat-label']",
+      value: "Applied to the metric label row.",
+    },
+    {
+      title: "[data-slot='stat-value']",
+      value: "Applied to the primary metric value.",
+    },
+    {
+      title: "[data-slot='stat-indicator']",
+      value: "Applied to the optional indicator cell.",
+    },
+    {
+      title: "[data-slot='stat-trend']",
+      value: "Applied to the trend summary row.",
+    },
+    {
+      title: "[data-slot='stat-separator']",
+      value: "Applied to the separator that spans the full card width.",
+    },
+    {
+      title: "[data-slot='stat-description']",
+      value: "Applied to the supporting description row.",
+    },
+    {
+      title: "[data-variant]",
+      value: "Present on `StatIndicator` to reflect the selected indicator style.",
+    },
+    {
+      title: "[data-color]",
+      value: "Present on `StatIndicator` to reflect the selected semantic color.",
+    },
+    {
+      title: "[data-trend]",
+      value: "Present on `StatTrend` to reflect `up`, `down`, or `neutral` state.",
+    },
+  ]}
+/>
+
+### Layout Notes
+
+The root uses a two-column grid. Labels and values stay in the first column, indicators render in the second column, and the trend, separator, and description rows span the full card width.

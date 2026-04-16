@@ -1,0 +1,482 @@
+---
+title: Button
+description: A clickable button component with multiple variants and states.
+---
+
+A clickable button component with multiple variants and states.
+
+<ComponentTabs name="button-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash title=""
+        npx shadcn@latest add @rakui/button
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash title=""
+        pnpm dlx shadcn@latest add @rakui/button
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash title=""
+        yarn dlx shadcn@latest add @rakui/button
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash title=""
+        bun x shadcn@latest add @rakui/button
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>Install the following dependencies:</Step>
+
+```bash
+npm install class-variance-authority
+```
+
+<Step>
+        Copy and paste the following code into your project.
+      </Step>
+
+      <ComponentSource name="button" />
+
+      <Step>
+        Update the import paths to match your project setup.
+      </Step>
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+## Usage
+
+---
+
+```tsx title="button-snippet.tsx"
+import { Button } from "@rakui/button";
+
+export default function Example() {
+  return <Button>Click me</Button>;
+}
+```
+
+## Examples
+
+### Variants
+
+Use the `variant` prop to change the button style.
+
+```tsx title="button-snippet.tsx"
+import { Button } from "@rakui/button";
+
+export function Variants() {
+  return (
+    <div className="flex flex-wrap gap-3">
+      <Button>Primary</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="tertiary">Tertiary</Button>
+      <Button variant="outline">Outline</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="danger">Danger</Button>
+      <Button variant="danger-soft">Danger Soft</Button>
+    </div>
+  );
+}
+```
+
+### Sizes
+
+Use the `size` prop to change the button size.
+
+```tsx title="button-snippet.tsx"
+import { Button } from "@rakui/button";
+
+export function Sizes() {
+  return (
+    <div className="flex items-center gap-3">
+      <Button size="sm">Small</Button>
+      <Button size="md">Medium</Button>
+      <Button size="lg">Large</Button>
+    </div>
+  );
+}
+```
+
+### With Icons
+
+Add icons inside the button for visual context.
+
+```tsx title="button-snippet.tsx"
+import { Button } from "@rakui/button";
+import { Globe, Plus, Trash2, Mail } from "lucide-react";
+
+export function WithIcons() {
+  return (
+    <div className="flex flex-wrap gap-3">
+      <Button>
+        <Globe />
+        Search
+      </Button>
+      <Button variant="secondary">
+        <Plus />
+        Add Member
+      </Button>
+      <Button variant="tertiary">
+        <Mail />
+        Email
+      </Button>
+      <Button variant="danger">
+        <Trash2 />
+        Delete
+      </Button>
+    </div>
+  );
+}
+```
+
+### Icon Only
+
+Use `isIconOnly` prop for buttons that contain only an icon.
+
+```tsx title="button-snippet.tsx"
+import { Button } from "@rakui/button";
+import { Ellipsis, Settings, Trash2 } from "lucide-react";
+
+export function IconOnly() {
+  return (
+    <div className="flex gap-3">
+      <Button isIconOnly variant="tertiary">
+        <Ellipsis />
+      </Button>
+      <Button isIconOnly variant="secondary">
+        <Settings />
+      </Button>
+      <Button isIconOnly variant="danger">
+        <Trash2 />
+      </Button>
+    </div>
+  );
+}
+```
+
+### Loading State
+
+Use `isPending` prop to show a loading state. Combine with render props for dynamic content.
+
+```tsx title="button-example.tsx"
+"use client";
+
+import { Button } from "@rakui/button";
+import { LoaderCircle, Paperclip } from "lucide-react";
+import { useState } from "react";
+
+export function LoadingState() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handlePress = () => {
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 2000);
+  };
+
+  return (
+    <Button isPending={isLoading} onPress={handlePress}>
+      {({ isPending }) => (
+        <>
+          {isPending ? <LoaderCircle className="animate-spin" /> : <Paperclip />}
+          {isPending ? "Uploading..." : "Upload File"}
+        </>
+      )}
+    </Button>
+  );
+}
+```
+
+### Full Width
+
+Use `fullWidth` prop to make the button take the full width of its container.
+
+```tsx title="button-snippet.tsx"
+import { Button } from "@rakui/button";
+import { Plus } from "lucide-react";
+
+export function FullWidth() {
+  return (
+    <div className="w-full max-w-xs space-y-3">
+      <Button fullWidth>Primary Button</Button>
+      <Button fullWidth>
+        <Plus />
+        With Icon
+      </Button>
+    </div>
+  );
+}
+```
+
+### Disabled State
+
+Use `isDisabled` prop to disable the button.
+
+```tsx title="button-snippet.tsx"
+import { Button } from "@rakui/button";
+
+export function Disabled() {
+  return (
+    <div className="flex flex-wrap gap-3">
+      <Button isDisabled>Primary</Button>
+      <Button isDisabled variant="secondary">
+        Secondary
+      </Button>
+      <Button isDisabled variant="tertiary">
+        Tertiary
+      </Button>
+      <Button isDisabled variant="outline">
+        Outline
+      </Button>
+    </div>
+  );
+}
+```
+
+### Custom Render Function
+
+Use the `render` prop to customize the rendered element.
+
+```tsx title="button-snippet.tsx"
+"use client";
+
+import { Button } from "@rakui/button";
+
+export function CustomRenderFunction() {
+  return (
+    <Button
+      render={(props, { isPressed }) => (
+        <button {...props} data-custom={isPressed ? "pressed" : "idle"} />
+      )}
+    >
+      Press me
+    </Button>
+  );
+}
+```
+
+## Styling
+
+### Passing Tailwind CSS Classes
+
+```tsx title="button-snippet.tsx"
+import { Button } from "@rakui/button";
+
+function CustomButton() {
+  return (
+    <Button className="bg-emerald-600 text-white hover:bg-emerald-700">
+      Custom Button
+    </Button>
+  );
+}
+```
+
+### Customizing Component Classes
+
+Use the `@layer components` directive to customize button classes:
+
+```css title="globals.css"
+@layer components {
+  .button {
+    @apply bg-emerald-600 text-white hover:bg-emerald-700;
+  }
+
+  .button--icon-only {
+    @apply rounded-lg bg-sky-500;
+  }
+}
+```
+
+### Adding Custom Variants
+
+Extend the Button component with your own custom variants:
+
+```tsx title="button-snippet.tsx"
+import { cva, type VariantProps } from "class-variance-authority";
+import { Button, type ButtonProps, buttonVariants } from "@rakui/button";
+import { cn } from "@/lib/utils";
+
+const customButtonVariants = cva("font-semibold shadow-md", {
+  extend: buttonVariants,
+  variants: {
+    radius: {
+      full: "rounded-full",
+      lg: "rounded-lg",
+      md: "rounded-md",
+      sm: "rounded-sm",
+    },
+  },
+  defaultVariants: {
+    radius: "full",
+    variant: "primary",
+  },
+});
+
+type CustomButtonProps = ButtonProps &
+  VariantProps<typeof customButtonVariants> & {
+    className?: string;
+  };
+
+function CustomButton({ className, radius, variant, ...props }: CustomButtonProps) {
+  return (
+    <Button
+      className={cn(customButtonVariants({ className, radius, variant }))}
+      {...props}
+    />
+  );
+}
+```
+
+### Interactive States
+
+Style buttons using data attributes:
+
+- **Hover**: `:hover` or `[data-hovered]`
+- **Pressed**: `[data-pressed]`
+- **Focus**: `:focus-visible` or `[data-focus-visible]`
+- **Disabled**: `[data-disabled]`
+- **Pending**: `[data-pending]`
+
+## API Reference
+
+### Button Props
+
+<TypeTable
+  type={{
+    variant: {
+      description: 'Visual style variant of the button',
+      type: '"primary" | "secondary" | "tertiary" | "outline" | "ghost" | "danger" | "danger-soft"',
+      default: '"primary"',
+    },
+    size: {
+      description: 'Size of the button',
+      type: '"sm" | "md" | "lg"',
+      default: '"md"',
+    },
+    fullWidth: {
+      description: 'Whether the button should take full width of its container',
+      type: 'boolean',
+      default: 'false',
+    },
+    isDisabled: {
+      description: 'Whether the button is disabled',
+      type: 'boolean',
+      default: 'false',
+    },
+    isPending: {
+      description: 'Whether the button is in a loading state',
+      type: 'boolean',
+      default: 'false',
+    },
+    isIconOnly: {
+      description: 'Whether the button contains only an icon',
+      type: 'boolean',
+      default: 'false',
+    },
+    onPress: {
+      description: 'Handler called when the button is pressed',
+      type: '(e: PressEvent) => void',
+    },
+    children: {
+      description: 'Button content or render prop function',
+      type: 'ReactNode | ((values: ButtonRenderProps) => ReactNode)',
+    },
+    render: {
+      description: 'Custom render function for the button element',
+      type: 'DOMRenderFunction',
+    },
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>
+
+### ButtonRenderProps
+
+When using the render prop pattern, these values are provided:
+
+<TypeTable
+  type={{
+    isPending: {
+      description: 'Whether the button is in a loading state',
+      type: 'boolean',
+    },
+    isPressed: {
+      description: 'Whether the button is currently pressed',
+      type: 'boolean',
+    },
+    isHovered: {
+      description: 'Whether the button is hovered',
+      type: 'boolean',
+    },
+    isFocused: {
+      description: 'Whether the button is focused',
+      type: 'boolean',
+    },
+    isFocusVisible: {
+      description: 'Whether the button should show focus indicator',
+      type: 'boolean',
+    },
+    isDisabled: {
+      description: 'Whether the button is disabled',
+      type: 'boolean',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-pressed]",
+      value: "Present when the button is pressed.",
+    },
+    {
+      title: "[data-hovered]",
+      value: "Present when the button is hovered.",
+    },
+    {
+      title: "[data-focus-visible]",
+      value: "Present when the button has focus visible.",
+    },
+    {
+      title: "[data-disabled]",
+      value: "Present when the button is disabled.",
+    },
+    {
+      title: "[data-pending]",
+      value: "Present when the button is in a pending/loading state.",
+    },
+  ]}
+/>

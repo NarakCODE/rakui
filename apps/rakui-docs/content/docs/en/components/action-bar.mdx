@@ -1,0 +1,337 @@
+---
+title: Action Bar
+description: A contextual action bar that appears when items are selected.
+---
+
+A contextual action bar that appears at the bottom of the viewport when items are selected, following the WAI-ARIA Toolbar pattern.
+
+<ComponentTabs name="action-bar-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/action-bar
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/action-bar
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/action-bar
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/action-bar
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps className="mb-0 pt-2">
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install radix-ui class-variance-authority
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="action-bar" />
+
+<Step>Update the import paths to match your project setup.</Step>
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Layout
+
+Import the parts and compose them together.
+
+```tsx title="components/ui/action-bar.tsx"
+import {
+  ActionBar,
+  ActionBarSelection,
+  ActionBarSeparator,
+  ActionBarGroup,
+  ActionBarItem,
+  ActionBarClose,
+} from "@/components/ui/action-bar";
+
+<ActionBar open={open} onOpenChange={setOpen}>
+  <ActionBarSelection>{selectedCount} selected</ActionBarSelection>
+  <ActionBarSeparator />
+  <ActionBarClose>
+    <X className="h-4 w-4" />
+  </ActionBarClose>
+  <ActionBarSeparator />
+  <ActionBarGroup>
+    <ActionBarItem onSelect={handleCopy}>
+      <Copy className="h-4 w-4" />
+      Copy
+    </ActionBarItem>
+    <ActionBarItem variant="destructive" onSelect={handleDelete}>
+      <Trash2 className="h-4 w-4" />
+      Delete
+    </ActionBarItem>
+  </ActionBarGroup>
+</ActionBar>;
+```
+
+## Usage
+
+### Basic Usage
+
+The Action Bar appears at the bottom of the viewport when items are selected.
+
+```tsx title="action-bar-basic.tsx"
+<ActionBar open={selectedIds.length > 0} onOpenChange={setOpen}>
+  <ActionBarSelection>{selectedIds.length} selected</ActionBarSelection>
+  <ActionBarSeparator />
+  <ActionBarGroup>
+    <ActionBarItem onSelect={handleDelete}>Delete</ActionBarItem>
+  </ActionBarGroup>
+</ActionBar>
+```
+
+### With Close Button
+
+Include a close button to allow users to dismiss the action bar.
+
+```tsx title="action-bar-with-close.tsx"
+<ActionBar open={open} onOpenChange={setOpen}>
+  <ActionBarSelection>3 selected</ActionBarSelection>
+  <ActionBarSeparator />
+  <ActionBarClose>
+    <X className="h-4 w-4" />
+  </ActionBarClose>
+  <ActionBarSeparator />
+  <ActionBarGroup>
+    <ActionBarItem onSelect={handleAction}>Action</ActionBarItem>
+  </ActionBarGroup>
+</ActionBar>
+```
+
+### Custom Positioning
+
+Use the `className` prop to customize the position of the action bar.
+
+```tsx title="action-bar-positioning.tsx"
+{
+  /* Bottom Left */
+}
+<ActionBar open={open} onOpenChange={setOpen} className="left-6 translate-x-0">
+  {/* ... */}
+</ActionBar>;
+
+{
+  /* Bottom Right */
+}
+<ActionBar
+  open={open}
+  onOpenChange={setOpen}
+  className="right-6 left-auto translate-x-0"
+>
+  {/* ... */}
+</ActionBar>;
+
+{
+  /* Top Center */
+}
+<ActionBar open={open} onOpenChange={setOpen} className="top-6 bottom-auto">
+  {/* ... */}
+</ActionBar>;
+```
+
+## API Reference
+
+### ActionBar
+
+The root component that controls visibility and provides context.
+
+<TypeTable
+  type={{
+    open: {
+      description: "Controls visibility of the action bar",
+      type: "boolean",
+      required: true,
+    },
+    onOpenChange: {
+      description: "Callback when visibility changes",
+      type: "(open: boolean) => void",
+    },
+    children: {
+      description: "Action bar content",
+      type: "ReactNode",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+### ActionBarSelection
+
+Displays selection information such as count of selected items.
+
+<TypeTable
+  type={{
+    children: {
+      description: "Selection text or count",
+      type: "ReactNode",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+### ActionBarGroup
+
+A container for grouping related action items.
+
+<TypeTable
+  type={{
+    children: {
+      description: "The action items to group",
+      type: "ReactNode",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+### ActionBarItem
+
+An interactive button item that performs an action.
+
+<TypeTable
+  type={{
+    children: {
+      description: "The content of the item",
+      type: "ReactNode",
+    },
+    variant: {
+      description: "Visual style variant",
+      type: '"default" | "destructive"',
+      default: '"default"',
+    },
+    onSelect: {
+      description: "Callback when item is clicked",
+      type: "() => void",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+    asChild: {
+      description: "Merge props onto child element",
+      type: "boolean",
+      default: "false",
+    },
+    disabled: {
+      description: "Whether the item is disabled",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+### ActionBarClose
+
+A button to close/dismiss the action bar.
+
+<TypeTable
+  type={{
+    children: {
+      description: "Close icon or content",
+      type: "ReactNode",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+### ActionBarSeparator
+
+Visual separator between items or groups.
+
+<TypeTable
+  type={{
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+## Accessibility
+
+The Action Bar follows the [WAI-ARIA Toolbar pattern](https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/).
+
+### Keyboard Interactions
+
+<KeyboardShortcutsTable
+  data={[
+    {
+      keys: ["Tab"],
+      description: "Moves focus into and out of the toolbar",
+    },
+    {
+      keys: ["Escape"],
+      description: "Closes the action bar (when focus is inside)",
+    },
+    {
+      keys: ["Enter", "Space"],
+      description: "Activates the focused action item",
+    },
+    {
+      keys: ["ArrowLeft", "ArrowRight"],
+      description: "Moves focus between items",
+    },
+  ]}
+/>
+
+### ARIA Attributes
+
+- The Action Bar has `role="toolbar"` and `aria-orientation="horizontal"`
+- Action groups have `role="group"` for semantic grouping
+- The close button has `aria-label="Close"` for screen readers
+- Separators have `aria-hidden="true"` to exclude from accessibility tree

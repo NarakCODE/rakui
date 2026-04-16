@@ -1,0 +1,112 @@
+---
+title: Tour
+description: An onboarding tour component with step-by-step highlights.
+---
+
+An onboarding tour component with step-by-step highlights.
+
+<ComponentTabs name="tour-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">Command</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/tour
+        ```
+      </CodeBlockTab>
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/tour
+        ```
+      </CodeBlockTab>
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/tour
+        ```
+      </CodeBlockTab>
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/tour
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>Install the following dependencies:</Step>
+
+```bash
+npm install lucide-react
+```
+
+<Step>
+        Copy and paste the following code into your project.
+      </Step>
+
+      <ComponentSource name="tour" />
+
+      <Step>
+        Update the import paths to match your project setup.
+      </Step>
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Usage
+
+```tsx title="tour-demo.tsx"
+import { Tour } from "@rakui/tour";
+
+export default function Example() {
+  const steps = [
+    { target: "#step1", title: "Welcome", content: "This is the first step" },
+    { target: "#step2", title: "Features", content: "Explore our features" },
+  ];
+
+  return (
+    <Tour
+      steps={steps}
+      isOpen={true}
+      onClose={() => {}}
+    />
+  );
+}
+```
+
+## API Reference
+
+### Tour
+
+<TypeTable
+  type={{
+    steps: {
+      description: 'Tour steps configuration',
+      type: 'Step[]',
+    },
+    isOpen: {
+      description: 'Whether the tour is visible',
+      type: 'boolean',
+    },
+    onClose: {
+      description: 'Callback when the tour is closed',
+      type: '() => void',
+    },
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>

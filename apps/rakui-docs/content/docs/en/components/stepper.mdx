@@ -1,0 +1,560 @@
+---
+title: Stepper
+description: A component that guides users through a multi-step process with clear visual progress indicators.
+---
+
+<ComponentTabs name="stepper-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+<CodeBlockTabs defaultValue="npm" groupId="package-manager">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="npm">
+    ```bash
+    npx shadcn@latest add @rakui/stepper
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="pnpm">
+    ```bash
+    pnpm dlx shadcn@latest add @rakui/stepper
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="yarn">
+    ```bash
+    yarn dlx shadcn@latest add @rakui/stepper
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="bun">
+    ```bash
+    bun x shadcn@latest add @rakui/stepper
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps className="mb-0 pt-2">
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install lucide-react
+```
+
+<Step>Install the following dependencies:</Step>
+
+<CodeBlockTabs defaultValue="npm" groupId="package-manager">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="npm">
+    ```bash
+    npm install radix-ui
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="pnpm">
+    ```bash
+    pnpm add radix-ui
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="yarn">
+    ```bash
+    yarn add radix-ui
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="bun">
+    ```bash
+    bun add radix-ui
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+<Step>Copy and paste the following utility into your project.</Step>
+<ComponentSource name="compose-refs" title="src/lib/compose-refs.ts" />
+
+<Step>Copy and paste the following hooks into your `hooks` directory.</Step>
+<ComponentSource name="use-isomorphic-layout-effect" title="src/hooks/use-isomorphic-layout-effect.ts" />
+<ComponentSource name="use-lazy-ref" title="src/hooks/use-lazy-ref.ts" />
+<ComponentSource name="use-as-ref" title="src/hooks/use-as-ref.ts" />
+
+<Step>Copy and paste the component source into your project.</Step>
+<ComponentSource name="stepper" title="src/components/ui/stepper.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+Import the parts you need and compose them in document order.
+
+```tsx title="components/stepper-demo.tsx"
+import {
+  Stepper,
+  StepperContent,
+  StepperIndicator,
+  StepperItem,
+  StepperList,
+  StepperSeparator,
+  StepperTrigger,
+} from "@/components/ui/stepper";
+
+const steps = [
+  {
+    value: "account",
+    title: "Account Setup",
+    description: "Create your account and verify email",
+  },
+  {
+    value: "profile",
+    title: "Profile Information",
+    description: "Add your personal details and preferences",
+  },
+  {
+    value: "payment",
+    title: "Payment Details",
+    description: "Set up billing and payment methods",
+  },
+  {
+    value: "complete",
+    title: "Complete Setup",
+    description: "Review and finish your account setup",
+  },
+];
+
+export function StepperDemo() {
+  return (
+    <Stepper defaultValue="account" className="w-full max-w-md">
+      <StepperList>
+        {steps.map((step) => (
+          <StepperItem key={step.value} value={step.value}>
+            <StepperTrigger>
+              <StepperIndicator />
+            </StepperTrigger>
+            <StepperSeparator />
+          </StepperItem>
+        ))}
+      </StepperList>
+      {steps.map((step) => (
+        <StepperContent
+          key={step.value}
+          value={step.value}
+          className="flex flex-col items-center gap-4 rounded-md border bg-card p-4 text-card-foreground"
+        >
+          <div className="flex flex-col items-center gap-px text-center">
+            <h3 className="font-semibold text-lg">{step.title}</h3>
+            <p className="text-muted-foreground">{step.description}</p>
+          </div>
+          <p className="text-sm">Content for {step.title} goes here.</p>
+        </StepperContent>
+      ))}
+    </Stepper>
+  );
+}
+```
+
+## Vertical Layout
+
+Switch `orientation` to `"vertical"` to display steps stacked vertically alongside their content.
+
+<ComponentTabs name="stepper-vertical-demo" />
+
+```tsx title="components/stepper-vertical-demo.tsx"
+import {
+  Stepper,
+  StepperContent,
+  StepperDescription,
+  StepperIndicator,
+  StepperItem,
+  StepperList,
+  StepperSeparator,
+  StepperTitle,
+  StepperTrigger,
+} from "@/components/ui/stepper";
+
+const steps = [
+  {
+    value: "placed",
+    title: "Order Placed",
+    description: "Your order has been successfully placed",
+  },
+  {
+    value: "processing",
+    title: "Processing",
+    description: "We're preparing your items for shipment",
+  },
+  {
+    value: "shipped",
+    title: "Shipped",
+    description: "Your order is on its way to you",
+  },
+  {
+    value: "delivered",
+    title: "Delivered",
+    description: "Order delivered to your address",
+  },
+];
+
+export function StepperVerticalDemo() {
+  return (
+    <Stepper defaultValue="shipped" orientation="vertical">
+      <StepperList>
+        {steps.map((step) => (
+          <StepperItem key={step.value} value={step.value}>
+            <StepperTrigger className="not-last:pb-6">
+              <StepperIndicator />
+              <div className="flex flex-col gap-1">
+                <StepperTitle>{step.title}</StepperTitle>
+                <StepperDescription>{step.description}</StepperDescription>
+              </div>
+            </StepperTrigger>
+            <StepperSeparator className="absolute inset-y-0 top-5 left-3.5 -z-10 -order-1 h-full -translate-x-1/2" />
+          </StepperItem>
+        ))}
+      </StepperList>
+      {steps.map((step) => (
+        <StepperContent
+          key={step.value}
+          value={step.value}
+          className="flex flex-col gap-4 rounded-lg border bg-card p-6 text-card-foreground"
+        >
+          <div className="flex flex-col gap-px">
+            <h4 className="font-semibold">{step.title}</h4>
+            <p className="text-muted-foreground text-sm">{step.description}</p>
+          </div>
+          <p className="text-sm">
+            This is the content for {step.title}. You can add forms,
+            information, or any other content here.
+          </p>
+        </StepperContent>
+      ))}
+    </Stepper>
+  );
+}
+```
+
+## With Validation
+
+Use `onValidate` to prevent users from advancing until the current step passes validation. This example uses `react-hook-form` and `zod` to validate fields per step.
+
+<ComponentTabs name="stepper-validation-demo" />
+
+## With Form
+
+Combine the stepper with a full form experience. Each step can contain its own fields, and validation is triggered before moving forward.
+
+<ComponentTabs name="stepper-form-demo" />
+
+## Accessibility
+
+- `StepperList` renders with `role="tablist"` and `aria-orientation`.
+- `StepperTrigger` renders as `role="tab"` with `aria-controls` pointing to its content panel.
+- The active trigger exposes `aria-current="step"` and `aria-selected="true"`.
+- `StepperContent` renders as `role="tabpanel"` with `aria-labelledby` referencing its trigger.
+- Arrow keys navigate between steps when focus is on a trigger.
+
+## API Reference
+
+### Stepper
+
+<TypeTable
+  type={{
+    value: {
+      description: "Controlled active step value.",
+      type: "string",
+    },
+    defaultValue: {
+      description: "Initial active step value when uncontrolled.",
+      type: "string",
+    },
+    onValueChange: {
+      description: "Called when the active step changes.",
+      type: "(value: string) => void",
+    },
+    onValueComplete: {
+      description: "Called when a step's completed state changes.",
+      type: "(value: string, completed: boolean) => void",
+    },
+    onValidate: {
+      description: "Async validation before moving to a new step.",
+      type: "(value: string, direction: 'next' | 'prev') => boolean | Promise<boolean>",
+    },
+    orientation: {
+      description: "Layout direction of the stepper list.",
+      type: '"horizontal" | "vertical"',
+      default: '"horizontal"',
+    },
+    activationMode: {
+      description: "Whether focus automatically activates a step.",
+      type: '"automatic" | "manual"',
+      default: '"automatic"',
+    },
+    dir: {
+      description: "Text direction.",
+      type: '"ltr" | "rtl"',
+      default: '"ltr"',
+    },
+    disabled: {
+      description: "Whether the entire stepper is disabled.",
+      type: "boolean",
+      default: "false",
+    },
+    loop: {
+      description: "Whether keyboard navigation wraps around.",
+      type: "boolean",
+      default: "false",
+    },
+    nonInteractive: {
+      description: "Disables step selection via click or keyboard.",
+      type: "boolean",
+      default: "false",
+    },
+    asChild: {
+      description: "Change the default rendered element.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes.",
+      type: "string",
+    },
+  }}
+/>
+
+### StepperList
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Change the default rendered element.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes.",
+      type: "string",
+    },
+  }}
+/>
+
+### StepperItem
+
+<TypeTable
+  type={{
+    value: {
+      description: "Unique identifier for the step.",
+      type: "string",
+      required: true,
+    },
+    completed: {
+      description: "Whether the step is marked as completed.",
+      type: "boolean",
+      default: "false",
+    },
+    disabled: {
+      description: "Whether the step is disabled.",
+      type: "boolean",
+      default: "false",
+    },
+    asChild: {
+      description: "Change the default rendered element.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes.",
+      type: "string",
+    },
+  }}
+/>
+
+### StepperTrigger
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Change the default rendered element.",
+      type: "boolean",
+      default: "false",
+    },
+    disabled: {
+      description: "Whether the trigger is disabled.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes.",
+      type: "string",
+    },
+  }}
+/>
+
+### StepperIndicator
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Change the default rendered element.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes.",
+      type: "string",
+    },
+    children: {
+      description: "Custom indicator content or a render function receiving the data state.",
+      type: "ReactNode | ((dataState: 'inactive' | 'active' | 'completed') => ReactNode)",
+    },
+  }}
+/>
+
+### StepperSeparator
+
+<TypeTable
+  type={{
+    forceMount: {
+      description: "Render the separator even on the last item.",
+      type: "boolean",
+      default: "false",
+    },
+    asChild: {
+      description: "Change the default rendered element.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes.",
+      type: "string",
+    },
+  }}
+/>
+
+### StepperContent
+
+<TypeTable
+  type={{
+    value: {
+      description: "The step value this content belongs to.",
+      type: "string",
+      required: true,
+    },
+    forceMount: {
+      description: "Keep the content in the DOM even when inactive.",
+      type: "boolean",
+      default: "false",
+    },
+    asChild: {
+      description: "Change the default rendered element.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes.",
+      type: "string",
+    },
+  }}
+/>
+
+### StepperTitle
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Change the default rendered element.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes.",
+      type: "string",
+    },
+  }}
+/>
+
+### StepperDescription
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Change the default rendered element.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes.",
+      type: "string",
+    },
+  }}
+/>
+
+### StepperPrev
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Change the default rendered element.",
+      type: "boolean",
+      default: "false",
+    },
+    disabled: {
+      description: "Whether the button is disabled.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes.",
+      type: "string",
+    },
+  }}
+/>
+
+### StepperNext
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Change the default rendered element.",
+      type: "boolean",
+      default: "false",
+    },
+    disabled: {
+      description: "Whether the button is disabled.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes.",
+      type: "string",
+    },
+  }}
+/>

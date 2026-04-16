@@ -1,0 +1,639 @@
+---
+title: Checkbox Group
+description: A group of checkboxes that allows multiple selections with support for validation and accessibility.
+---
+
+A group of checkboxes that allows multiple selections with support for validation and accessibility.
+
+<ComponentTabs name="checkbox-group-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+<CodeBlockTabs defaultValue="npm" groupId="package-manager">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="npm">
+    ```bash
+    npx shadcn@latest add @diceui/checkbox-group
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="pnpm">
+    ```bash
+    pnpm dlx shadcn@latest add @diceui/checkbox-group
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="yarn">
+    ```bash
+    yarn dlx shadcn@latest add @diceui/checkbox-group
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="bun">
+    ```bash
+    bun x shadcn@latest add @diceui/checkbox-group
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps className="mb-0 pt-2">
+<Step>Install the following dependencies:</Step>
+
+<CodeBlockTabs defaultValue="npm" groupId="package-manager">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="npm">
+    ```bash
+    npm install @diceui/checkbox-group
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="pnpm">
+    ```bash
+    pnpm add @diceui/checkbox-group
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="yarn">
+    ```bash
+    yarn add @diceui/checkbox-group
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="bun">
+    ```bash
+    bun add @diceui/checkbox-group
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+<Step>Copy and paste the following code into your project.</Step>
+
+```tsx title="components/ui/checkbox-group.tsx"
+import * as CheckboxGroupPrimitive from "@diceui/checkbox-group";
+import { Check } from "lucide-react";
+import type * as React from "react";
+import { cn } from "@/lib/utils";
+
+function CheckboxGroup({
+  className,
+  ...props
+}: React.ComponentProps<typeof CheckboxGroupPrimitive.Root>) {
+  return (
+    <CheckboxGroupPrimitive.Root
+      data-slot="checkbox-group"
+      className={cn("peer flex flex-col gap-3.5", className)}
+      {...props}
+    />
+  );
+}
+
+function CheckboxGroupLabel({
+  className,
+  ...props
+}: React.ComponentProps<typeof CheckboxGroupPrimitive.Label>) {
+  return (
+    <CheckboxGroupPrimitive.Label
+      data-slot="checkbox-group-label"
+      className={cn(
+        "text-foreground/70 text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function CheckboxGroupList({
+  className,
+  ...props
+}: React.ComponentProps<typeof CheckboxGroupPrimitive.List>) {
+  return (
+    <CheckboxGroupPrimitive.List
+      data-slot="checkbox-group-list"
+      className={cn(
+        "flex gap-3 data-[orientation=horizontal]:flex-row data-[orientation=vertical]:flex-col",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function CheckboxGroupItem({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof CheckboxGroupPrimitive.Item>) {
+  return (
+    <label className="flex w-fit select-none items-center gap-2 text-sm leading-none has-data-disabled:cursor-not-allowed has-data-invalid:text-destructive has-data-disabled:opacity-50">
+      <CheckboxGroupPrimitive.Item
+        data-slot="checkbox-group-item"
+        className={cn(
+          "size-4 shrink-0 rounded-sm border border-primary shadow-sm focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring data-invalid:border-destructive [&[data-state=checked]:not([data-invalid])]:bg-primary [&[data-state=checked]:not([data-invalid])]:text-primary-foreground [&[data-state=checked][data-invalid]]:bg-destructive [&[data-state=checked][data-invalid]]:text-primary-foreground [&[data-state=unchecked][data-invalid]]:bg-transparent",
+          className,
+        )}
+        {...props}
+      >
+        <CheckboxGroupPrimitive.Indicator
+          className="flex items-center justify-center text-current"
+          asChild
+        >
+          <Check className="size-3.5" />
+        </CheckboxGroupPrimitive.Indicator>
+      </CheckboxGroupPrimitive.Item>
+      {children}
+    </label>
+  );
+}
+
+function CheckboxGroupDescription({
+  className,
+  ...props
+}: React.ComponentProps<typeof CheckboxGroupPrimitive.Description>) {
+  return (
+    <CheckboxGroupPrimitive.Description
+      data-slot="checkbox-group-description"
+      className={cn(
+        "text-[0.8rem] text-muted-foreground leading-none data-invalid:text-destructive",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function CheckboxGroupMessage({
+  className,
+  ...props
+}: React.ComponentProps<typeof CheckboxGroupPrimitive.Message>) {
+  return (
+    <CheckboxGroupPrimitive.Message
+      data-slot="checkbox-group-message"
+      className={cn(
+        "text-[0.8rem] text-muted-foreground leading-none data-invalid:text-destructive",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+export {
+  CheckboxGroup,
+  CheckboxGroupDescription,
+  CheckboxGroupItem,
+  CheckboxGroupLabel,
+  CheckboxGroupList,
+  CheckboxGroupMessage,
+};
+```
+
+<Step>Update the import paths to match your project setup.</Step>
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Layout
+
+Import the parts and compose them together.
+
+```tsx title="components/ui/checkbox-group.tsx"
+import {
+  CheckboxGroup,
+  CheckboxGroupLabel,
+  CheckboxGroupList,
+  CheckboxGroupItem,
+  CheckboxGroupIndicator,
+  CheckboxGroupDescription,
+} from "@diceui/checkbox-group";
+
+<CheckboxGroup>
+  <CheckboxGroupLabel />
+  <CheckboxGroupList>
+  <CheckboxGroupItem>
+      <CheckboxGroupIndicator />
+    </CheckboxGroupItem>
+  </CheckboxGroupList>
+  <CheckboxGroupDescription />
+</CheckboxGroup>
+```
+
+## Usage
+
+### Basic
+
+```tsx title="checkbox-group-basic.tsx"
+import * as CheckboxGroup from "@diceui/checkbox-group";
+import { Check } from "lucide-react";
+
+export function CheckboxGroupDemo() {
+  return (
+    <CheckboxGroup.CheckboxGroupRoot className="peer flex flex-col gap-3.5">
+      <CheckboxGroup.CheckboxGroupLabel className="text-sm text-zinc-600 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-zinc-400">
+        Select your favorite tricks
+      </CheckboxGroup.CheckboxGroupLabel>
+      <CheckboxGroup.CheckboxGroupList className="flex gap-3 data-[orientation=horizontal]:flex-row data-[orientation=vertical]:flex-col">
+        <label className="flex w-fit select-none items-center gap-2 text-sm text-zinc-900 leading-none has-data-disabled:cursor-not-allowed has-data-invalid:text-red-500 has-data-disabled:opacity-50 dark:text-zinc-100 dark:has-data-invalid:text-red-400">
+          <CheckboxGroup.CheckboxGroupItem value="kickflip">
+            <CheckboxGroup.CheckboxGroupIndicator>
+              <Check className="size-3.5" />
+            </CheckboxGroup.CheckboxGroupIndicator>
+          </CheckboxGroup.CheckboxGroupItem>
+          Kickflip
+        </label>
+      </CheckboxGroup.CheckboxGroupList>
+    </CheckboxGroup.CheckboxGroupRoot>
+  );
+}
+```
+
+### Horizontal Orientation
+
+Use the `orientation` prop to display checkboxes horizontally.
+
+<ComponentTabs name="checkbox-group-horizontal-demo" />
+
+### With Validation
+
+Validate the group with `onValidate` or `required` prop for native form validation.
+
+<ComponentTabs name="checkbox-group-validation-demo" />
+
+### Multi Selection
+
+Hold down the Shift key to select and deselect multiple checkboxes at once.
+
+<ComponentTabs name="checkbox-group-multi-selection-demo" />
+
+## Animated Checkbox
+
+Update `tailwind.config.ts` to include the following animation:
+
+```ts title="tailwind.config.ts"
+export default {
+  theme: {
+    extend: {
+      keyframes: {
+        "stroke-dashoffset": {
+          "0%": { strokeDashoffset: "100%" },
+          "100%": { strokeDashoffset: "0" },
+        },
+      },
+      animation: {
+        "stroke-dashoffset": "stroke-dashoffset 0.2s linear forwards",
+      },
+    },
+  },
+}
+```
+
+Then add the animation class to your indicator:
+
+```tsx title="checkbox-group-animated.tsx"
+<CheckboxGroup.CheckboxGroupIndicator
+  className="size-3.5 animate-stroke-dashoffset [stroke-dasharray:100%_100%] motion-reduce:animate-none"
+  asChild
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M4 12 9 17L20 6" />
+  </svg>
+</CheckboxGroup.CheckboxGroupIndicator>
+```
+
+## API Reference
+
+### CheckboxGroup
+
+Container for the checkbox group.
+
+<TypeTable
+  type={{
+    defaultValue: {
+      description: 'Default selected values (uncontrolled)',
+      type: 'string[]',
+    },
+    value: {
+      description: 'Selected values (controlled)',
+      type: 'string[]',
+    },
+    onValueChange: {
+      description: 'Callback when selection changes',
+      type: '(value: string[]) => void',
+    },
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+    onValidate: {
+      description: 'Validation callback function',
+      type: '(value: string[]) => string | null',
+    },
+    disabled: {
+      description: 'Whether the group is disabled',
+      type: 'boolean',
+      default: 'false',
+    },
+    invalid: {
+      description: 'Whether the group is invalid',
+      type: 'boolean',
+      default: 'false',
+    },
+    readOnly: {
+      description: 'Whether the group is read-only',
+      type: 'boolean',
+      default: 'false',
+    },
+    required: {
+      description: 'Whether the group is required',
+      type: 'boolean',
+      default: 'false',
+    },
+    orientation: {
+      description: 'Layout orientation',
+      type: '"vertical" | "horizontal"',
+      default: '"vertical"',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-invalid]",
+      value: "Present when invalid.",
+    },
+    {
+      title: "[data-disabled]",
+      value: "Present when disabled.",
+    },
+    {
+      title: "[data-orientation]",
+      value: '"vertical" | "horizontal"',
+    },
+  ]}
+/>
+
+### CheckboxGroupLabel
+
+Label for the checkbox group.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-disabled]",
+      value: "Present when disabled.",
+    },
+  ]}
+/>
+
+### CheckboxGroupList
+
+Container for checkbox items.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-orientation]",
+      value: '"vertical" | "horizontal"',
+    },
+    {
+      title: "[data-invalid]",
+      value: "Present when invalid.",
+    },
+  ]}
+/>
+
+### CheckboxGroupItem
+
+Individual checkbox item.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+    required: {
+      description: 'Whether the item is required',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-state]",
+      value: '"checked" | "unchecked"',
+    },
+    {
+      title: "[data-disabled]",
+      value: "Present when disabled.",
+    },
+    {
+      title: "[data-invalid]",
+      value: "Present when invalid.",
+    },
+    {
+      title: "[data-orientation]",
+      value: '"vertical" | "horizontal"',
+    },
+  ]}
+/>
+
+### CheckboxGroupIndicator
+
+Visual indicator for the checkbox state.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+    forceMount: {
+      description: 'Force mount the indicator',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-state]",
+      value: '"checked" | "unchecked"',
+    },
+    {
+      title: "[data-disabled]",
+      value: "Present when disabled.",
+    },
+  ]}
+/>
+
+### CheckboxGroupDescription
+
+Optional description text for the checkbox group.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+    announce: {
+      description: 'Announce to screen readers',
+      type: 'boolean',
+      default: 'false',
+    },
+    hideOnError: {
+      description: 'Hide when there is an error',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-disabled]",
+      value: "Present when disabled.",
+    },
+    {
+      title: "[data-invalid]",
+      value: "Present when invalid.",
+    },
+  ]}
+/>
+
+### CheckboxGroupMessage
+
+Error or validation message for the checkbox group.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+    announce: {
+      description: 'Announce to screen readers',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-disabled]",
+      value: "Present when disabled.",
+    },
+    {
+      title: "[data-invalid]",
+      value: "Present when invalid.",
+    },
+  ]}
+/>
+
+## Accessibility
+
+### Keyboard Interactions
+
+<KeyboardShortcutsTable
+  data={[
+    {
+      keys: ["Space"],
+      description: "Toggles checkbox item.",
+    },
+    {
+      keys: ["ArrowUp", "ArrowDown"],
+      description: "Moves focus between items (vertical orientation).",
+    },
+    {
+      keys: ["ArrowLeft", "ArrowRight"],
+      description: "Moves focus between items (horizontal orientation).",
+    },
+    {
+      keys: ["Home"],
+      description: "Moves focus to first item.",
+    },
+    {
+      keys: ["End"],
+      description: "Moves focus to last item.",
+    },
+  ]}
+/>
+
+### ARIA Attributes
+
+- The checkbox group has `role="group"` with appropriate `aria-labelledby`
+- Each checkbox item has `role="checkbox"` with `aria-checked` state
+- The indicator is excluded from the accessibility tree with `aria-hidden`
+- Error messages are linked via `aria-describedby` and `aria-errormessage`

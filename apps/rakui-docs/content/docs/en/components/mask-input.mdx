@@ -1,0 +1,348 @@
+---
+title: Mask Input
+description: An input component with built-in masking for phone numbers, dates, currency, and more.
+---
+
+<ComponentTabs name="mask-input-demo" />
+
+## Installation [#installation]
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">Command</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/mask-input
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/mask-input
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/mask-input
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/mask-input
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>Install the following dependencies:</Step>
+
+      <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+        <CodeBlockTabsList>
+          <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+          <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+          <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+          <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
+
+        <CodeBlockTab value="npm">
+          ```bash
+          npm install radix-ui
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="pnpm">
+          ```bash
+          pnpm add radix-ui
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="yarn">
+          ```bash
+          yarn add radix-ui
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="bun">
+          ```bash
+          bun add radix-ui
+          ```
+        </CodeBlockTab>
+      </CodeBlockTabs>
+
+      <Step>Copy and paste the compose-refs utility into your project.</Step>
+
+      <ComponentSource name="compose-refs" />
+
+      <Step>Copy and paste the following code into your project.</Step>
+
+      <ComponentSource name="mask-input" />
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Layout [#layout]
+
+Import the parts and compose them together.
+
+```tsx title="mask-input-imports.tsx"
+import { MaskInput } from "@/components/ui/mask-input";
+```
+
+## Usage [#usage]
+
+### Basic Masks
+
+The Mask Input component comes with several built-in masks for common use cases.
+
+<ComponentTabs name="mask-input-demo" />
+
+### Built-in Masks
+
+| Mask | Pattern | Description |
+|------|---------|-------------|
+| `phone` | `(###) ###-####` | Phone number with area code |
+| `ssn` | `###-##-####` | Social Security Number |
+| `date` | `##/##/####` | Date in MM/DD/YYYY format |
+| `time` | `##:##` | Time in HH:MM format |
+| `creditCard` | `#### #### #### ####` | Credit card number |
+| `creditCardExpiry` | `##/##` | Credit card expiry MM/YY |
+| `zipCode` | `#####` | 5-digit ZIP code |
+| `zipCodeExtended` | `#####-####` | 9-digit ZIP+4 |
+| `currency` | `$###,###.##` | Currency with formatting |
+| `percentage` | `##.##%` | Percentage value |
+| `licensePlate` | `###-###` | License plate format |
+| `ipv4` | `###.###.###.###` | IPv4 address |
+| `macAddress` | `##:##:##:##:##:##` | MAC address |
+| `isbn` | `###-#-###-#####-#` | ISBN-13 format |
+| `ein` | `##-#######` | Employer Identification Number |
+
+### Currency Masks
+
+Support for international currency formatting with locale-aware symbols and separators.
+
+```tsx title="mask-input-snippet.tsx"
+// US Dollar (default)
+<MaskInput mask="currency" placeholder="$0.00" />
+
+// Euro with German locale
+<MaskInput
+  mask="currency"
+  currency="EUR"
+  locale="de-DE"
+  placeholder="0,00 €"
+/>
+
+// Japanese Yen
+<MaskInput
+  mask="currency"
+  currency="JPY"
+  locale="ja-JP"
+  placeholder="¥0"
+/>
+```
+
+### Custom Patterns
+
+Create custom masks for specific formatting needs.
+
+<ComponentTabs name="mask-input-custom-pattern-demo" />
+
+### Validation Modes
+
+Control when validation runs with different validation modes.
+
+<TypeTable
+  type={{
+    validationMode: {
+      description: 'When to trigger validation',
+      type: '"onChange" | "onBlur" | "onTouched" | "onSubmit" | "all"',
+      default: '"onChange"',
+    },
+  }}
+/>
+
+## API Reference [#api-reference]
+
+### MaskInput
+
+The main masked input component.
+
+<TypeTable
+  type={{
+    mask: {
+      description: 'Built-in mask key or custom pattern object',
+      type: 'MaskPatternKey | MaskPattern',
+    },
+    value: {
+      description: 'Controlled value of the input',
+      type: 'string',
+    },
+    defaultValue: {
+      description: 'Default value for uncontrolled usage',
+      type: 'string',
+    },
+    onValueChange: {
+      description: 'Callback when value changes, receives masked and unmasked values',
+      type: '(maskedValue: string, unmaskedValue: string) => void',
+    },
+    onValidate: {
+      description: 'Callback with validation result',
+      type: '(isValid: boolean, unmaskedValue: string) => void',
+    },
+    validationMode: {
+      description: 'When to trigger validation',
+      type: '"onChange" | "onBlur" | "onTouched" | "onSubmit" | "all"',
+      default: '"onChange"',
+    },
+    currency: {
+      description: 'Currency code for currency mask (e.g., "USD", "EUR")',
+      type: 'string',
+      default: '"USD"',
+    },
+    locale: {
+      description: 'Locale for currency/number formatting (e.g., "en-US", "de-DE")',
+      type: 'string',
+      default: '"en-US"',
+    },
+    maskPlaceholder: {
+      description: 'Placeholder shown when focused (e.g., "(###) ###-####")',
+      type: 'string',
+    },
+    min: {
+      description: 'Minimum value for percentage/number masks',
+      type: 'number',
+    },
+    max: {
+      description: 'Maximum value for percentage/number masks',
+      type: 'number',
+    },
+    withoutMask: {
+      description: 'Disable masking and use as regular input',
+      type: 'boolean',
+      default: 'false',
+    },
+    invalid: {
+      description: 'Whether the input is in an invalid state',
+      type: 'boolean',
+      default: 'false',
+    },
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+### MaskPattern
+
+Interface for creating custom mask patterns.
+
+<TypeTable
+  type={{
+    pattern: {
+      description: 'Mask pattern using # for digit placeholders',
+      type: 'string',
+    },
+    transform: {
+      description: 'Function to transform raw input to unmasked value',
+      type: '(value: string, opts?: TransformOptions) => string',
+    },
+    validate: {
+      description: 'Function to validate the unmasked value',
+      type: '(value: string, opts?: ValidateOptions) => boolean',
+    },
+  }}
+/>
+
+## Examples [#examples]
+
+### With Custom Patterns
+
+Create custom masks for specific formatting needs.
+
+<ComponentTabs name="mask-input-custom-pattern-demo" />
+
+### With Form Integration
+
+Integration with react-hook-form and zod validation.
+
+```tsx title="mask-input-snippet.tsx"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { MaskInput } from "@/components/ui/mask-input";
+
+const formSchema = z.object({
+  phone: z.string().min(10, "Phone number must be at least 10 digits"),
+});
+
+function MyForm() {
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+  });
+
+  return (
+    <FormField
+      control={form.control}
+      name="phone"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Phone Number</FormLabel>
+          <FormControl>
+            <MaskInput
+              mask="phone"
+              value={field.value}
+              onValueChange={(_masked, unmasked) => field.onChange(unmasked)}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+}
+```
+
+## Accessibility [#accessibility]
+
+### Keyboard Interactions
+
+<KeyboardShortcutsTable
+  data={[
+    {
+      keys: ["Backspace"],
+      description: "Deletes the previous character, skipping over mask literal characters.",
+    },
+    {
+      keys: ["Delete"],
+      description: "Deletes the next character, skipping over mask literal characters.",
+    },
+    {
+      keys: ["Ctrl/Cmd", "V"],
+      description: "Pastes content with automatic masking applied.",
+    },
+  ]}
+/>
+
+### ARIA Attributes
+
+- The input has `aria-invalid` when in an invalid state
+- `data-invalid` attribute is present for styling invalid states
+- Proper labeling support via `htmlFor` and `id` attributes

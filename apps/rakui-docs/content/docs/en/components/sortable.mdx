@@ -1,0 +1,515 @@
+---
+title: Sortable
+description: A composable drag-and-drop sortable list with vertical, horizontal, and mixed layouts.
+---
+
+<ComponentTabs name="sortable-demo" />
+
+## Installation [#installation]
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">
+          npm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="pnpm">
+          pnpm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="yarn">
+          yarn
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="bun">
+          bun
+        </CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/sortable
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/sortable
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/sortable
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/sortable
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>
+        Install the following dependencies:
+      </Step>
+
+      <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+        <CodeBlockTabsList>
+          <CodeBlockTabsTrigger value="npm">
+            npm
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="pnpm">
+            pnpm
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="yarn">
+            yarn
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="bun">
+            bun
+          </CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
+
+        <CodeBlockTab value="npm">
+          ```bash
+          npm install @dnd-kit/core @dnd-kit/modifiers @dnd-kit/sortable @dnd-kit/utilities radix-ui
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="pnpm">
+          ```bash
+          pnpm add @dnd-kit/core @dnd-kit/modifiers @dnd-kit/sortable @dnd-kit/utilities radix-ui
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="yarn">
+          ```bash
+          yarn add @dnd-kit/core @dnd-kit/modifiers @dnd-kit/sortable @dnd-kit/utilities radix-ui
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="bun">
+          ```bash
+          bun add @dnd-kit/core @dnd-kit/modifiers @dnd-kit/sortable @dnd-kit/utilities radix-ui
+          ```
+        </CodeBlockTab>
+      </CodeBlockTabs>
+
+      <Step>
+        Copy and paste the refs composition utilities into your project.
+      </Step>
+
+      <ComponentSource name="compose-refs" title="src/lib/compose-refs.ts" />
+
+      <Step>
+        Copy and paste the sortable source into your project.
+      </Step>
+
+      <ComponentSource name="sortable" title="src/components/ui/sortable.tsx" />
+
+      <Step>
+        Update the import paths to match your project setup.
+      </Step>
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Layout [#layout]
+
+Import the parts you need and compose them together.
+
+```tsx title="sortable-usage.tsx"
+import {
+  Sortable,
+  SortableContent,
+  SortableItem,
+  SortableItemHandle,
+  SortableOverlay,
+} from "@/components/ui/sortable";
+
+return (
+  <Sortable value={items} onValueChange={setItems}>
+    <SortableContent>
+      {items.map((item) => (
+        <SortableItem key={item.id} value={item.id}>
+          <SortableItemHandle />
+          {item.title}
+        </SortableItem>
+      ))}
+    </SortableContent>
+
+    <SortableOverlay />
+  </Sortable>
+);
+```
+
+## Usage [#usage]
+
+### With Primitive Values [#with-primitive-values]
+
+When the list contains primitive values, the items themselves are used as sortable identifiers, so `getItemValue` is optional.
+
+<ComponentTabs name="sortable-primitive-values-demo" />
+
+```tsx title="sortable-example.tsx"
+const [items, setItems] = React.useState(["Inbox", "In Review", "Done"]);
+
+<Sortable value={items} onValueChange={setItems}>
+  <SortableContent className="flex flex-col gap-2">
+    {items.map((item) => (
+      <SortableItem
+        key={item}
+        value={item}
+        asHandle
+        className="rounded-lg border bg-card p-3 shadow-xs"
+      >
+        {item}
+      </SortableItem>
+    ))}
+  </SortableContent>
+</Sortable>
+```
+
+### With Object Arrays [#with-object-arrays]
+
+When the list contains objects, pass `getItemValue` so the component can derive a stable sortable id.
+
+<ComponentTabs name="sortable-demo" />
+
+```tsx title="sortable-example.tsx"
+const [tasks, setTasks] = React.useState([
+  { id: "write-copy", title: "Write landing page copy" },
+  { id: "review-pr", title: "Review sortable pull request" },
+  { id: "ship-demo", title: "Ship docs demo" },
+]);
+
+<Sortable
+  value={tasks}
+  onValueChange={setTasks}
+  getItemValue={(item) => item.id}
+>
+  <SortableContent className="flex flex-col gap-2">
+    {tasks.map((task) => (
+      <SortableItem
+        key={task.id}
+        value={task.id}
+        className="rounded-lg border bg-card"
+      >
+        <div className="flex items-center gap-3 p-3">
+          <SortableItemHandle className="rounded-md border p-2">
+            <GripVertical className="size-4" />
+            <span className="sr-only">Reorder {task.title}</span>
+          </SortableItemHandle>
+          <span>{task.title}</span>
+        </div>
+      </SortableItem>
+    ))}
+  </SortableContent>
+</Sortable>
+```
+
+### Horizontal Lists [#horizontal-lists]
+
+Set `orientation="horizontal"` to restrict movement to the x-axis and switch the default sorting strategy to the horizontal list preset.
+
+<ComponentTabs name="sortable-horizontal-demo" />
+
+```tsx title="sortable-snippet.tsx"
+<Sortable
+  value={items}
+  onValueChange={setItems}
+  orientation="horizontal"
+>
+  <SortableContent className="flex gap-3">
+    {items.map((item) => (
+      <SortableItem
+        key={item}
+        value={item}
+        asHandle
+        className="min-w-40 rounded-lg border bg-card p-4 text-center shadow-xs"
+      >
+        {item}
+      </SortableItem>
+    ))}
+  </SortableContent>
+</Sortable>
+```
+
+### Custom Overlay [#custom-overlay]
+
+Use `SortableOverlay` when the dragged preview should differ from the source element.
+
+<ComponentTabs name="sortable-demo" />
+
+```tsx title="sortable-snippet.tsx"
+<SortableOverlay>
+  {({ value }) => {
+    const activeTask = tasks.find((task) => task.id === value);
+
+    if (!activeTask) return null;
+
+    return (
+      <div className="w-80 rounded-xl border bg-card p-3 shadow-lg">
+        {activeTask.title}
+      </div>
+    );
+  }}
+</SortableOverlay>
+```
+
+## Examples [#examples]
+
+### With Handle [#with-handle]
+
+Use `SortableItemHandle` when only a dedicated affordance should activate dragging.
+
+<ComponentTabs name="sortable-with-handle-demo" />
+
+## Accessibility [#accessibility]
+
+Sortable includes default screen-reader announcements and keyboard instructions for pick up, move, drop, and cancel interactions. For the clearest accessible UX, prefer a real `SortableItemHandle` button with an `sr-only` label when only part of the item should start dragging.
+
+## Data Attributes [#data-attributes]
+
+<DataAttributesTable
+  data={[
+    {
+      title: 'data-slot="sortable-content"',
+      value: "Applied to the content wrapper rendered by SortableContent.",
+    },
+    {
+      title: 'data-slot="sortable-item"',
+      value: "Applied to each sortable item wrapper.",
+    },
+    {
+      title: 'data-slot="sortable-item-handle"',
+      value: "Applied to the dedicated drag handle button.",
+    },
+    {
+      title: "data-dragging",
+      value: "Present on items and handles while the item is actively being dragged.",
+    },
+    {
+      title: "data-disabled",
+      value: "Present on items and handles when drag interaction is disabled.",
+    },
+  ]}
+/>
+
+## Keyboard Shortcuts [#keyboard-shortcuts]
+
+<KeyboardShortcutsTable
+  data={[
+    {
+      keys: ["Space", "Enter"],
+      description: "Pick up the focused item or drop it in the current position.",
+    },
+    {
+      keys: ["Esc"],
+      description: "Cancel the active drag and restore the original order.",
+    },
+    {
+      keys: ["Arrow Up", "Arrow Down"],
+      description: "Move the active item in vertical lists.",
+    },
+    {
+      keys: ["Arrow Left", "Arrow Right"],
+      description: "Move the active item in horizontal lists.",
+    },
+  ]}
+/>
+
+## API Reference [#api-reference]
+
+### Sortable [#sortable]
+
+<TypeTable
+  type={{
+    value: {
+      description: "Ordered list of sortable items.",
+      type: "T[]",
+      required: true,
+    },
+    onValueChange: {
+      description: "Called with the reordered list after a successful drop.",
+      type: "(items: T[]) => void",
+    },
+    getItemValue: {
+      description:
+        "Required for object arrays so the component can derive a stable sortable id.",
+      type: "(item: T) => UniqueIdentifier",
+    },
+    onMove: {
+      description:
+        "Intercepts reordering with both source and target indexes when you want custom move handling.",
+      type: "(event: { activeIndex: number; overIndex: number }) => void",
+    },
+    strategy: {
+      description: "Overrides the sorting strategy used by the content area.",
+      type: "SortableContextProps['strategy']",
+    },
+    orientation: {
+      description:
+        "Applies axis restrictions and default collision detection for the sortable area.",
+      type: '"vertical" | "horizontal" | "mixed"',
+      default: '"vertical"',
+    },
+    flatCursor: {
+      description: "Disables grab cursor styling on draggable elements.",
+      type: "boolean",
+      default: "false",
+    },
+    modifiers: {
+      description: "Custom dnd-kit modifiers for drag movement.",
+      type: "DndContextProps['modifiers']",
+    },
+    sensors: {
+      description:
+        "Overrides the default mouse, touch, and keyboard sensors used by the component.",
+      type: "DndContextProps['sensors']",
+    },
+    collisionDetection: {
+      description: "Overrides the default collision detection algorithm.",
+      type: "DndContextProps['collisionDetection']",
+    },
+    children: {
+      description:
+        "Expected children are SortableContent and an optional SortableOverlay.",
+      type: "ReactNode",
+    },
+  }}
+/>
+
+### SortableContent [#sortablecontent]
+
+<TypeTable
+  type={{
+    strategy: {
+      description: "Overrides the sorting strategy for this content wrapper.",
+      type: "SortableContextProps['strategy']",
+    },
+    asChild: {
+      description: "Merges props into a custom wrapper element.",
+      type: "boolean",
+      default: "false",
+    },
+    withoutSlot: {
+      description:
+        "Skips rendering the wrapper element and returns the children directly.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes for the content wrapper.",
+      type: "string",
+    },
+    children: {
+      description: "Sortable items rendered inside the active SortableContext.",
+      type: "ReactNode",
+    },
+  }}
+/>
+
+### SortableItem [#sortableitem]
+
+<TypeTable
+  type={{
+    value: {
+      description: "Unique identifier for the sortable item.",
+      type: "UniqueIdentifier",
+      required: true,
+    },
+    asHandle: {
+      description:
+        "Turns the entire item into the drag activator instead of using a separate handle.",
+      type: "boolean",
+      default: "false",
+    },
+    asChild: {
+      description: "Merges item props into a custom element.",
+      type: "boolean",
+      default: "false",
+    },
+    disabled: {
+      description: "Disables dragging for the item.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes for the item wrapper.",
+      type: "string",
+    },
+    children: {
+      description: "The sortable item content.",
+      type: "ReactNode",
+    },
+  }}
+/>
+
+### SortableItemHandle [#sortableitemhandle]
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Merges handle props into a custom button element.",
+      type: "boolean",
+      default: "false",
+    },
+    disabled: {
+      description: "Disables the handle and prevents drag activation.",
+      type: "boolean",
+    },
+    className: {
+      description: "Additional CSS classes for the handle element.",
+      type: "string",
+    },
+    children: {
+      description: "The visible handle affordance, usually an icon button.",
+      type: "ReactNode",
+    },
+  }}
+/>
+
+### SortableOverlay [#sortableoverlay]
+
+<TypeTable
+  type={{
+    container: {
+      description:
+        "Optional portal container for the drag overlay. Defaults to document.body after mount.",
+      type: "Element | DocumentFragment | null",
+    },
+    children: {
+      description:
+        "Overlay content or a render function that receives the currently active item id.",
+      type: "ReactNode | ((params: { value: UniqueIdentifier }) => ReactNode)",
+    },
+    dropAnimation: {
+      description: "Overrides the default overlay drop animation.",
+      type: "DropAnimation",
+    },
+    zIndex: {
+      description: "Controls the overlay stacking order.",
+      type: "number",
+    },
+  }}
+/>

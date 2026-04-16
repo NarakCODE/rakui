@@ -1,0 +1,291 @@
+---
+title: Banner
+description: A composable announcement banner system for inline messages and queued global notices.
+---
+
+<ComponentTabs name="banner-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/banner
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/banner
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/banner
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/banner
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps className="mb-0 pt-2">
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install radix-ui class-variance-authority @phosphor-icons/react
+```
+
+<Step>Copy and paste the following hooks into your `hooks` directory.</Step>
+<ComponentSource name="use-isomorphic-layout-effect" />
+<ComponentSource name="use-as-ref" />
+<ComponentSource name="use-lazy-ref" />
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install radix-ui class-variance-authority @phosphor-icons/react
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+<ComponentSource name="banner" />
+<Step>Update the import paths to match your project setup.</Step>
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Layout
+
+Import the parts and compose them together.
+
+```tsx title="components/ui/banner.tsx"
+import {
+  Banner,
+  BannerActions,
+  BannerClose,
+  BannerContent,
+  BannerDescription,
+  BannerIcon,
+  BannerTitle,
+} from "@/components/ui/banner";
+
+return (
+  <Banner variant="info">
+    <BannerIcon />
+    <BannerContent>
+      <BannerTitle>Banner title</BannerTitle>
+      <BannerDescription>Helpful supporting copy.</BannerDescription>
+    </BannerContent>
+    <BannerActions>
+      <BannerClose />
+    </BannerActions>
+  </Banner>
+);
+```
+
+## Examples
+
+### Inline Banner
+
+Use `Banner` by itself when the notice belongs in the normal document flow.
+
+```tsx title="inline-banner.tsx"
+import { Info } from "lucide-react";
+import {
+  Banner,
+  BannerActions,
+  BannerClose,
+  BannerContent,
+  BannerDescription,
+  BannerIcon,
+  BannerTitle,
+} from "@/components/ui/banner";
+
+export function InlineBanner() {
+  return (
+    <Banner variant="info" className="rounded-lg border">
+      <BannerIcon>
+        <Info aria-hidden="true" />
+      </BannerIcon>
+      <BannerContent>
+        <BannerTitle>Maintenance window scheduled</BannerTitle>
+        <BannerDescription>
+          The dashboard will restart at 02:00 UTC. Save your work before then.
+        </BannerDescription>
+      </BannerContent>
+      <BannerActions>
+        <BannerClose />
+      </BannerActions>
+    </Banner>
+  );
+}
+```
+
+### Queued Banners
+
+Wrap part of your app with `Banners` and use `useBanners()` to push notices into the shared queue.
+
+```tsx title="queued-banners.tsx"
+"use client";
+
+import { CheckCircle2 } from "lucide-react";
+import {
+  BannerActions,
+  BannerClose,
+  BannerContent,
+  BannerDescription,
+  BannerIcon,
+  Banners,
+  BannerTitle,
+  useBanners,
+} from "@/components/ui/banner";
+import { Button } from "@/components/ui/button";
+
+function BannerLauncher() {
+  const { onBannerAdd } = useBanners();
+
+  return (
+    <Button
+      onClick={() =>
+        onBannerAdd({
+          variant: "success",
+          duration: 5000,
+          content: (
+            <>
+              <BannerIcon>
+                <CheckCircle2 aria-hidden="true" />
+              </BannerIcon>
+              <BannerContent>
+                <BannerTitle>Deployment complete</BannerTitle>
+                <BannerDescription>
+                  Production was updated successfully with zero failed checks.
+                </BannerDescription>
+              </BannerContent>
+              <BannerActions>
+                <BannerClose />
+              </BannerActions>
+            </>
+          ),
+        })
+      }
+    >
+      Show banner
+    </Button>
+  );
+}
+
+export function QueuedBanners() {
+  return (
+    <Banners maxVisible={2}>
+      <BannerLauncher />
+    </Banners>
+  );
+}
+```
+
+## Accessibility
+
+The banner system includes several accessibility safeguards:
+
+- Inline and queued banners expose live-region semantics so assistive technology announces important changes.
+- `warning` and `destructive` banners use assertive urgency, while informational banners stay polite.
+- The close affordance is an icon-only button with an explicit accessible name.
+- Decorative icons should be marked `aria-hidden="true"` when they do not add semantic meaning.
+- All dismiss actions remain keyboard operable through the shared button primitive.
+
+## API Reference
+
+### Banner
+
+<AutoTypeTable
+  path="./types/radix/banner.ts"
+  name="BannerProps"
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-slot='banner']",
+      value: "Present on inline banners rendered directly in the layout.",
+    },
+    {
+      title: "[data-state='open']",
+      value: "Present while the banner is mounted and visible.",
+    },
+  ]}
+/>
+
+### Banners
+
+<AutoTypeTable
+  path="./types/radix/banner.ts"
+  name="BannersProps"
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-slot='banner-container']",
+      value: "Present on the fixed queue container.",
+    },
+    {
+      title: "[data-side='top' | 'bottom']",
+      value: "Indicates which edge queued banners are anchored to.",
+    },
+  ]}
+/>
+
+### BannerContent
+
+<AutoTypeTable
+  path="./types/radix/banner.ts"
+  name="BannerContentProps"
+/>
+
+### BannerIcon
+
+<AutoTypeTable
+  path="./types/radix/banner.ts"
+  name="BannerIconProps"
+/>
+
+### BannerActions
+
+<AutoTypeTable
+  path="./types/radix/banner.ts"
+  name="BannerActionsProps"
+/>
+
+### BannerClose
+
+<AutoTypeTable
+  path="./types/radix/banner.ts"
+  name="BannerCloseProps"
+/>

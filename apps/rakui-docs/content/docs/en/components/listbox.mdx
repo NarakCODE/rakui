@@ -1,0 +1,367 @@
+---
+title: Listbox
+description: A selectable list component that supports single and multiple selection with keyboard navigation.
+---
+
+<ComponentTabs name="listbox-demo" />
+
+## Installation [#installation]
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">
+          npm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="pnpm">
+          pnpm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="yarn">
+          yarn
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="bun">
+          bun
+        </CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @diceui/listbox
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @diceui/listbox
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @diceui/listbox
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @diceui/listbox
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>Install the following dependencies:</Step>
+
+```bash
+npm install @diceui/listbox lucide-react
+```
+
+<Step>
+        Install the following dependencies:
+      </Step>
+
+      <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+        <CodeBlockTabsList>
+          <CodeBlockTabsTrigger value="npm">
+            npm
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="pnpm">
+            pnpm
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="yarn">
+            yarn
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="bun">
+            bun
+          </CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
+
+        <CodeBlockTab value="npm">
+          ```bash
+          npm install @diceui/listbox
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="pnpm">
+          ```bash
+          pnpm add @diceui/listbox
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="yarn">
+          ```bash
+          yarn add @diceui/listbox
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="bun">
+          ```bash
+          bun add @diceui/listbox
+          ```
+        </CodeBlockTab>
+      </CodeBlockTabs>
+
+      <Step>
+        Copy and paste the following code into your project.
+      </Step>
+
+      <ComponentSource name="listbox" />
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Layout [#layout]
+
+Import the parts, and compose them together.
+
+```tsx title="listbox-usage.tsx"
+import {
+  Listbox,
+  ListboxGroup,
+  ListboxGroupLabel,
+  ListboxItem,
+  ListboxItemIndicator,
+} from "@/components/ui/listbox";
+
+return (
+  <Listbox>
+    <ListboxGroup>
+      <ListboxGroupLabel>Group Label</ListboxGroupLabel>
+      <ListboxItem>
+        Item Label
+        <ListboxItemIndicator />
+      </ListboxItem>
+    </ListboxGroup>
+  </Listbox>
+);
+```
+
+## Usage [#usage]
+
+### Basic Selection
+
+A simple single-select listbox with items containing labels and descriptions.
+
+<ComponentTabs name="listbox-demo" />
+
+### Horizontal Orientation
+
+Use the `orientation` prop to arrange items horizontally.
+
+<ComponentTabs name="listbox-horizontal-demo" />
+
+### Grid Layout
+
+Combine with CSS grid for a grid-based listbox layout.
+
+<ComponentTabs name="listbox-grid-demo" />
+
+### Grouped Items
+
+Organize items into groups with labels for better categorization.
+
+<ComponentTabs name="listbox-group-demo" />
+
+## API Reference [#api-reference]
+
+### Listbox
+
+The root component for creating listboxes.
+
+<TypeTable
+  type={{
+    defaultValue: {
+      description: 'Default selected value(s) when uncontrolled',
+      type: 'string | string[]',
+    },
+    value: {
+      description: 'Selected value(s) when controlled',
+      type: 'string | string[]',
+    },
+    onValueChange: {
+      description: 'Callback when selection changes',
+      type: '(value: string | string[]) => void',
+    },
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+    disabled: {
+      description: 'Whether the listbox is disabled',
+      type: 'boolean',
+      default: 'false',
+    },
+    loop: {
+      description: 'Whether to loop focus around when reaching the end',
+      type: 'boolean',
+      default: 'false',
+    },
+    multiple: {
+      description: 'Whether to allow multiple selection',
+      type: 'boolean',
+      default: 'false',
+    },
+    virtual: {
+      description: 'Whether to use virtualization for performance',
+      type: 'boolean',
+      default: 'false',
+    },
+    orientation: {
+      description: 'Layout orientation of the listbox',
+      type: '"vertical" | "horizontal" | "mixed"',
+      default: '"vertical"',
+    },
+    name: {
+      description: 'Name for the form field',
+      type: 'string',
+    },
+  }}
+/>
+
+### ListboxGroup
+
+A group of items inside the selectable list.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+### ListboxGroupLabel
+
+A label for the group of items.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+### ListboxItem
+
+An item inside the selectable list.
+
+<TypeTable
+  type={{
+    value: {
+      description: 'Unique value for the item',
+      type: 'string',
+    },
+    onSelect: {
+      description: 'Callback when the item is selected',
+      type: '(value: string) => void',
+    },
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+    disabled: {
+      description: 'Whether the item is disabled',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-highlighted]",
+      value: "Present when the item is highlighted/focused.",
+    },
+    {
+      title: "[data-selected]",
+      value: "Present when the item is selected.",
+    },
+    {
+      title: "[data-disabled]",
+      value: "Present when the item is disabled.",
+    },
+  ]}
+/>
+
+### ListboxItemIndicator
+
+A visual indicator that shows when the item is selected.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Merge props onto child element',
+      type: 'boolean',
+      default: 'false',
+    },
+    forceMount: {
+      description: 'Force the indicator to always render',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+## Accessibility [#accessibility]
+
+### Keyboard Interactions
+
+<KeyboardShortcutsTable
+  data={[
+    {
+      keys: ["Home"],
+      description: "Focuses the first item in the list.",
+    },
+    {
+      keys: ["End"],
+      description: "Focuses the last item in the list.",
+    },
+    {
+      keys: ["ArrowUp"],
+      description: "Moves highlighting to previous item in vertical lists.",
+    },
+    {
+      keys: ["ArrowDown"],
+      description: "Moves highlighting to next item in vertical lists.",
+    },
+    {
+      keys: ["ArrowLeft"],
+      description: "Moves highlighting to previous item in horizontal lists.",
+    },
+    {
+      keys: ["ArrowRight"],
+      description: "Moves highlighting to next item in horizontal lists.",
+    },
+    {
+      keys: ["Enter", "Space"],
+      description: "Selects the highlighted item.",
+    },
+  ]}
+/>

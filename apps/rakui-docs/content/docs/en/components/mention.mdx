@@ -1,0 +1,315 @@
+---
+title: Mention
+description: An input component that supports @mentions with autocomplete.
+---
+
+<ComponentTabs name="mention-demo" />
+
+## Installation [#installation]
+
+<CodeBlockTabs defaultValue="npm" groupId="package-manager">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="npm">
+      npm
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="pnpm">
+      pnpm
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="yarn">
+      yarn
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="bun">
+      bun
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="npm">
+    ```bash
+    npm install @diceui/mention
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="pnpm">
+    ```bash
+    pnpm add @diceui/mention
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="yarn">
+    ```bash
+    yarn add @diceui/mention
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="bun">
+    ```bash
+    bun add @diceui/mention
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+## Installation with shadcn/ui [#installation-with-shadcnui]
+
+<CodeTabs>
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">
+          npm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="pnpm">
+          pnpm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="yarn">
+          yarn
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="bun">
+          bun
+        </CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @diceui/mention
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @diceui/mention
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @diceui/mention
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @diceui/mention
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>
+        Install the following dependencies:
+      </Step>
+
+      <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+        <CodeBlockTabsList>
+          <CodeBlockTabsTrigger value="npm">
+            npm
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="pnpm">
+            pnpm
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="yarn">
+            yarn
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="bun">
+            bun
+          </CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
+
+        <CodeBlockTab value="npm">
+          ```bash
+          npm install @diceui/mention
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="pnpm">
+          ```bash
+          pnpm add @diceui/mention
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="yarn">
+          ```bash
+          yarn add @diceui/mention
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="bun">
+          ```bash
+          bun add @diceui/mention
+          ```
+        </CodeBlockTab>
+      </CodeBlockTabs>
+
+      <Step>
+        Copy and paste the following code into your project.
+      </Step>
+
+      <ComponentSource name="mention" />
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Layout [#layout]
+
+Import the parts, and compose them together.
+
+```tsx title="mention-usage.tsx"
+import {
+  MentionRoot,
+  MentionLabel,
+  MentionInput,
+  MentionPortal,
+  MentionContent,
+  MentionItem,
+} from "@/components/ui/mention";
+
+return (
+  <MentionRoot>
+    <MentionLabel />
+    <MentionInput />
+    <MentionPortal>
+      <MentionContent>
+        <MentionItem />
+      </MentionContent>
+    </MentionPortal>
+  </MentionRoot>
+)
+```
+
+## API Reference [#api-reference]
+
+### MentionRoot
+
+The container for all mention parts. Mention tags can be styled using the `data-tag` attribute within the root.
+
+<AutoTypeTable path="./types/radix/mention.ts" name="RootProps" />
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-state]",
+      value: ["open", "closed"],
+    },
+    {
+      title: "[data-disabled]",
+      value: "Present when disabled.",
+    },
+  ]}
+/>
+
+### MentionLabel
+
+An accessible label that describes the mention input. Associates with the input element for screen readers.
+
+<AutoTypeTable path="./types/radix/mention.ts" name="LabelProps" />
+
+### MentionInput
+
+The text input field that users can type into to trigger mentions.
+
+<AutoTypeTable path="./types/radix/mention.ts" name="InputProps" />
+
+### MentionPortal
+
+A portal for rendering the mention content outside of its DOM hierarchy.
+
+<AutoTypeTable path="./types/radix/mention.ts" name="PortalProps" />
+
+### MentionContent
+
+The popover container for mention items. Positions the mention popover relative to the cursor position.
+
+<AutoTypeTable path="./types/radix/mention.ts" name="ContentProps" />
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-state]",
+      value: ["open", "closed"],
+    },
+    {
+      title: "[data-side]",
+      value: ["top", "right", "bottom", "left"],
+    },
+    {
+      title: "[data-align]",
+      value: ["start", "center", "end"],
+    },
+  ]}
+/>
+
+### MentionItem
+
+An interactive option in the mention list.
+
+<AutoTypeTable path="./types/radix/mention.ts" name="ItemProps" />
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-highlighted]",
+      value: "Present when the item is highlighted.",
+    },
+    {
+      title: "[data-disabled]",
+      value: "Present when the item is disabled.",
+    },
+    {
+      title: "[data-value]",
+      value: "The value of the item.",
+    },
+  ]}
+/>
+
+## Accessibility [#accessibility]
+
+### Keyboard Interactions [#keyboard-interactions]
+
+<KeyboardShortcutsTable
+  data={[
+    {
+      keys: ["Enter"],
+      description: "When open, selects the highlighted mention option.",
+    },
+    {
+      keys: ["ArrowUp"],
+      description: "When open, highlights the previous mention option.",
+    },
+    {
+      keys: ["ArrowDown"],
+      description: "When open, highlights the next mention option.",
+    },
+    {
+      keys: ["Home"],
+      description: "When open, highlights the first mention option.",
+    },
+    {
+      keys: ["End"],
+      description: "When open, highlights the last mention option.",
+    },
+    {
+      keys: ["Escape"],
+      description: "Closes the mention popover and returns focus to the input.",
+    },
+  ]}
+/>

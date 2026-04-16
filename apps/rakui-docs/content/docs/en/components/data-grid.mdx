@@ -1,0 +1,748 @@
+---
+title: Data Grid
+description: A high-performance editable data grid component with virtualization, keyboard navigation, and comprehensive cell editing capabilities with TanStack Table.
+---
+
+A high-performance editable data grid component built on top of TanStack Table, featuring virtualization, keyboard navigation, and comprehensive cell editing capabilities.
+
+<ComponentTabs name="data-grid-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/data-grid
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/data-grid
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/data-grid
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/data-grid
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps className="mb-0 pt-2">
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="data-grid" title="src/components/ui/data-grid.tsx" />
+
+<ComponentSource name="use-data-grid" title="src/hooks/use-data-grid.tsx" />
+
+<ComponentSource name="data-grid-keyboard-shortcuts" title="src/components/data-grid/data-grid-keyboard-shortcuts.tsx" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+### Basic Data Grid
+
+```tsx title="data-grid-example.tsx"
+import { DataGrid } from "@/components/ui/data-grid";
+import { DataGridKeyboardShortcuts } from "@/components/data-grid/data-grid-keyboard-shortcuts";
+import { useDataGrid } from "@/hooks/use-data-grid";
+
+export default function MyDataGrid() {
+  const [data, setData] = React.useState(initialData);
+
+  const columns = React.useMemo(() => [
+    {
+      id: "name",
+      accessorKey: "name",
+      header: "Name",
+      meta: {
+        cell: {
+          variant: "short-text",
+        },
+      },
+    },
+    // ... other columns
+  ], []);
+
+  const {
+    table,
+    editingState,
+    setEditingCell,
+    updateCell,
+    handleKeyDown,
+  } = useDataGrid({
+    data,
+    columns,
+    onDataChange: setData,
+    getRowId: (row) => row.id,
+  });
+
+  return (
+    <>
+      <DataGridKeyboardShortcuts />
+      <DataGrid
+        table={table}
+        editingState={editingState}
+        onCellEdit={updateCell}
+        onCellClick={(rowIndex, columnId) => setEditingCell(rowIndex, columnId)}
+        onKeyDown={handleKeyDown}
+      />
+    </>
+  );
+}
+```
+
+### With Row Management
+
+Add and delete rows with callbacks:
+
+```tsx title="data-grid-example.tsx"
+const onRowAdd = React.useCallback(() => {
+  setData((prev) => [...prev, { id: generateId() }]);
+
+  return {
+    rowIndex: data.length,
+    columnId: "name", // Focus this column after creating the new row
+  };
+}, [data.length]);
+
+const {
+  table,
+  editingState,
+  setEditingCell,
+  updateCell,
+  handleKeyDown,
+  deleteRow,
+} = useDataGrid({
+  data,
+  columns,
+  onDataChange: setData,
+  onRowAdd,
+  getRowId: (row) => row.id,
+});
+```
+
+### With Search
+
+Use `enableSearch` in the keyboard shortcuts component to enable `Cmd/Ctrl+F` search:
+
+```tsx title="data-grid-snippet.tsx"
+const {
+  table,
+  editingState,
+  setEditingCell,
+  updateCell,
+  handleKeyDown,
+  searchState,
+} = useDataGrid({
+  data,
+  columns,
+  onDataChange: setData,
+});
+
+// Pass search state to keyboard shortcuts for proper shortcuts display
+<DataGridKeyboardShortcuts enableSearch={!!searchState} />
+```
+
+### With Paste Support
+
+Use the `enablePaste` prop to enable pasting from clipboard:
+
+```tsx title="data-grid-snippet.tsx"
+const { table, editingState, ...rest } = useDataGrid({
+  data,
+  columns,
+  onDataChange: setData,
+  enablePaste: true, // Enable paste (Ctrl/Cmd+V)
+});
+```
+
+### Read-Only Mode
+
+Use the `readOnly` prop to make the grid read-only (not yet supported — omit `onCellEdit` and `onCellClick` to achieve this):
+
+```tsx title="data-grid-snippet.tsx"
+<DataGrid
+  table={table}
+  editingState={editingState}
+  height={400}
+/>
+```
+
+### RTL Support
+
+Wrap the grid in a container with `dir="rtl"`:
+
+```tsx title="data-grid-snippet.tsx"
+import { DataGrid } from "@/components/ui/data-grid";
+import { useDataGrid } from "@/hooks/use-data-grid";
+
+export function DataGridRtlDemo() {
+  const { table, editingState, setEditingCell, updateCell, handleKeyDown } =
+    useDataGrid({
+      columns,
+      data,
+      onDataChange: setData,
+    });
+
+  return (
+    <div dir="rtl">
+      <DataGrid
+        table={table}
+        editingState={editingState}
+        onCellEdit={updateCell}
+        onCellClick={(rowIndex, columnId) => setEditingCell(rowIndex, columnId)}
+        onKeyDown={handleKeyDown}
+      />
+    </div>
+  );
+}
+```
+
+### Custom Height
+
+Control the grid height in pixels (default: `400`):
+
+```tsx title="data-grid-snippet.tsx"
+<DataGrid
+  table={table}
+  editingState={editingState}
+  onCellEdit={updateCell}
+  onCellClick={(rowIndex, columnId) => setEditingCell(rowIndex, columnId)}
+  onKeyDown={handleKeyDown}
+  height={600}
+/>
+```
+
+## Cell Variants
+
+The Data Grid supports various cell variants for different data formats:
+
+### Short Text Cell
+
+Single-line text input with inline editing:
+
+```tsx title="data-grid-snippet.tsx"
+{
+  id: "name",
+  accessorKey: "name",
+  header: "Name",
+  meta: {
+    cell: {
+      variant: "short-text",
+    },
+  },
+}
+```
+
+### Long Text Cell
+
+Multi-line text displayed in a textarea with auto-save:
+
+```tsx title="data-grid-snippet.tsx"
+{
+  id: "notes",
+  accessorKey: "notes",
+  header: "Notes",
+  meta: {
+    cell: {
+      variant: "long-text",
+    },
+  },
+}
+```
+
+### Number Cell
+
+Numeric input with optional constraints:
+
+```tsx title="data-grid-snippet.tsx"
+{
+  id: "price",
+  accessorKey: "price",
+  header: "Price",
+  meta: {
+    cell: {
+      variant: "number",
+      min: 0,
+      max: 1000,
+    },
+  },
+}
+```
+
+### Checkbox Cell
+
+Boolean checkbox for true/false values:
+
+```tsx title="data-grid-snippet.tsx"
+{
+  id: "isActive",
+  accessorKey: "isActive",
+  header: "Active",
+  meta: {
+    cell: {
+      variant: "checkbox",
+    },
+  },
+}
+```
+
+### Select Cell
+
+Single-select input with predefined options:
+
+```tsx title="data-grid-snippet.tsx"
+{
+  id: "category",
+  accessorKey: "category",
+  header: "Category",
+  meta: {
+    cell: {
+      variant: "select",
+      options: [
+        { label: "Electronics", value: "electronics" },
+        { label: "Clothing", value: "clothing" },
+        { label: "Books", value: "books" },
+      ],
+    },
+  },
+}
+```
+
+### Date Cell
+
+Date picker input:
+
+```tsx title="data-grid-snippet.tsx"
+{
+  id: "startDate",
+  accessorKey: "startDate",
+  header: "Start Date",
+  meta: {
+    cell: {
+      variant: "date",
+    },
+  },
+}
+```
+
+## Row Selection
+
+Row selection is built into `useDataGrid`. The hook automatically includes a `select` column with checkboxes:
+
+```tsx title="data-grid-snippet.tsx"
+const {
+  table,
+  toggleRowSelection,
+  selectAllRows,
+  clearSelection,
+  getSelectedRowIndices,
+} = useDataGrid({
+  data,
+  columns,
+  onDataChange: setData,
+  getRowId: (row) => row.id,
+});
+
+// Get selected row indices
+const selectedIndices = getSelectedRowIndices();
+```
+
+Pin the built-in select column to the left:
+
+```tsx title="data-grid-snippet.tsx"
+useDataGrid({
+  data,
+  columns,
+  initialState: {
+    columnPinning: {
+      left: ["select"],
+    },
+  },
+});
+```
+
+## Column Configuration
+
+### Enabling Filtering and Sorting
+
+Enable filtering and sorting per-column:
+
+```tsx title="data-grid-snippet.tsx"
+const columns = React.useMemo(() => [
+  {
+    id: "name",
+    accessorKey: "name",
+    header: "Name",
+    enableSorting: true,
+    enableColumnFilter: true,
+    meta: {
+      cell: {
+        variant: "short-text",
+      },
+    },
+  },
+  // ... other columns
+], []);
+```
+
+Enable at the grid level:
+
+```tsx title="data-grid-snippet.tsx"
+useDataGrid({
+  data,
+  columns,
+  enableSorting: true,
+  enableFiltering: true,
+});
+```
+
+### Column Pinning
+
+Pin columns to the left or right:
+
+```tsx title="data-grid-snippet.tsx"
+const { table, ...rest } = useDataGrid({
+  data,
+  columns,
+  initialState: {
+    columnPinning: {
+      left: ["select", "name"], // Pin to left side
+      right: ["actions"],       // Pin to right side
+    },
+  },
+});
+```
+
+### Initial Sorting
+
+Set the initial sort state:
+
+```tsx title="data-grid-snippet.tsx"
+useDataGrid({
+  data,
+  columns,
+  initialState: {
+    sorting: [
+      { id: "name", desc: false },
+    ],
+  },
+});
+```
+
+### Column Minimum Width
+
+Set minimum column width using `minSize`:
+
+```tsx title="data-grid-snippet.tsx"
+{
+  id: "name",
+  accessorKey: "name",
+  header: "Name",
+  minSize: 180, // Minimum width in pixels
+  meta: {
+    cell: {
+      variant: "short-text",
+    },
+  },
+}
+```
+
+## Keyboard Shortcuts
+
+Use the `DataGridKeyboardShortcuts` component to display available keyboard shortcuts:
+
+```tsx title="data-grid-snippet.tsx"
+<DataGridKeyboardShortcuts enableSearch={true} />
+```
+
+### Navigation
+
+<KeyboardShortcutsTable
+  data={[
+    {
+      keys: ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"],
+      description: "Move between cells.",
+    },
+    {
+      keys: ["Tab"],
+      description: "Move to next cell.",
+    },
+    {
+      keys: ["Shift", "Tab"],
+      description: "Move to previous cell.",
+    },
+    {
+      keys: ["Enter"],
+      description: "Edit cell / Confirm edit.",
+    },
+    {
+      keys: ["Escape"],
+      description: "Cancel edit.",
+    },
+  ]}
+/>
+
+### Editing
+
+<KeyboardShortcutsTable
+  data={[
+    {
+      keys: ["Cmd", "Enter"],
+      description: "Add new row.",
+    },
+    {
+      keys: ["Cmd", "Backspace"],
+      description: "Delete current row.",
+    },
+    {
+      keys: ["Delete"],
+      description: "Clear cell content.",
+    },
+    {
+      keys: ["Cmd", "F"],
+      description: "Open search.",
+    },
+  ]}
+/>
+
+### Selection
+
+<KeyboardShortcutsTable
+  data={[
+    {
+      keys: ["Space"],
+      description: "Toggle row selection.",
+    },
+    {
+      keys: ["Cmd", "A"],
+      description: "Select all rows.",
+    },
+  ]}
+/>
+
+## API Reference
+
+### useDataGrid
+
+Hook for managing data grid state and interactions.
+
+<TypeTable
+  type={{
+    columns: {
+      description: "Column definitions array",
+      type: "ColumnDef<TData>[]",
+      required: true,
+    },
+    data: {
+      description: "Data array to display",
+      type: "TData[]",
+      required: true,
+    },
+    onDataChange: {
+      description: "Callback when data changes",
+      type: "(data: TData[]) => void",
+    },
+    onRowAdd: {
+      description: "Callback when adding a row. Return { rowIndex, columnId } to focus a cell after creation.",
+      type: "() => { rowIndex: number; columnId: string } | void",
+    },
+    getRowId: {
+      description: "Function to get a unique row ID",
+      type: "(row: TData) => string",
+    },
+    initialState: {
+      description: "Initial table state (sorting, columnPinning, columnFilters, etc.)",
+      type: "Partial<TableState>",
+    },
+    enablePaste: {
+      description: "Enable paste functionality (Ctrl/Cmd+V)",
+      type: "boolean",
+      default: "false",
+    },
+    enableSorting: {
+      description: "Enable column sorting",
+      type: "boolean",
+      default: "true",
+    },
+    enableFiltering: {
+      description: "Enable column and global filtering",
+      type: "boolean",
+      default: "true",
+    },
+  }}
+/>
+
+Returns the following values:
+
+<TypeTable
+  type={{
+    table: {
+      description: "TanStack Table instance",
+      type: "Table<TData>",
+    },
+    editingState: {
+      description: "Currently editing cell position",
+      type: "{ rowIndex: number | null; columnId: string | null }",
+    },
+    setEditingCell: {
+      description: "Set the active editing cell",
+      type: "(rowIndex: number | null, columnId: string | null) => void",
+    },
+    updateCell: {
+      description: "Update a cell value",
+      type: "(rowIndex: number, columnId: string, value: unknown) => void",
+    },
+    handleKeyDown: {
+      description: "Keyboard event handler for navigation and shortcuts",
+      type: "(event: React.KeyboardEvent) => void",
+    },
+    addRow: {
+      description: "Programmatically add a new row",
+      type: "() => void",
+    },
+    deleteRow: {
+      description: "Delete a row by index",
+      type: "(rowIndex: number) => void",
+    },
+    goToCell: {
+      description: "Navigate to an adjacent cell",
+      type: "(direction: 'up' | 'down' | 'left' | 'right') => void",
+    },
+    searchState: {
+      description: "Current search state",
+      type: "{ isOpen: boolean; searchTerm: string; currentMatch: number; totalMatches: number }",
+    },
+    getSelectedRowIndices: {
+      description: "Get the indices of all selected rows",
+      type: "() => number[]",
+    },
+    toggleRowSelection: {
+      description: "Toggle selection of a row by index",
+      type: "(rowIndex: number) => void",
+    },
+    selectAllRows: {
+      description: "Select all rows",
+      type: "() => void",
+    },
+    clearSelection: {
+      description: "Clear all selected rows",
+      type: "() => void",
+    },
+  }}
+/>
+
+### DataGrid
+
+The main data grid component.
+
+<TypeTable
+  type={{
+    table: {
+      description: "TanStack Table instance from useDataGrid",
+      type: "Table<TData>",
+      required: true,
+    },
+    height: {
+      description: "Grid height in pixels",
+      type: "number",
+      default: "400",
+    },
+    editingState: {
+      description: "Current editing cell position",
+      type: "{ rowIndex: number | null; columnId: string | null }",
+    },
+    onCellEdit: {
+      description: "Called when a cell value is edited",
+      type: "(rowIndex: number, columnId: string, value: unknown) => void",
+    },
+    onCellClick: {
+      description: "Called when a cell is clicked",
+      type: "(rowIndex: number, columnId: string) => void",
+    },
+    onKeyDown: {
+      description: "Keyboard event handler (pass handleKeyDown from useDataGrid)",
+      type: "(event: React.KeyboardEvent) => void",
+    },
+    enableSorting: {
+      description: "Enable column sorting controls in the header",
+      type: "boolean",
+      default: "true",
+    },
+    enableFiltering: {
+      description: "Enable column filter inputs in the header",
+      type: "boolean",
+      default: "true",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+### Cell Variants
+
+Configure cell editing behavior through column `meta.cell`:
+
+| Variant | Options | Description |
+|---------|---------|-------------|
+| `short-text` | — | Single-line text input |
+| `long-text` | — | Multi-line textarea |
+| `number` | `min`, `max` | Number input with constraints |
+| `select` | `options: {label, value}[]` | Dropdown selection |
+| `checkbox` | — | Boolean checkbox |
+| `date` | — | Date picker input |
+
+### DataGridKeyboardShortcuts
+
+Component for displaying a keyboard shortcuts reference dialog.
+
+<TypeTable
+  type={{
+    enableSearch: {
+      description: "Show search-related shortcuts (Cmd/Ctrl+F)",
+      type: "boolean",
+      default: "true",
+    },
+  }}
+/>
+F

@@ -1,0 +1,285 @@
+---
+title: Segmented Input
+description: An input split into segments for codes, PINs, and grouped values.
+---
+
+<ComponentTabs name="segmented-input-demo" />
+
+## Installation [#installation]
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">Command</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/segmented-input
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/segmented-input
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/segmented-input
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/segmented-input
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>Install the following dependencies:</Step>
+
+```bash
+npm install class-variance-authority
+```
+
+<Step>
+        Copy and paste the following code into your project.
+      </Step>
+
+      <ComponentSource name="segmented-input" />
+
+      <Step>
+        Update the import paths to match your project setup.
+      </Step>
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Layout [#layout]
+
+Import the parts, and compose them together.
+
+```tsx title="segmented-input-usage.tsx"
+import {
+  SegmentedInput,
+  SegmentedInputItem,
+} from "@/components/ui/segmented-input";
+
+return (
+  <SegmentedInput>
+    <SegmentedInputItem placeholder="First" />
+    <SegmentedInputItem placeholder="Second" />
+    <SegmentedInputItem placeholder="Third" />
+  </SegmentedInput>
+);
+```
+
+## Usage [#usage]
+
+### Basic
+
+A standard segmented input with multiple fields grouped together.
+
+<ComponentTabs name="segmented-input-demo" />
+
+### Form Input
+
+Use segmented input inside a form for structured data like phone numbers.
+
+<ComponentTabs name="segmented-input-form-demo" />
+
+### RGB Color Input
+
+Numeric inputs combined for color channels.
+
+<ComponentTabs name="segmented-input-rgb-demo" />
+
+### Vertical Layout
+
+Use the `orientation="vertical"` prop to stack segments vertically.
+
+<ComponentTabs name="segmented-input-vertical-demo" />
+
+## API Reference [#api-reference]
+
+### SegmentedInput
+
+The root container that groups input segments.
+
+<TypeTable
+  type={{
+    orientation: {
+      description: "Layout direction of the segments.",
+      type: '"horizontal" | "vertical"',
+      default: '"horizontal"',
+    },
+    size: {
+      description: "Size of all child input segments.",
+      type: '"default" | "sm" | "lg"',
+      default: '"default"',
+    },
+    dir: {
+      description: "Text direction of the group.",
+      type: '"ltr" | "rtl"',
+      default: '"ltr"',
+    },
+    disabled: {
+      description: "Disables all input segments.",
+      type: "boolean",
+      default: "false",
+    },
+    invalid: {
+      description: "Marks the group as invalid for accessibility.",
+      type: "boolean",
+      default: "false",
+    },
+    required: {
+      description: "Marks the group as required for accessibility.",
+      type: "boolean",
+      default: "false",
+    },
+    asChild: {
+      description: "Merge props onto child element.",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-orientation]",
+      value: '"horizontal" | "vertical"',
+    },
+    {
+      title: "[data-disabled]",
+      value: "Present when disabled.",
+    },
+    {
+      title: "[data-invalid]",
+      value: "Present when invalid.",
+    },
+    {
+      title: "[data-required]",
+      value: "Present when required.",
+    },
+  ]}
+/>
+
+### SegmentedInputItem
+
+Individual input items within the segmented input.
+
+<TypeTable
+  type={{
+    position: {
+      description: "The position of the input within the segment. Controls the visual styling and borders. If not provided, it will be automatically detected based on the input's position.",
+      type: '"first" | "middle" | "last" | "isolated" | undefined',
+    },
+    asChild: {
+      description: "Merge props onto child element.",
+      type: "boolean",
+      default: "false",
+    },
+    disabled: {
+      description: "Disables the individual segment.",
+      type: "boolean",
+      default: "false",
+    },
+    required: {
+      description: "Marks the individual segment as required.",
+      type: "boolean",
+      default: "false",
+    },
+    placeholder: {
+      description: "Placeholder text shown when the segment is empty.",
+      type: "string",
+    },
+    value: {
+      description: "Current value of the segment.",
+      type: "string | number | readonly string[]",
+    },
+    onChange: {
+      description: "Called when the segment value changes.",
+      type: "React.ChangeEventHandler<HTMLInputElement>",
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "isolated",
+      value: "Single standalone input in the segment.",
+    },
+    {
+      title: "first",
+      value: "First input in the segment.",
+    },
+    {
+      title: "middle",
+      value: "Middle input in the segment.",
+    },
+    {
+      title: "last",
+      value: "Last input in the segment.",
+    },
+  ]}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-position]",
+      value: '"isolated" | "first" | "middle" | "last"',
+    },
+    {
+      title: "[data-orientation]",
+      value: '"horizontal" | "vertical"',
+    },
+    {
+      title: "[data-disabled]",
+      value: "Present when the item is disabled.",
+    },
+    {
+      title: "[data-invalid]",
+      value: "Present when the group is invalid.",
+    },
+    {
+      title: "[data-required]",
+      value: "Present when the item is required.",
+    },
+  ]}
+/>
+
+## Accessibility [#accessibility]
+
+### Keyboard Interactions
+
+<KeyboardShortcutsTable
+  data={[
+    {
+      keys: ["Tab"],
+      description: "Moves focus between segments.",
+    },
+    {
+      keys: ["Shift + Tab"],
+      description: "Moves focus to the previous segment.",
+    },
+  ]}
+/>

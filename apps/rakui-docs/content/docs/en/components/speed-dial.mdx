@@ -1,0 +1,454 @@
+---
+title: Speed Dial
+description: A floating action button that expands to reveal a menu of primary actions.
+---
+
+import { ComponentTabs } from "@/components/docs-mdx";
+
+<ComponentTabs name="speed-dial-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">
+          npm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="pnpm">
+          pnpm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="yarn">
+          yarn
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="bun">
+          bun
+        </CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/speed-dial
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/speed-dial
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/speed-dial
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/speed-dial
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="mb-0 pt-2">
+      <Step>Install the following dependencies:</Step>
+
+      <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+        <CodeBlockTabsList>
+          <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+          <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+          <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+          <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
+
+        <CodeBlockTab value="npm">
+          ```bash
+          npm install lucide-react class-variance-authority radix-ui sonner
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="pnpm">
+          ```bash
+          pnpm add lucide-react class-variance-authority radix-ui sonner
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="yarn">
+          ```bash
+          yarn add lucide-react class-variance-authority radix-ui sonner
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="bun">
+          ```bash
+          bun add lucide-react class-variance-authority radix-ui sonner
+          ```
+        </CodeBlockTab>
+      </CodeBlockTabs>
+
+      <Step>Copy and paste the following utilities into your project:</Step>
+      <ComponentSource name="compose-refs" title="src/lib/compose-refs.ts" />
+
+      <Step>Copy and paste the following hooks into your `hooks` directory:</Step>
+      <ComponentSource name="use-isomorphic-layout-effect" title="src/hooks/use-isomorphic-layout-effect.ts" />
+      <ComponentSource name="use-lazy-ref" title="src/hooks/use-lazy-ref.ts" />
+      <ComponentSource name="use-as-ref" title="src/hooks/use-as-ref.ts" />
+
+      <Step>Copy and paste the component source into your project:</Step>
+      <ComponentSource name="speed-dial" title="src/components/ui/speed-dial.tsx" />
+
+      <Step>Update the import paths to match your project setup.</Step>
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Layout
+
+Import the parts you need and compose them inside the `SpeedDial` root.
+
+```tsx title="speed-dial-demo.tsx"
+import {
+  SpeedDial,
+  SpeedDialTrigger,
+  SpeedDialContent,
+  SpeedDialItem,
+  SpeedDialLabel,
+  SpeedDialAction,
+} from "@/components/ui/speed-dial";
+
+export function SpeedDialDemo() {
+  return (
+    <SpeedDial>
+      <SpeedDialTrigger>
+        {/* Trigger icon */}
+      </SpeedDialTrigger>
+      <SpeedDialContent>
+        <SpeedDialItem>
+          <SpeedDialLabel>Label</SpeedDialLabel>
+          <SpeedDialAction>
+            {/* Action icon */}
+          </SpeedDialAction>
+        </SpeedDialItem>
+      </SpeedDialContent>
+    </SpeedDial>
+  );
+}
+```
+
+## Examples
+
+### With Visible Labels
+
+Show descriptive labels next to each action for better discoverability.
+
+<ComponentTabs name="speed-dial-labels-demo" />
+
+### Hover Activation
+
+Open the speed dial on hover instead of click. The `delay` prop controls how long the cursor must hover before the menu opens.
+
+<ComponentTabs name="speed-dial-hover-demo" />
+
+### Controlled
+
+Use the `open` and `onOpenChange` props to control the speed dial state from outside the component. This example demonstrates toggling the menu with an external button.
+
+<ComponentTabs name="speed-dial-controlled-demo" />
+
+### Expansion Sides
+
+The speed dial can expand in any of the four directions. Use the `side` prop to change where the action items appear relative to the trigger.
+
+<ComponentTabs name="speed-dial-side-demo" />
+
+### Fixed Positioning
+
+To pin the speed dial to a corner of the viewport, apply `fixed` positioning classes to the **`SpeedDial` root**, not the trigger.
+
+<ComponentTabs name="speed-dial-fixed-demo" />
+
+```tsx title="speed-dial-snippet.tsx"
+<SpeedDial className="fixed right-4 bottom-4">
+  {/* trigger and content */}
+</SpeedDial>
+```
+
+<Callout>
+  **Important:** Always apply fixed or absolute positioning to the `SpeedDial` root container, not to `SpeedDialTrigger`. The trigger is positioned relative to the root, and the content is positioned relative to the trigger.
+</Callout>
+
+## API Reference
+
+### SpeedDial
+
+<TypeTable
+  type={{
+    open: {
+      description: "Controlled open state of the speed dial.",
+      type: "boolean",
+    },
+    defaultOpen: {
+      description: "Default open state when uncontrolled.",
+      type: "boolean",
+      default: "false",
+    },
+    onOpenChange: {
+      description: "Callback fired when the open state changes.",
+      type: "(open: boolean) => void",
+    },
+    side: {
+      description: "Direction the action items expand toward.",
+      type: '"top" | "right" | "bottom" | "left"',
+      default: '"top"',
+    },
+    activationMode: {
+      description: "How the speed dial is triggered.",
+      type: '"click" | "hover"',
+      default: '"click"',
+    },
+    delay: {
+      description: "Hover delay in milliseconds before opening (only applies when activationMode is 'hover').",
+      type: "number",
+      default: "250",
+    },
+    disabled: {
+      description: "Whether the speed dial is disabled.",
+      type: "boolean",
+      default: "false",
+    },
+    asChild: {
+      description: "Render the root as a custom child element.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes for the root container.",
+      type: "string",
+    },
+  }}
+/>
+
+### SpeedDialTrigger
+
+`SpeedDialTrigger` accepts all props from the [Button](/docs/en/components/button) component.
+
+<TypeTable
+  type={{
+    onClick: {
+      description: "Click handler. Toggles the open state.",
+      type: "(event: React.MouseEvent) => void",
+    },
+    onMouseEnter: {
+      description: "Mouse enter handler. Opens the speed dial in hover mode.",
+      type: "(event: React.MouseEvent) => void",
+    },
+    onMouseLeave: {
+      description: "Mouse leave handler. Closes the speed dial in hover mode.",
+      type: "(event: React.MouseEvent) => void",
+    },
+    disabled: {
+      description: "Whether the trigger is disabled.",
+      type: "boolean",
+    },
+    className: {
+      description: "Additional CSS classes for the trigger button.",
+      type: "string",
+    },
+  }}
+/>
+
+### SpeedDialContent
+
+<TypeTable
+  type={{
+    side: {
+      description: "Direction the content expands toward. Should match the parent SpeedDial `side`.",
+      type: '"top" | "right" | "bottom" | "left"',
+      default: "inherited from SpeedDial",
+    },
+    offset: {
+      description: "Distance in pixels between the trigger and the content.",
+      type: "number",
+      default: "8",
+    },
+    gap: {
+      description: "Gap in pixels between action items.",
+      type: "number",
+      default: "8",
+    },
+    forceMount: {
+      description: "Keep the content in the DOM even when closed.",
+      type: "boolean",
+      default: "false",
+    },
+    onEscapeKeyDown: {
+      description: "Callback fired when Escape is pressed while the menu is open.",
+      type: "(event: KeyboardEvent) => void",
+    },
+    onInteractOutside: {
+      description: "Callback fired when interacting outside the speed dial. Call `event.preventDefault()` to prevent closing.",
+      type: "(event: InteractOutsideEvent) => void",
+    },
+    asChild: {
+      description: "Render the content as a custom child element.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes for the content container.",
+      type: "string",
+    },
+  }}
+/>
+
+### SpeedDialItem
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Render the item as a custom child element.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes for the item wrapper.",
+      type: "string",
+    },
+  }}
+/>
+
+### SpeedDialAction
+
+`SpeedDialAction` accepts all props from the [Button](/docs/en/components/button) component.
+
+<TypeTable
+  type={{
+    onSelect: {
+      description: "Callback fired when the action is selected. The speed dial closes automatically after selection.",
+      type: "(event: Event) => void",
+    },
+    disabled: {
+      description: "Whether the action is disabled.",
+      type: "boolean",
+    },
+    className: {
+      description: "Additional CSS classes for the action button.",
+      type: "string",
+    },
+  }}
+/>
+
+### SpeedDialLabel
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Render the label as a custom child element.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes for the label.",
+      type: "string",
+    },
+  }}
+/>
+
+### Data Attributes
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-slot='speed-dial']",
+      value: "Applied to the root element.",
+    },
+    {
+      title: "[data-slot='speed-dial-trigger']",
+      value: "Applied to the trigger button.",
+    },
+    {
+      title: "[data-slot='speed-dial-content']",
+      value: "Applied to the content container.",
+    },
+    {
+      title: "[data-slot='speed-dial-item']",
+      value: "Applied to each item wrapper.",
+    },
+    {
+      title: "[data-slot='speed-dial-action']",
+      value: "Applied to each action button.",
+    },
+    {
+      title: "[data-slot='speed-dial-label']",
+      value: "Applied to each action label.",
+    },
+    {
+      title: "[data-state='open']",
+      value: "Present when the speed dial is open.",
+    },
+    {
+      title: "[data-state='closed']",
+      value: "Present when the speed dial is closed.",
+    },
+    {
+      title: "[data-disabled]",
+      value: "Present when the speed dial is disabled.",
+    },
+    {
+      title: "[data-side]",
+      value: "The expansion side: top, right, bottom, or left.",
+    },
+    {
+      title: "[data-orientation]",
+      value: "The expansion orientation: vertical or horizontal.",
+    },
+  ]}
+/>
+
+## Features
+
+- **Composable architecture** — Build the speed dial from individual, composable parts.
+- **Click or hover activation** — Trigger the menu with a click or by hovering over the button.
+- **Four expansion directions** — Expand toward `top`, `right`, `bottom`, or `left`.
+- **Staggered animations** — Action items animate in and out with calculated delays based on their order.
+- **Keyboard navigation** — Full keyboard support including `Escape` to close and `Tab` to exit.
+- **Outside click detection** — Automatically closes when clicking outside, with touch support.
+- **Controlled or uncontrolled** — Manage state internally or externally.
+- **Accessible** — Uses `role="menu"`, `aria-expanded`, `aria-controls`, and `aria-labelledby` for screen reader support.
+- **Slot support** — All parts support `asChild` for custom element rendering.
+
+## Usage Notes
+
+- **Fixed positioning** — Apply `fixed` or `absolute` positioning to the `SpeedDial` root, not the `SpeedDialTrigger`. The trigger is positioned relative to the root, and the content is positioned relative to the trigger.
+- **State management** — The component uses an internal store pattern (`useSyncExternalStore`) for state management. All sub-components access the same store through context.
+- **Hover timers** — In hover mode, a close timer (`DEFAULT_HOVER_CLOSE_DELAY = 100ms`) and an open delay (controlled by `delay` prop) prevent accidental open/close cycles.
+- **Animation delays** — Each `SpeedDialItem` receives a calculated animation delay based on its position in the children array. Items animate in sequentially during open, and in reverse order during close.
+- **Unmount timing** — When closed, the content remains in the DOM long enough for all animations to complete before unmounting (unless `forceMount` is set).
+- **Interact outside** — The `onInteractOutside` callback receives a custom event with the original `PointerEvent`. Call `event.preventDefault()` to prevent the speed dial from closing.
+- **Node registration** — Action elements register themselves in a `Map` via refs, enabling keyboard navigation and outside click detection to work correctly.
+
+## Accessibility
+
+- `SpeedDialTrigger` renders with `role="button"`, `aria-expanded`, `aria-controls`, and `aria-haspopup="menu"`.
+- `SpeedDialContent` renders with `role="menu"` and `aria-orientation`.
+- `SpeedDialAction` renders with `role="menuitem"` and `aria-labelledby` pointing to its associated label.
+- Pressing `Escape` closes the menu and returns focus to the trigger.
+- Pressing `Tab` at the first or last focusable element closes the menu.
+- The component respects `prefers-reduced-motion` by using CSS transitions that can be overridden.

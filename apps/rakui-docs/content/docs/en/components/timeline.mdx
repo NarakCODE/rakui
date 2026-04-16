@@ -1,0 +1,593 @@
+---
+title: Timeline
+description: A flexible timeline for chronological events with vertical, horizontal, alternate, and RTL-aware layouts.
+---
+
+<ComponentTabs name="timeline-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+<CodeBlockTabs defaultValue="npm" groupId="package-manager">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="npm">
+    ```bash
+    npx shadcn@latest add @rakui/timeline
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="pnpm">
+    ```bash
+    pnpm dlx shadcn@latest add @rakui/timeline
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="yarn">
+    ```bash
+    yarn dlx shadcn@latest add @rakui/timeline
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="bun">
+    ```bash
+    bun x shadcn@latest add @rakui/timeline
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps className="mb-0 pt-2">
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install class-variance-authority
+```
+
+<Step>Copy and paste the following utility into your project.</Step>
+<ComponentSource name="compose-refs" title="src/lib/compose-refs.ts" />
+<Step>Copy and paste the following hooks into your `hooks` directory.</Step>
+<ComponentSource
+  name="use-isomorphic-layout-effect"
+  title="src/hooks/use-isomorphic-layout-effect.ts"
+/>
+<ComponentSource name="use-lazy-ref" title="src/hooks/use-lazy-ref.ts" />
+<Step>Copy and paste the component source into your project.</Step>
+<ComponentSource name="timeline" title="src/components/ui/timeline.tsx" />
+<Step>Update the import paths to match your project setup.</Step>
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+Import the parts you need and compose them in document order.
+
+```tsx title="components/timeline-demo.tsx"
+import {
+  Timeline,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDescription,
+  TimelineDot,
+  TimelineHeader,
+  TimelineItem,
+  TimelineTime,
+  TimelineTitle,
+} from "@/components/ui/timeline";
+
+const timelineItems = [
+  {
+    id: "project-kickoff",
+    dateTime: "2025-01-15",
+    date: "January 15, 2025",
+    title: "Project Kickoff",
+    description: "Initial meeting to define scope.",
+  },
+  {
+    id: "design-phase",
+    dateTime: "2025-02-01",
+    date: "February 1, 2025",
+    title: "Design Phase",
+    description: "Created wireframes and mockups.",
+  },
+  {
+    id: "development",
+    dateTime: "2025-03-01",
+    date: "March 1, 2025",
+    title: "Development",
+    description: "Building core features.",
+  },
+];
+
+export function TimelineDemo() {
+  return (
+    <Timeline activeIndex={1}>
+      {timelineItems.map((item) => (
+        <TimelineItem key={item.id}>
+          <TimelineDot />
+          <TimelineConnector />
+          <TimelineContent>
+            <TimelineHeader>
+              <TimelineTime dateTime={item.dateTime}>{item.date}</TimelineTime>
+              <TimelineTitle>{item.title}</TimelineTitle>
+            </TimelineHeader>
+            <TimelineDescription>{item.description}</TimelineDescription>
+          </TimelineContent>
+        </TimelineItem>
+      ))}
+    </Timeline>
+  );
+}
+```
+
+## Examples
+
+### Alternate Layout
+
+Use `variant="alternate"` to switch each item to the opposite side of the center line.
+
+<ComponentTabs name="timeline-alternate-demo" />
+
+```tsx title="alternate-timeline.tsx"
+const timelineItems = [
+  {
+    id: "project-kickoff",
+    dateTime: "2025-01-15",
+    date: "January 15, 2025",
+    title: "Project Kickoff",
+    description: "Initial meeting to define scope.",
+  },
+  {
+    id: "design-phase",
+    dateTime: "2025-02-01",
+    date: "February 1, 2025",
+    title: "Design Phase",
+    description: "Created wireframes and mockups.",
+  },
+  {
+    id: "development",
+    dateTime: "2025-03-01",
+    date: "March 1, 2025",
+    title: "Development",
+    description: "Building core features.",
+  },
+];
+
+export function TimelineAlternateDemo() {
+  return (
+    <Timeline variant="alternate" activeIndex={1}>
+      {timelineItems.map((item) => (
+        <TimelineItem key={item.id}>
+          <TimelineDot />
+          <TimelineConnector />
+          <TimelineContent>
+            <TimelineHeader>
+              <TimelineTime dateTime={item.dateTime}>{item.date}</TimelineTime>
+              <TimelineTitle>{item.title}</TimelineTitle>
+            </TimelineHeader>
+            <TimelineDescription>{item.description}</TimelineDescription>
+          </TimelineContent>
+        </TimelineItem>
+      ))}
+    </Timeline>
+  );
+}
+```
+
+### Horizontal Layout
+
+Switch `orientation` to `"horizontal"` when the timeline should read left-to-right instead of top-to-bottom.
+
+<ComponentTabs name="timeline-horizontal-demo" />
+
+```tsx title="horizontal-timeline.tsx"
+const timelineItems = [
+  {
+    id: "research-and-planning",
+    dateTime: "2025-01",
+    date: "Jan - Mar",
+    title: "Q1",
+    description: "Research and planning",
+  },
+  {
+    id: "development-sprint",
+    dateTime: "2025-04",
+    date: "Apr - Jun",
+    title: "Q2",
+    description: "Development sprint",
+  },
+  {
+    id: "beta-launch",
+    dateTime: "2025-07",
+    date: "Jul - Sep",
+    title: "Q3",
+    description: "Beta launch",
+  },
+];
+
+export function TimelineHorizontalDemo() {
+  return (
+    <div className="overflow-x-auto">
+      <Timeline
+        orientation="horizontal"
+        activeIndex={1}
+        className="min-w-[720px]"
+      >
+        {timelineItems.map((item) => (
+          <TimelineItem key={item.id} className="min-w-52">
+            <TimelineDot />
+            <TimelineConnector />
+            <TimelineContent>
+              <TimelineHeader>
+                <TimelineTitle>{item.title}</TimelineTitle>
+                <TimelineTime dateTime={item.dateTime}>
+                  {item.date}
+                </TimelineTime>
+              </TimelineHeader>
+              <TimelineDescription>{item.description}</TimelineDescription>
+            </TimelineContent>
+          </TimelineItem>
+        ))}
+      </Timeline>
+    </div>
+  );
+}
+```
+
+### RTL
+
+Pass `dir="rtl"` to mirror the connector placement and alternate alignment for right-to-left interfaces.
+
+<ComponentTabs name="timeline-rtl-demo" />
+
+```tsx title="rtl-timeline.tsx"
+const timelineItems = [
+  {
+    id: "registration-opened",
+    dateTime: "2025-01-01",
+    date: "January 1, 2025",
+    title: "Registration Opened",
+    description: "Online registration portal opens.",
+  },
+  {
+    id: "early-bird-deadline",
+    dateTime: "2025-02-15",
+    date: "February 15, 2025",
+    title: "Early Bird Deadline",
+    description: "Last day for early bird pricing.",
+  },
+  {
+    id: "event-day",
+    dateTime: "2025-03-01",
+    date: "March 1, 2025",
+    title: "Event Day",
+    description: "Main event begins at 9:00 AM.",
+  },
+];
+
+export function TimelineRtlDemo() {
+  return (
+    <Timeline dir="rtl" activeIndex={1}>
+      {timelineItems.map((item) => (
+        <TimelineItem key={item.id}>
+          <TimelineDot />
+          <TimelineConnector />
+          <TimelineContent>
+            <TimelineHeader>
+              <TimelineTitle>{item.title}</TimelineTitle>
+              <TimelineTime dateTime={item.dateTime}>{item.date}</TimelineTime>
+            </TimelineHeader>
+            <TimelineDescription>{item.description}</TimelineDescription>
+          </TimelineContent>
+        </TimelineItem>
+      ))}
+    </Timeline>
+  );
+}
+```
+
+### Custom Dots
+
+Customize the dot content and size with icons and CSS variables.
+
+<ComponentTabs name="timeline-custom-dot-demo" />
+
+```tsx title="custom-dot-timeline.tsx"
+import { Code, Layers, Rocket } from "lucide-react";
+
+const timelineItems = [
+  {
+    id: "project-kickoff",
+    dateTime: "2025-01-15",
+    date: "January 15, 2025",
+    title: "Project Kickoff",
+    description: "Initial meeting to define scope.",
+    icon: Rocket,
+  },
+  {
+    id: "design-phase",
+    dateTime: "2025-02-01",
+    date: "February 1, 2025",
+    title: "Design Phase",
+    description: "Created wireframes and mockups.",
+    icon: Layers,
+  },
+  {
+    id: "development",
+    dateTime: "2025-03-01",
+    date: "March 1, 2025",
+    title: "Development",
+    description: "Building core features.",
+    icon: Code,
+  },
+];
+
+export function TimelineCustomDotDemo() {
+  return (
+    <Timeline activeIndex={1} className="[--timeline-dot-size:2rem]">
+      {timelineItems.map((item) => (
+        <TimelineItem key={item.id}>
+          <TimelineDot>
+            <item.icon className="size-3.5" />
+          </TimelineDot>
+          <TimelineConnector />
+          <TimelineContent>
+            <TimelineHeader>
+              <TimelineTime dateTime={item.dateTime}>{item.date}</TimelineTime>
+              <TimelineTitle>{item.title}</TimelineTitle>
+            </TimelineHeader>
+            <TimelineDescription>{item.description}</TimelineDescription>
+          </TimelineContent>
+        </TimelineItem>
+      ))}
+    </Timeline>
+  );
+}
+```
+
+## Accessibility
+
+- The root uses list semantics and each `TimelineItem` renders as a `listitem`.
+- The active item exposes `aria-current="step"` so assistive technology can announce current progress.
+- Use `TimelineTime` with a `dateTime` value to keep event dates machine-readable.
+- Decorative content inside `TimelineDot` should use `aria-hidden="true"` when it does not convey extra meaning.
+
+## API Reference
+
+### Timeline
+
+<TypeTable
+  type={{
+    activeIndex: {
+      description: 'The index of the currently active timeline item',
+      type: 'number',
+    },
+    orientation: {
+      description: 'The orientation of the timeline',
+      type: '"vertical" | "horizontal"',
+      default: '"vertical"',
+    },
+    variant: {
+      description: 'The visual variant of the timeline',
+      type: '"default" | "alternate"',
+      default: '"default"',
+    },
+    dir: {
+      description: 'The reading direction of the timeline',
+      type: '"ltr" | "rtl"',
+      default: '"ltr"',
+    },
+    asChild: {
+      description: 'Change the default rendered element',
+      type: 'boolean',
+      default: 'false',
+    },
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-slot='timeline']",
+      value: "Present on the timeline root element.",
+    },
+    {
+      title: "[data-orientation='vertical' | 'horizontal']",
+      value: "Indicates the layout direction used by the timeline.",
+    },
+    {
+      title: "[data-variant='default' | 'alternate']",
+      value: "Indicates whether the timeline uses the default or alternating arrangement.",
+    },
+  ]}
+/>
+
+### TimelineItem
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Change the default rendered element',
+      type: 'boolean',
+      default: 'false',
+    },
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-slot='timeline-item']",
+      value: "Present on each item wrapper.",
+    },
+    {
+      title: "[data-status='completed' | 'active' | 'pending']",
+      value: "Reflects the computed state for styling completed, current, and upcoming steps.",
+    },
+    {
+      title: "[data-alternate-right]",
+      value: "Present when an alternating item is rendered on the opposite side of the center line.",
+    },
+  ]}
+/>
+
+### TimelineConnector
+
+<TypeTable
+  type={{
+    forceMount: {
+      description: 'Whether the connector should always be rendered regardless of being the last item',
+      type: 'boolean',
+      default: 'false',
+    },
+    asChild: {
+      description: 'Change the default rendered element',
+      type: 'boolean',
+      default: 'false',
+    },
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-slot='timeline-connector']",
+      value: "Present on each rendered connector.",
+    },
+    {
+      title: "[data-completed]",
+      value: "Present when the next item is completed or currently active.",
+    },
+  ]}
+/>
+
+### TimelineTime
+
+<TypeTable
+  type={{
+    dateTime: {
+      description: 'The machine-readable date and time value',
+      type: 'string',
+    },
+    asChild: {
+      description: 'Change the default rendered element',
+      type: 'boolean',
+      default: 'false',
+    },
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>
+
+### TimelineHeader
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Change the default rendered element',
+      type: 'boolean',
+      default: 'false',
+    },
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>
+
+### TimelineTitle
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Change the default rendered element',
+      type: 'boolean',
+      default: 'false',
+    },
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>
+
+### TimelineDescription
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Change the default rendered element',
+      type: 'boolean',
+      default: 'false',
+    },
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>
+
+### TimelineContent
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Change the default rendered element',
+      type: 'boolean',
+      default: 'false',
+    },
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>
+
+### TimelineDot
+
+<TypeTable
+  type={{
+    asChild: {
+      description: 'Change the default rendered element',
+      type: 'boolean',
+      default: 'false',
+    },
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>

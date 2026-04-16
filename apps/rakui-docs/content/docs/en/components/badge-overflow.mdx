@@ -1,0 +1,313 @@
+---
+title: Badge Overflow
+description: Automatically truncates a long list of inline elements into a single overflow badge to save space.
+---
+
+<ComponentTabs name="badge-overflow-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">
+          npm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="pnpm">
+          pnpm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="yarn">
+          yarn
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="bun">
+          bun
+        </CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/badge-overflow
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/badge-overflow
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/badge-overflow
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/badge-overflow
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>Install the following dependencies:</Step>
+
+      <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+        <CodeBlockTabsList>
+          <CodeBlockTabsTrigger value="npm">
+            npm
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="pnpm">
+            pnpm
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="yarn">
+            yarn
+          </CodeBlockTabsTrigger>
+
+          <CodeBlockTabsTrigger value="bun">
+            bun
+          </CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
+
+        <CodeBlockTab value="npm">
+          ```bash
+          npm install radix-ui
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="pnpm">
+          ```bash
+          pnpm add radix-ui
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="yarn">
+          ```bash
+          yarn add radix-ui
+          ```
+        </CodeBlockTab>
+
+        <CodeBlockTab value="bun">
+          ```bash
+          bun add radix-ui
+          ```
+        </CodeBlockTab>
+      </CodeBlockTabs>
+
+      <Step>Copy and paste the refs composition utilities into your <code>lib/compose-refs.ts</code> file.</Step>
+
+      ```tsx title="lib/compose-refs.ts"
+      /**
+       * @see https://github.com/radix-ui/primitives/blob/main/packages/react/compose-refs/src/compose-refs.tsx
+       */
+
+      import * as React from "react";
+
+      type PossibleRef<T> = React.Ref<T> | undefined;
+
+      /**
+       * Set a given ref to a given value
+       * This utility takes care of different types of refs: callback refs and RefObject(s)
+       */
+      function setRef<T>(ref: PossibleRef<T>, value: T) {
+        if (typeof ref === "function") {
+          return ref(value);
+        }
+
+        if (ref !== null && ref !== undefined) {
+          ref.current = value;
+        }
+      }
+
+      /**
+       * A utility to compose multiple refs together
+       * Accepts callback refs and RefObject(s)
+       */
+      function composeRefs<T>(...refs: PossibleRef<T>[]): React.RefCallback<T> {
+        return (node) => {
+          let hasCleanup = false;
+          const cleanups = refs.map((ref) => {
+            const cleanup = setRef(ref, node);
+            if (!hasCleanup && typeof cleanup === "function") {
+              hasCleanup = true;
+            }
+            return cleanup;
+          });
+
+          // React <19 will log an error to the console if a callback ref returns a
+          // value. We don't use ref cleanups internally so this will only happen if a
+          // user's ref callback returns a value, which we only expect if they are
+          // using the cleanup functionality added in React 19.
+          if (hasCleanup) {
+            return () => {
+              for (let i = 0; i < cleanups.length; i++) {
+                const cleanup = cleanups[i];
+                if (typeof cleanup === "function") {
+                  cleanup();
+                } else {
+                  setRef(refs[i], null);
+                }
+              }
+            };
+          }
+        };
+      }
+
+      /**
+       * A custom hook that composes multiple refs
+       * Accepts callback refs and RefObject(s)
+       */
+      function useComposedRefs<T>(...refs: PossibleRef<T>[]): React.RefCallback<T> {
+        // biome-ignore lint/correctness/useExhaustiveDependencies: we want to memoize by all values
+        return React.useCallback(composeRefs(...refs), refs);
+      }
+
+      export { composeRefs, useComposedRefs };
+      ```
+
+      <Step>Copy and paste the following code into your project.</Step>
+
+      <ComponentSource name="badge-overflow" />
+    </Steps>
+
+  </TabsContent>
+</CodeTabs>
+
+## Layout
+
+```tsx title="badge-overflow-imports.tsx"
+import { Badge } from "@/components/ui/badge";
+import { BadgeOverflow } from "@/components/ui/badge-overflow";
+
+<BadgeOverflow renderBadge={(_, label) => <Badge>{label}</Badge>} />;
+```
+
+## Usage
+
+### With Primitive Arrays
+
+When using primitive arrays (strings, numbers), the `getBadgeLabel` prop is optional. The component will automatically use the item itself as the label.
+
+```tsx title="badge-overflow-snippet.tsx"
+<BadgeOverflow
+  items={["React", "TypeScript", "Next.js"]}
+  renderBadge={(item, label) => <Badge>{label}</Badge>}
+/>
+```
+
+### With Object Arrays
+
+When using object arrays, the `getBadgeLabel` prop is required to extract the label from each item.
+
+```tsx title="badge-overflow-snippet.tsx"
+<BadgeOverflow
+  items={[
+    { id: 1, name: "React" },
+    { id: 2, name: "TypeScript" },
+  ]}
+  getBadgeLabel={(item) => item.name}
+  renderBadge={(item, label) => <Badge>{label}</Badge>}
+/>
+```
+
+## Examples
+
+### Multi-line Overflow
+
+Display badges across multiple lines using the `lineCount` prop.
+
+<ComponentTabs name="badge-overflow-multiline-demo" />
+
+### Interactive Tags
+
+Interactive demo showing how to add and remove tags with overflow handling.
+
+<ComponentTabs name="badge-overflow-interactive-demo" />
+
+## API Reference
+
+### BadgeOverflow
+
+The component that measures available space and displays badges with overflow indicators.
+
+<TypeTable
+  type={{
+    items: {
+      description: "Array of items to display as badges",
+      type: "T[]",
+      required: true,
+    },
+    renderBadge: {
+      description: "Function to render each badge",
+      type: "(item: T, label: string) => React.ReactNode",
+      required: true,
+    },
+    getBadgeLabel: {
+      description:
+        "Function to extract label from each item (required for object arrays)",
+      type: "(item: T) => string",
+    },
+    renderOverflow: {
+      description: "Custom render function for the overflow indicator",
+      type: "(count: number) => React.ReactNode",
+    },
+    lineCount: {
+      description: "Number of lines to display before overflow",
+      type: "number",
+      default: "1",
+    },
+    className: {
+      description: "Additional CSS classes for the container",
+      type: "string",
+    },
+  }}
+/>
+
+## Features
+
+### Automatic Width Measurement
+
+The component automatically measures badge widths using DOM measurement and caches results for performance. This ensures accurate overflow calculations without manual configuration.
+
+### Computed Container Styles
+
+The component automatically extracts container padding, gap, badge height, and overflow badge width from computed styles. This means it adapts seamlessly to your CSS without requiring manual prop configuration.
+
+### Multi-line Support
+
+Control how many lines of badges to display using the `lineCount` prop. The component will intelligently wrap badges across lines while respecting the overflow constraints.
+
+### Custom Rendering
+
+Use `renderBadge` and `renderOverflow` props to fully customize how badges and overflow indicators are rendered, allowing complete control over styling and behavior.
+
+### Performance Optimization
+
+The component renders all badges invisibly to measure their actual widths, then uses those measurements to determine which badges fit within the specified line count. ResizeObserver efficiently responds to container size changes.
+
+## Notes
+
+- The component measures actual rendered badges to calculate widths accurately (including icons, custom styling, etc.)
+- Container styles (padding, gap, badge height, overflow width) are automatically computed from CSS
+- Measurements update automatically when items change or container is resized
+- Container must have a defined width for overflow calculations to work

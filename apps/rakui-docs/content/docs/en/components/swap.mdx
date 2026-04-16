@@ -1,0 +1,222 @@
+---
+title: Swap
+description: A toggle component that animates between two states with various animation effects.
+---
+
+A toggle component that animates between two states with support for click or hover activation and multiple animation types.
+
+<ComponentTabs name="swap-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/swap
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/swap
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/swap
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/swap
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>Install the following dependencies:</Step>
+
+```bash
+npm install radix-ui
+```
+
+<Step>
+        Copy and paste the following code into your project.
+      </Step>
+
+      <ComponentSource name="swap" />
+
+      <Step>
+        Update the import paths to match your project setup.
+      </Step>
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Usage
+
+---
+
+```tsx title="swap-imports.tsx"
+import { Swap, SwapOff, SwapOn } from "@/components/ui/swap";
+```
+
+```tsx title="swap-snippet.tsx"
+<Swap>
+  <SwapOn>
+    <Sun className="h-8 w-8" />
+  </SwapOn>
+  <SwapOff>
+    <Moon className="h-8 w-8" />
+  </SwapOff>
+</Swap>
+```
+
+## Examples
+
+### Animation Types
+
+The Swap component supports four animation types. Use the `animation` prop to change the effect.
+
+<ComponentTabs name="swap-animations-demo" />
+
+### Activation Modes
+
+The Swap component can be activated by click (default) or hover.
+
+#### Click
+
+Default click activation with keyboard support (Enter or Space).
+
+<ComponentTabs name="swap-demo" />
+
+#### Hover
+
+Activates on mouse enter/leave.
+
+<ComponentTabs name="swap-hover-demo" />
+
+### Controlled
+
+Use the `swapped` prop to control the state externally.
+
+<ComponentTabs name="swap-controlled-demo" />
+
+## API Reference
+
+### Swap Props
+
+<TypeTable
+  type={{
+    swapped: {
+      description: "Controlled state of the swap",
+      type: "boolean",
+    },
+    defaultSwapped: {
+      description: "Default state for uncontrolled usage",
+      type: "boolean",
+      default: "false",
+    },
+    onSwappedChange: {
+      description: "Callback when state changes",
+      type: "(swapped: boolean) => void",
+    },
+    activationMode: {
+      description: "How the swap is activated",
+      type: '"click" | "hover"',
+      default: '"click"',
+    },
+    animation: {
+      description: "Animation type for the transition",
+      type: '"fade" | "rotate" | "flip" | "scale"',
+      default: '"fade"',
+    },
+    disabled: {
+      description: "Whether the swap is disabled",
+      type: "boolean",
+      default: "false",
+    },
+    asChild: {
+      description: "Render as child element",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+### SwapOn & SwapOff Props
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Render as child element",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+### Data Attributes
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-slot='swap']",
+      value: "Applied to the root element",
+    },
+    {
+      title: "[data-slot='swap-on']",
+      value: "Applied to the on state element",
+    },
+    {
+      title: "[data-slot='swap-off']",
+      value: "Applied to the off state element",
+    },
+    {
+      title: "[data-state='on']",
+      value: "Present when the swap is in on state",
+    },
+    {
+      title: "[data-state='off']",
+      value: "Present when the swap is in off state",
+    },
+    {
+      title: "[data-animation]",
+      value: "The animation type: fade, rotate, flip, or scale",
+    },
+    {
+      title: "[data-disabled]",
+      value: "Present when the swap is disabled",
+    },
+  ]}
+/>
+
+### Accessibility
+
+- When `activationMode` is `"click"`, the root element has `role="button"` and `aria-pressed` attributes
+- Supports keyboard navigation with Enter and Space keys (click mode)
+- Respects `prefers-reduced-motion` by disabling animations
+- Includes `aria-disabled` when disabled

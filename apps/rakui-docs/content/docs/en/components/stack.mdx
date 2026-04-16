@@ -1,0 +1,210 @@
+---
+title: Stack
+description: A layout component for stacking items with expansion effects.
+---
+
+import { ComponentTabs } from "@/components/docs-mdx";
+
+<ComponentTabs name="stack-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">
+          npm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="pnpm">
+          pnpm
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="yarn">
+          yarn
+        </CodeBlockTabsTrigger>
+
+        <CodeBlockTabsTrigger value="bun">
+          bun
+        </CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/stack
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/stack
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/stack
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/stack
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>Install the following dependencies:</Step>
+
+```bash
+npm install radix-ui class-variance-authority
+```
+
+<Step>
+        Copy and paste the following code into your project:
+      </Step>
+
+      <ComponentSource name="stack" title="src/components/ui/stack.tsx" />
+
+      <Step>
+        Update the import paths to match your project setup.
+      </Step>
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Usage
+
+```tsx title="stack-demo.tsx"
+import { Stack, StackItem } from "@/components/ui/stack";
+
+export function StackDemo() {
+  return (
+    <Stack className="w-[360px]" expandOnHover>
+      <StackItem className="flex flex-col gap-2">
+        <h3 className="font-semibold">Notification 1</h3>
+        <p className="text-muted-foreground text-sm">
+          Your deployment was successful
+        </p>
+      </StackItem>
+      <StackItem className="flex flex-col gap-2">
+        <h3 className="font-semibold">Notification 2</h3>
+        <p className="text-muted-foreground text-sm">
+          New message from John Doe
+        </p>
+      </StackItem>
+      <StackItem className="flex flex-col gap-2">
+        <h3 className="font-semibold">Notification 3</h3>
+        <p className="text-muted-foreground text-sm">
+          Update available for your app
+        </p>
+      </StackItem>
+    </Stack>
+  );
+}
+```
+
+## Examples
+
+### Without Expansion
+
+Disable the hover expansion effect for a static stack.
+
+<ComponentTabs name="stack-without-expansion-demo" />
+
+### Different Sides
+
+Stack items from different sides using the `side` prop.
+
+<ComponentTabs name="stack-side-demo" />
+
+## API Reference
+
+### Stack
+
+<TypeTable
+  type={{
+    side: {
+      description: "Direction items stack toward when they fan out.",
+      type: '"top" | "bottom"',
+      default: '"bottom"',
+    },
+    itemCount: {
+      description: "Number of visible items while the stack is collapsed.",
+      type: "number",
+      default: "3",
+    },
+    expandedItemCount: {
+      description: "Number of visible items once the stack expands.",
+      type: "number",
+      default: "childrenCount",
+    },
+    gap: {
+      description: "Gap between items in pixels while the stack is expanded.",
+      type: "number",
+      default: "8",
+    },
+    scale: {
+      description: "Scale reduction applied per item while collapsed.",
+      type: "number",
+      default: "0.05",
+    },
+    offset: {
+      description: "Offset applied per item while the stack is collapsed.",
+      type: "number",
+      default: "10",
+    },
+    expandOnHover: {
+      description: "Expands the stack while the pointer is over the root.",
+      type: "boolean",
+      default: "false",
+    },
+    asChild: {
+      description: "Merges the root props into a custom wrapper element.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes for the stack root.",
+      type: "string",
+    },
+    children: {
+      description: "Stack items rendered in front-to-back order.",
+      type: "ReactNode",
+    },
+  }}
+/>
+
+### StackItem
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Merges item props into a custom element.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes for the rendered stack item.",
+      type: "string",
+    },
+    children: {
+      description: "Content shown inside the stacked card.",
+      type: "ReactNode",
+    },
+  }}
+/>

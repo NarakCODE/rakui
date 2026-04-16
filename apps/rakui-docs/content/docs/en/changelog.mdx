@@ -1,0 +1,33 @@
+---
+title: Changelog
+description: Latest updates, improvements, and announcements for Rak UI.
+---
+
+# Changelog
+
+Latest updates, improvements, and announcements.
+
+## February 2026 - Unified Radix UI and Multi-Base Architecture
+
+### February 16, 2026
+
+We've shipped several major improvements to Rak UI's component infrastructure and documentation.
+
+### Unified Radix UI Package
+
+All components have been migrated from individual `@radix-ui/react-*` packages to the unified `radix-ui` package. This follows Radix UI's official consolidation effort and simplifies dependency management.
+
+```diff title="diff.patch"
+- import * as SelectPrimitive from "@radix-ui/react-select"
++ import { Select } from "radix-ui"
+```
+
+### Optimized Utility Components
+
+The `ClientOnly` and `Portal` components have been rewritten using `useSyncExternalStore` for better performance and proper SSR/hydration handling.
+
+**Benefits:**
+
+- No `useState` + `useLayoutEffect` pattern needed
+- Proper SSR/Hydration with explicit server vs client snapshots
+- No hydration mismatches

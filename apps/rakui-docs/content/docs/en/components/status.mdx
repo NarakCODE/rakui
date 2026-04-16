@@ -1,0 +1,193 @@
+---
+title: Status
+description: A flexible status indicator component with animated ping effect and color variants for displaying system states, user presence, and service health.
+---
+
+A flexible status indicator component with animated ping effect and color variants for displaying system states, user presence, and service health.
+
+<ComponentTabs name="status-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">
+      Command
+    </TabsTrigger>
+
+    <TabsTrigger value="manual">
+      Manual
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/status
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/status
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/status
+        ```
+      </CodeBlockTab>
+
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/status
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>Install the following dependencies:</Step>
+
+```bash
+npm install radix-ui class-variance-authority
+```
+
+<Step>
+        Copy and paste the following code into your project.
+      </Step>
+
+      <ComponentSource name="status" />
+
+      <Step>
+        Update the import paths to match your project setup.
+      </Step>
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Usage
+
+---
+
+```tsx title="status-imports.tsx"
+import {
+  Status,
+  StatusIndicator,
+  StatusLabel,
+} from "@/components/ui/status";
+```
+
+```tsx title="status-snippet.tsx"
+<Status variant="success">
+  <StatusIndicator />
+  <StatusLabel>Online</StatusLabel>
+</Status>
+```
+
+## Examples
+
+### Variants
+
+Status supports five color variants to represent different states.
+
+<ComponentTabs name="status-variants-demo" />
+
+### Text Only
+
+Use status without the indicator for a simpler appearance.
+
+<ComponentTabs name="status-text-only-demo" />
+
+### Service Status List
+
+Display multiple status items in a list format, ideal for system health dashboards.
+
+<ComponentTabs name="status-list-demo" />
+
+## API Reference
+
+### Status Props
+
+<TypeTable
+  type={{
+    variant: {
+      description: 'Visual style variant of the status',
+      type: '"default" | "success" | "error" | "warning" | "info"',
+      default: '"default"',
+    },
+    asChild: {
+      description: 'Render as child element',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+### StatusIndicator Props
+
+<TypeTable
+  type={{
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>
+
+### StatusLabel Props
+
+<TypeTable
+  type={{
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>
+
+### Data Attributes
+
+<DataAttributesTable
+  data={[
+    {
+      title: "[data-slot='status']",
+      value: "Applied to the root Status element",
+    },
+    {
+      title: "[data-slot='status-indicator']",
+      value: "Applied to the status indicator dot",
+    },
+    {
+      title: "[data-slot='status-label']",
+      value: "Applied to the status label text",
+    },
+    {
+      title: "[data-variant]",
+      value: "The variant type: default, success, error, warning, or info",
+    },
+  ]}
+/>
+
+### Styling
+
+The Status component uses Tailwind CSS with CVA (class-variance-authority) for variant management. Each variant includes:
+
+- **Border color** - Subtle border with opacity
+- **Background color** - Light tinted background
+- **Text color** - Matching variant color
+- **Indicator color** - The animated dot inherits the variant color
+
+The `StatusIndicator` includes:
+- `before:` pseudo-element with `animate-ping` for the ripple effect
+- `after:` pseudo-element for the solid dot center

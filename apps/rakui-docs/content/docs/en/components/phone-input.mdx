@@ -1,0 +1,107 @@
+---
+title: Phone Input
+description: An international phone number input with country selection.
+---
+
+An international phone number input with country selection.
+
+<ComponentTabs name="phone-input-demo" />
+
+## Installation
+
+<CodeTabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">Command</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <CodeBlockTabs defaultValue="npm" groupId="package-manager">
+      <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+      </CodeBlockTabsList>
+      <CodeBlockTab value="npm">
+        ```bash
+        npx shadcn@latest add @rakui/phone-input
+        ```
+      </CodeBlockTab>
+      <CodeBlockTab value="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add @rakui/phone-input
+        ```
+      </CodeBlockTab>
+      <CodeBlockTab value="yarn">
+        ```bash
+        yarn dlx shadcn@latest add @rakui/phone-input
+        ```
+      </CodeBlockTab>
+      <CodeBlockTab value="bun">
+        ```bash
+        bun x shadcn@latest add @rakui/phone-input
+        ```
+      </CodeBlockTab>
+    </CodeBlockTabs>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps className="pt-2">
+      <Step>Install the following dependencies:</Step>
+
+```bash
+npm install class-variance-authority lucide-react
+```
+
+<Step>
+        Copy and paste the following code into your project.
+      </Step>
+
+      <ComponentSource name="phone-input" />
+
+      <Step>
+        Update the import paths to match your project setup.
+      </Step>
+    </Steps>
+  </TabsContent>
+</CodeTabs>
+
+## Usage
+
+```tsx title="phone-input-demo.tsx"
+import { PhoneInput } from "@rakui/phone-input";
+
+export default function Example() {
+  return (
+    <PhoneInput
+      defaultCountry="US"
+      onChange={(phone) => console.log(phone)}
+    />
+  );
+}
+```
+
+## API Reference
+
+### PhoneInput
+
+<TypeTable
+  type={{
+    defaultCountry: {
+      description: 'Default country code',
+      type: 'string',
+      default: '"US"',
+    },
+    onChange: {
+      description: 'Change handler',
+      type: '(phone: string) => void',
+    },
+    value: {
+      description: 'Controlled phone value',
+      type: 'string',
+    },
+    className: {
+      description: 'Additional CSS classes',
+      type: 'string',
+    },
+  }}
+/>
