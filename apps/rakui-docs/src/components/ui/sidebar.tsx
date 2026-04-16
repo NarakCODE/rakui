@@ -349,7 +349,7 @@ SidebarFooter.displayName = "SidebarFooter"
 const SidebarSeparator = React.forwardRef<
   React.ElementRef<typeof Separator>,
   React.ComponentProps<typeof Separator>
->(({ className, ...props }, ref) => {
+>(({ className, ...props }, ref): React.ReactElement => {
   return (
     <Separator
       ref={ref}

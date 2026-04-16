@@ -6,7 +6,8 @@
     "build": "next build",
     "dev": "NODE_OPTIONS='--max-old-space-size=4096' next dev",
     "start": "next start",
-    "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
+    "check-types": "fumadocs-mdx && next typegen && tsc --noEmit",
+    "lint": "eslint .",
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
@@ -40,10 +41,10 @@
     "input-otp": "^1.4.2",
     "lucide-react": "^1.7.0",
     "motion": "^12.38.0",
-    "next": "16.2.2",
+    "next": "16.2.0",
     "radix-ui": "^1.4.3",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "react-hook-form": "^7.72.1",
     "recharts": "^3.8.0",
     "shadcn": "^4.1.2",
@@ -55,13 +56,15 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/mdx": "^2.0.13",
-    "@types/node": "^25.5.0",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
+    "@types/node": "^22.15.3",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.2",
-    "typescript": "^6.0.2"
+    "typescript": "5.9.2"
   }
 }

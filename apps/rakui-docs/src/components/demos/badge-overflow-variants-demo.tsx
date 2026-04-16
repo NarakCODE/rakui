@@ -73,7 +73,7 @@ export function BadgeOverflowVariantsDemo() {
           lineCount={1}
           getBadgeLabel={(item: Category) => item.name}
           renderBadge={(item: Category) => {
-            const colors = colorMap[item.color];
+            const colors = colorMap[item.color]!;
             return (
               <Badge className={`${colors.bg} ${colors.text}`}>
                 {item.name}

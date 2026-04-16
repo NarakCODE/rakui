@@ -66,7 +66,7 @@ function generateOrders(): Order[] {
         "failed",
         "refunded",
       ]),
-      date: faker.date.recent({ days: 14 }).toISOString().split("T")[0],
+      date: faker.date.recent({ days: 14 }).toISOString().split("T")[0]!,
     };
   });
 }

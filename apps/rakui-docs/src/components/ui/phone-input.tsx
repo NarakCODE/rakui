@@ -259,7 +259,7 @@ const PhoneInputRoot = React.forwardRef<HTMLDivElement, PhoneInputProps>(
       return (
         countryList.current.find(
           (c) => c.iso2 === defaultCountry.toLowerCase(),
-        ) ?? countryList.current[0]
+        ) ?? countryList.current[0]!
       );
     });
 
